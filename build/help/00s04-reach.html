@@ -1,0 +1,90 @@
+<!-- id: h-s04 | title: Stage 4 · How far does it reach? | group: The project | stage: 4 | tab: yes | tabtitle: Stage 4 – How far does it reach? | summary: Scan the whole 500 kb for variants linked to rs41310749; discover that the answer depends entirely on which population you ask in; find the edges of the block and learn what a recombination map is | summary2: r2 scan, LD decay, the European block, recombination | keys: stage 4 ld scan r2 decay haplotype block boundaries recombination rate hotspot plink2 r2-phased ld-snp ld-window-kb loop-cats european african plot ggplot2 locuszoom -->
+<h1>Stage 4 · How far does it reach?</h1>
+<div class="stage-meta"><span class="when">Weeks 4–5</span><span>about 6 hours</span><span class="stage-progress"></span></div>
+<p class="lede">Two variants 989 bases apart travel together. The question this project exists to answer is how much <i>else</i> travels with them. Stop looking at a pair and scan the whole half-megabase.</p>
+<div class="skills"><b>You will learn</b><ul>
+<li>to compute LD between one variant and thousands of others at once</li>
+<li>to plot LD against position, and to read the plot</li>
+<li>that a haplotype block has edges, and how to find them</li>
+<li>that "the block" is not one thing – it has a different size in every population</li>
+</ul></div>
+
+<h2>1. One against all</h2>
+<p>PLINK's <code>--ld-snp</code> fixes one variant and computes r² against every other within a window. <code>--ld-window-kb</code> sets how far to look, <code>--ld-window-r2 0</code> says report everything rather than only strong pairs:</p>
+<pre class="code" data-run="term"><code>cd ~/project
+plink2 --pfile scn5a --ld-snp 3:38651526:G:A \
+       --r2-phased --ld-window-kb 300 --ld-window-r2 0 \
+       --out scan_all
+wc -l scan_all.vcor
+sort -g -k7,7 -r scan_all.vcor | head -15</code></pre>
+<p>The last column is r². Sorting it largest-first shows the variants most tightly linked to rs41310749 across the whole region.</p>
+<div class="callout check"><div class="co-t">Check</div><p>Across all 2,504 people, <b>no variant anywhere in the 500 kb reaches r² ≥ 0.8</b> with rs41310749. Nineteen reach 0.5, spanning 39.3 kb; thirty-five reach 0.2, spanning 52.5 kb. The highest r² in the file is with rs41310239 – the variant you already knew about.</p></div>
+<div class="callout think"><div class="co-t">Think</div><p>You were told to expect a large haplotype block. The strongest partner in half a megabase has r² below 0.8. Has the hypothesis failed? Before you answer, remember what you found in stage 3 – and what made r² collapse there while D′ stayed at 1.</p></div>
+
+<h2>2. The same scan, one population at a time</h2>
+<p>Reuse the <code>superpop.txt</code> you built in stage 2:</p>
+<pre class="code" data-run="term"><code>plink2 --pfile scn5a --ld-snp 3:38651526:G:A \
+       --r2-phased --ld-window-kb 300 --ld-window-r2 0 \
+       --pheno superpop.txt --loop-cats SUPERPOP --out scan
+for f in scan.*.vcor; do
+  n=$(awk 'NR>1 && $7>=0.8' $f | wc -l)
+  echo "$f  variants with r2>=0.8: $n"
+done</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>In <b>Europeans, 22 variants</b> reach r² ≥ 0.8, and they span <b>50.6 kb</b> – from 38,631,501 to 38,682,101. In Africans, essentially none do. The block the project is about is there, and it was hidden by pooling five continents into one sample.</p></div>
+<div class="callout science"><div class="co-t">Why pooling destroyed it</div>
+<p>r² is a correlation, and a correlation computed across structured groups measures two things at once: whether the alleles travel together <i>within</i> a group, and whether the groups differ in frequency. Africans carry rs41310749 at 13% and almost none of the rest of the block; Europeans carry the whole block at 16%. Mixing them in one calculation lets the between-group difference swamp the within-group correlation.</p>
+<p>This is the same statistical trap as Simpson's paradox, and it is why population genetics is done within populations and only then compared across them. <b>Never compute LD in a pooled multi-ancestry sample</b> unless you have thought hard about what the number will mean.</p></div>
+<div class="task"><div class="task-t">Your turn</div>
+<p>Find the 22 European variants and write their positions into a file – you will use them in stage 5. Then check whether the same 22 are the top 22 in South Asians, where r² between the two promoter variants was 0.98.</p>
+<details class="hint answer"><summary>Show a hint</summary>
+<pre class="code" data-run="term"><code>awk 'NR>1 && $7>=0.8 {print $5, $6, $7}' scan.EUR.vcor | sort -n > eur_block.txt
+head -3 eur_block.txt; tail -3 eur_block.txt; wc -l eur_block.txt
+awk 'NR>1 && $7>=0.8 {print $5}' scan.SAS.vcor | sort -n > sas_block.txt
+comm -12 <(cut -d' ' -f1 eur_block.txt | sort) <(sort sas_block.txt) | wc -l</code></pre>
+<p>Column 5 is the position of the partner variant, column 6 its identifier and column 7 the r². The European list runs from 38,631,501 to 38,682,101.</p></details></div>
+
+<h2>2b. Doing it yourself, and plotting it</h2>
+<p>You wrote an <code>ld()</code> function in stage 3. Apply it across every variant in the file and plot the result – this is the figure that makes the block visible.</p>
+<pre class="code" data-run="r"><code>library(ggplot2)
+d &lt;- read.table("~/project/scan.EUR.vcor", header = TRUE, comment.char = "")
+names(d)[c(5, 7)] &lt;- c("pos", "r2")
+ggplot(d, aes(pos / 1e6, r2)) +
+  geom_point(aes(colour = r2 &gt;= 0.8), size = 1.1, alpha = 0.8) +
+  geom_vline(xintercept = c(38.631501, 38.682101), linetype = 2, linewidth = 0.3) +
+  scale_colour_manual(values = c("grey70", "#C5705D"), guide = "none") +
+  labs(x = "position on chromosome 3 (Mb)", y = expression(r^2~"with rs41310749"),
+       title = "Europeans") +
+  theme_minimal(base_size = 11)</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>A dense cluster of points near r² = 1 between the two dashed lines, and a scatter of low values either side. The cluster has <b>edges</b>: the r² does not trail off gently, it drops. That shape is what the word "block" means.</p></div>
+<div class="callout log"><div class="co-t">Keep this figure</div><p>Make the same plot for all five superpopulations – <code>facet_wrap(~ pop)</code> once you have read the five files into one data frame. It is the first figure of your report, and the clearest single picture of what this project found.</p></div>
+
+<h2>3. Where are the edges, and why there?</h2>
+<p>Blocks end where recombination has had a chance to cut. The genome has <b>recombination hotspots</b> – short stretches where crossing-over is tens of times more likely than average – and block boundaries tend to sit on them.</p>
+<p>Look up the region in the Ensembl recombination track, and compare where the rate rises with where your block ends:</p>
+<div class="tryrow"><button class="do" type="button" data-api="ensembl:region:3:38600000-38720000">chr3:38,600,000–38,720,000 in Ensembl</button></div>
+<div class="callout think"><div class="co-t">Think</div><p>Your block is 50.6 kb. The average human haplotype block is a few tens of kilobases, so this is ordinary in size. But its <i>frequency</i> is 16% in Europeans and 1.5% in Africans. Which of those two facts is the interesting one, and which is just how genomes are?</p></div>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->A boundary is not a fact</div><p>Every method of calling block boundaries gives slightly different answers, because r² is estimated from a finite sample and the threshold (0.8 here) is a choice, not a discovery. Quote your threshold whenever you quote a block size, and check that your conclusions do not change if you use 0.7 or 0.9. Do that now – it takes one line.</p></div>
+
+<div class="callout log"><div class="co-t">For your logbook</div>
+<ul>
+<li>The pooled scan result, and why it was misleading.</li>
+<li>The European block: how many variants, what span, which positions at the edges.</li>
+<li>Your five-panel figure.</li>
+<li>Your sensitivity check: the block size at r² thresholds of 0.7, 0.8 and 0.9.</li>
+<li>One paragraph on what a recombination hotspot is.</li>
+</ul></div>
+
+<h2>Going further</h2>
+<ul>
+<li><b>The other direction.</b> Scan from rs41310239 instead. Do you get the same block? Should you?</li>
+<li><b>Decay curves.</b> Bin the variants by distance from rs41310749 and plot mean r² against distance, for each population. This is the classic LD-decay curve. Which population decays fastest, and why would you expect that from human history?</li>
+<li><b>The 26 populations.</b> Run the scan in Finns (FIN) and in Yoruba (YRI) separately. The contrast is sharper than the superpopulation one.</li>
+</ul>
+<ul class="checklist">
+<li data-check="s4-scan">I scanned the whole region against rs41310749.</li>
+<li data-check="s4-pool">I understand why the pooled scan found nothing and can explain it.</li>
+<li data-check="s4-eur">I found the European block and its 22 variants.</li>
+<li data-check="s4-plot">I made the LD figure for all five populations.</li>
+<li data-check="s4-thresh">I checked that the block size does not depend on my threshold.</li>
+</ul>
+<div class="stage-nav"><button type="button" data-goto="h-s03"><small>Back</small>← Stage 3 · Measuring linkage</button><button class="next" type="button" data-goto="h-s05"><small>Next</small>Stage 5 · The haplotype itself →</button></div>

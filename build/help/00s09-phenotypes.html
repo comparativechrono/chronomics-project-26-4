@@ -1,0 +1,118 @@
+<!-- id: h-s09 | title: Stage 9 · Does it matter? Heart and clock | group: The project | stage: 9 | tab: yes | tabtitle: Stage 9 – Does it matter? | summary: Eleven sets of GWAS summary statistics from hundreds of thousands of people; look up all 20 variants in each; strong cardiac conduction signals, nothing circadian, and the build conversion that could ruin it all | keys: stage 9 gwas summary statistics biobank uk biobank pr interval qrs qt brugada atrial fibrillation resting heart rate chronotype sleep duration insomnia napping beta standard error z score effect allele strand build grch37 grch38 liftover multiple testing -->
+<h1>Stage 9 · Does it matter? Heart and clock</h1>
+<div class="stage-meta"><span class="when">Weeks 9–10</span><span>about 7 hours</span><span class="stage-progress"></span></div>
+<p class="lede">Up to now the project has been about a piece of DNA. This stage asks whether it does anything to the people who carry it – using studies of hundreds of thousands of people that are already done, already public, and sitting in your bundle.</p>
+<div class="skills"><b>You will learn</b><ul>
+<li>what GWAS summary statistics are and how to read a file of them</li>
+<li>to look up a variant across many studies and assemble the result</li>
+<li>to get the effect allele and the genome build right – the two things that go wrong</li>
+<li>to handle multiple testing without either ignoring it or hiding behind it</li>
+</ul></div>
+
+<h2>1. What is in these files</h2>
+<p>A genome-wide association study tests every common variant against a trait and publishes, for each, an effect size, its standard error and a P-value. Those <b>summary statistics</b> are public even when the individual data are not – which is why a student with a laptop can use a study of half a million people.</p>
+<pre class="code" data-run="term"><code>ls -la /data/examples/scn5a/gwas/
+column -t -s $'\t' /data/examples/scn5a/gwas/sources.tsv
+head -2 /data/examples/scn5a/gwas/PR_interval_Ntalla2020.tsv | column -t -s $'\t'
+head -2 /data/examples/scn5a/gwas/chronotype_Jones2019.tsv | column -t -s $'\t'</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>Eleven trait files. Six cardiac – PR interval, QRS duration, QT interval, resting heart rate, atrial fibrillation, Brugada syndrome – and five circadian: chronotype, being a morning person, sleep duration, insomnia and daytime napping. Note that <b>the files do not share a column layout</b>: one calls the position <code>base_pair_location</code>, another <code>BP</code>; one has <code>beta</code>, another <code>LOGOR</code>. Every one has to be read on its own terms.</p></div>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->Two ways to get a wrong answer that looks right</div>
+<p><b>The build.</b> Four of these files are on GRCh37 and two on GRCh38. Your variants are on GRCh38. At this locus the offset is 41,491 – you noted it in stage 1. Subtract it from a GRCh37 position to get GRCh38, and check your arithmetic by confirming that the alleles match.</p>
+<p><b>The effect allele.</b> A beta of +0.6 is meaningless until you know which allele it refers to. Every file names an effect allele and another allele; if the file's effect allele is your reference allele, <b>the sign flips</b>. Get this wrong and you will report that the haplotype shortens the PR interval when it lengthens it.</p></div>
+
+<h2>2. One variant, one trait, by hand</h2>
+<p>Do the simplest possible version first, so you know what the automated version should produce. rs41310749 is at 38,651,526 on GRCh38, so 38,693,017 on GRCh37:</p>
+<pre class="code" data-run="term"><code>echo $((38651526 + 41491))
+awk -F'\t' 'NR==1 || $3==38693017' /data/examples/scn5a/gwas/PR_interval_Ntalla2020.tsv | column -t -s $'\t'</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>One row. Read off the effect allele, the other allele, the beta, the standard error and the P. Check the alleles against the VCF: the haplotype allele at this position is <code>A</code>. If the file's effect allele is <code>G</code>, negate the beta before you use it.</p></div>
+
+<h2>3. All 20 variants, all 11 traits</h2>
+<p>Now write it properly. The pattern – read a file, resolve its column names, convert the build, align the allele, keep the rows you want – is the single most reusable piece of code in genetics:</p>
+<pre class="code" data-run="r"><code>OFFSET &lt;- 41491
+hap &lt;- read.delim("/data/examples/scn5a/annotation/haplotype_variants.tsv")
+builds &lt;- c(PR_interval_Ntalla2020 = 37, QRS_duration_Sieliwonczyk2025 = 37,
+            QT_interval_Hoffmann2022 = 38, resting_heart_rate_Zhu2019 = 37,
+            atrial_fibrillation_Yuan2025 = 38, brugada_syndrome_Barc2022 = 38,
+            chronotype_Jones2019 = 37, morning_person_Jones2019 = 37,
+            sleep_duration_Dashti2019 = 37, insomnia_Lane2019 = 37)
+
+pick &lt;- function(nms, want) { i &lt;- which(tolower(nms) %in% want); if (length(i)) i[1] else NA }
+lookup &lt;- function(stem) {
+  d &lt;- read.delim(file.path("/data/examples/scn5a/gwas", paste0(stem, ".tsv")))
+  n &lt;- names(d)
+  ci &lt;- list(pos  = pick(n, c("base_pair_location", "bp", "pos")),
+             ea   = pick(n, c("effect_allele", "allele1", "a1")),
+             oa   = pick(n, c("other_allele", "allele0", "a0", "allele2")),
+             beta = pick(n, c("beta", "logor")),
+             se   = pick(n, c("standard_error", "logor_se", "se")),
+             p    = pick(n, c("p_value", "p_bolt_lmm", "p")))
+  stopifnot(!any(is.na(unlist(ci))))
+  d$pos38 &lt;- d[[ci$pos]] - ifelse(builds[[stem]] == 37, OFFSET, 0)
+  m &lt;- merge(hap[, c("pos_GRCh38", "rsid", "ref", "alt")], d, by.x = "pos_GRCh38", by.y = "pos38")
+  flip &lt;- toupper(m[[n[ci$ea]]]) == toupper(m$ref)       # effect allele is OUR reference: flip
+  data.frame(trait = stem, pos = m$pos_GRCh38, rsid = m$rsid,
+             beta = ifelse(flip, -m[[n[ci$beta]]], m[[n[ci$beta]]]),
+             se = m[[n[ci$se]]], p = m[[n[ci$p]]])
+}
+res &lt;- do.call(rbind, lapply(names(builds), lookup))
+res$z &lt;- res$beta / res$se
+table(res$trait)</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>Between 17 and 20 of the 20 variants are found in each file – not all, because each study imputed a slightly different set. Every beta is now oriented to the <b>haplotype</b> allele, so a positive beta means carrying the block goes with a higher value of the trait.</p></div>
+<pre class="code" data-run="r"><code>library(dplyr)
+res %&gt;% group_by(trait) %&gt;% slice_min(p, n = 1) %&gt;%
+  select(trait, rsid, beta, se, p) %&gt;% arrange(p) %&gt;% as.data.frame()</code></pre>
+<div class="callout check"><div class="co-t">Check</div>
+<table class="table"><thead><tr><th>trait</th><th>strongest variant</th><th>effect on the haplotype allele</th><th>P</th></tr></thead>
+<tbody>
+<tr><td>PR interval</td><td>rs62242851</td><td>+0.64 ms</td><td>7.5 × 10<sup>−15</sup></td></tr>
+<tr><td>Brugada syndrome</td><td>rs62242851</td><td>+0.28 log-odds</td><td>1.3 × 10<sup>−11</sup></td></tr>
+<tr><td>atrial fibrillation</td><td>rs75073937</td><td>−0.023 log-odds</td><td>5.4 × 10<sup>−7</sup></td></tr>
+<tr><td>QT interval</td><td>rs74958514</td><td>+0.47 ms</td><td>3.2 × 10<sup>−5</sup></td></tr>
+<tr><td>QRS duration</td><td>rs62242851</td><td>+0.022 ms</td><td>0.014</td></tr>
+<tr><td>resting heart rate</td><td>rs7373686</td><td>+0.031 bpm</td><td>0.20</td></tr>
+<tr><td colspan="4" style="padding-top:.5em"><b>and the circadian traits</b></td></tr>
+<tr><td>morning person</td><td>rs7373686</td><td>+0.0095 log-odds</td><td>0.11</td></tr>
+<tr><td>daytime napping</td><td>rs56053699</td><td>+0.0020 SD</td><td>0.14</td></tr>
+<tr><td>insomnia</td><td>rs41310749</td><td>+0.0026 log-odds</td><td>0.16</td></tr>
+<tr><td>sleep duration</td><td>rs56053699</td><td>+0.0035 h</td><td>0.22</td></tr>
+<tr><td>chronotype</td><td>rs7373686</td><td>+0.0033 SD</td><td>0.33</td></tr>
+</tbody></table></div>
+<div class="callout science"><div class="co-t">A clean split</div>
+<p>Cardiac conduction: four traits with P below 10<sup>−4</sup>, in the direction you would expect from a variant that reduces sodium-channel availability – a longer PR interval, a longer QT, higher Brugada risk. Circadian and sleep: <b>nothing</b>. The smallest circadian P-value is 0.11, which is what the best of eleven essentially random numbers looks like.</p>
+<p>The split is worth stating carefully. These five circadian studies are large – the UK Biobank chronotype study has 450,000 people – so this is a reasonably powered null, not an absence of data. For a block sitting beside a cardiac ion-channel gene, that is the result you would predict. It is still worth having, because it was not obvious before you looked, and a published null is more useful to the next person than a silence.</p></div>
+
+<h2>4. Multiple testing, honestly</h2>
+<p>You have just done 20 × 11 = 220 tests. Correcting naively by 220 would be too harsh, because the 20 variants are nearly perfectly correlated – they are one haplotype, so they are close to <b>one</b> test, not 20 – and too lenient in another way, because you chose these traits after seeing the gene.</p>
+<pre class="code" data-run="r"><code># how many independent variants are there, really?
+sel &lt;- match(hap$pos_GRCh38, pos)
+sel &lt;- sel[!is.na(sel)]
+ev &lt;- eigen(cor(t(H[sel, ])), only.values = TRUE)$values
+sum(ev)^2 / sum(ev^2)        # effective number of independent tests</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>The effective number of independent variants is close to <b>1</b>. So the right correction is for the number of <i>traits</i> – eleven – giving a threshold of 0.05/11 = 0.0045. Four cardiac traits pass it; no circadian trait comes close.</p></div>
+<div class="callout think"><div class="co-t">Think</div><p>You have four P-values below 10<sup>−4</sup> for a 50 kb haplotype beside a cardiac gene. What is the most likely reason that is <i>not</i> "this haplotype affects cardiac conduction"? You met the answer in stage 8 and it is the subject of stage 10 – but try to state the problem yourself before you turn the page.</p></div>
+
+<div class="callout log"><div class="co-t">For your logbook</div>
+<ul>
+<li>Your lookup code, with comments on the build conversion and the allele flip.</li>
+<li>The hand-checked single lookup, and confirmation that your code agrees with it.</li>
+<li>The full table of 11 traits, with effects oriented to the haplotype allele.</li>
+<li>Your multiple-testing reasoning and the effective number of tests.</li>
+<li>One paragraph on the circadian null: how much power these studies had, and what you can therefore say.</li>
+</ul></div>
+
+<h2>Going further</h2>
+<ul>
+<li><b>Direction of effect.</b> Are all 20 variants' betas the same sign within a trait? They should be, if they are one haplotype. Any that are not tell you about a lookup error or a phasing problem – find out which.</li>
+<li><b>Forest plot.</b> Plot beta with 95% confidence intervals for all 20 variants, faceted by trait. It makes the consistency – and the circadian nulls – visible at a glance.</li>
+<li><b>More traits.</b> The GWAS Catalog has thousands of studies with public summary statistics. Pick three more traits that you can justify <i>before</i> you look, and add them. Write down your prediction first.</li>
+<li><b>How big is the effect?</b> 0.64 ms of PR interval is the effect of carrying one copy. Put that next to the normal range of the PR interval and the threshold for first-degree AV block. Is this a difference anyone would notice?</li>
+</ul>
+<ul class="checklist">
+<li data-check="s9-read">I can read a summary statistics file and find its columns.</li>
+<li data-check="s9-hand">I looked one variant up by hand before writing any code.</li>
+<li data-check="s9-build">I converted the build correctly and verified it with the alleles.</li>
+<li data-check="s9-allele">I oriented every effect to the haplotype allele.</li>
+<li data-check="s9-table">I have the full 11-trait table and the cardiac/circadian split.</li>
+<li data-check="s9-mt">I handled multiple testing and can defend my threshold.</li>
+</ul>
+<div class="stage-nav"><button type="button" data-goto="h-s08"><small>Back</small>← Stage 8 · What is on the haplotype</button><button class="next" type="button" data-goto="h-s10"><small>Next</small>Stage 10 · Is it a signal of its own? →</button></div>

@@ -1,0 +1,4 @@
+scenario	n_replicates	median_abs_t	p99_abs_t	rejection_rate_alpha_0.05	rejection_rate_alpha_0.01	rejection_rate_alpha_0.001
+the test's own null: the lead is the only causal variant	40000	0.679	2.584	0.0515	0.0102	0.0012
+the real locus: a second causal signal (rs4131768) ignored	40000	3.055	5.363	0.8599	0.6824	0.4067
+a second causal signal half as strong	40000	1.524	3.87	0.3332	0.1489	0.0394

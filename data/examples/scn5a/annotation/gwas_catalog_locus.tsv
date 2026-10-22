@@ -1,0 +1,267 @@
+mapped_gene	rsid	chromosome	position_GRCh38	effect_allele	p_value	trait	reported_trait	study	pubmed_id	first_author	n_unique_associations	n_distinct_lead_rsids	r2_with_rs41310749	r2_with_rs41310239	dprime_with_rs41310749	r2_EUR_with_rs41310749	in_promoter_haplotype
+SCN5A	rs73056438	3	38629983	C	2e-13	heart rate	heart rate (HR, minimum, inv-normal transformed)	GCST90480667	39024449	Verma A	266	103	0.0008	0.0118	0.0306	0.0069	no
+SCN5A	rs3922844	3	38582762	T	2e-35	heart rate	heart rate (HR, mean, inv-normal transformed)	GCST90480666	39024449	Verma A	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs3922844	3	38582762	T	5e-15	heart rate	heart rate (HR, minimum, inv-normal transformed)	GCST90476340	39024449	Verma A	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs3922844	3	38582762	T	2e-23	heart rate	heart rate (HR, maximum, inv-normal transformed)	GCST90480665	39024449	Verma A	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs3922844	3	38582762	T	2e-23	heart rate	heart rate (HR, mean, inv-normal transformed)	GCST90476337	39024449	Verma A	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs3922844	3	38582762	T	2e-11	heart rate	heart rate (HR, maximum, inv-normal transformed)	GCST90476333	39024449	Verma A	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs3922844	3	38582762	T	3e-15	cardiac arrhythmia	Cardiac dysrhythmias (PheCode 427)	GCST90480180	39024449	Verma A	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs3922844	3	38582762	T	1e-11	paroxysmal tachycardia	Paroxysmal tachycardia, unspecified (PheCode 427.1)	GCST90480167	39024449	Verma A	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs3922844	3	38582762	T	3e-11	atrial fibrillation; atrial flutter	Atrial fibrillation and flutter (PheCode 427.2)	GCST90475966	39024449	Verma A	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs73060416	3	38680054	?	1e-06	retinal nerve fibre layer thickness	Retinal nerve fibre layer (RNFL) thickness	GCST90554824	38365752	Saez ME	266	103	0.0015	0.0012	1.0	0.0076	no
+SCN5A	rs62241188	3	38561578	?	4e-06	memory impairment	Memory decline in normal cognition (excluding comorbidities)	GCST90448866	37985223	Archer DB	266	103	0.0	0.0017	0.0102	0.0	no
+SCN5A	rs9845438	3	38558965	?	9e-06	memory impairment	Memory decline in normal cognition	GCST90448865	37985223	Archer DB	266	103	0.0	0.005	0.0042	0.0002	no
+SCN5A	rs62241188	3	38561578	?	8e-06	memory impairment	Memory decline in normal cognition	GCST90448865	37985223	Archer DB	266	103	0.0	0.0017	0.0102	0.0	no
+SCN5A	rs6793245	3	38557546	?	4e-06	memory impairment	Memory decline in normal cognition (excluding comorbidities)	GCST90448878	37985223	Archer DB	266	103	0.0001	0.0048	0.034	0.0014	no
+SCN5A	rs12053903	3	38551902	?	4e-06	memory impairment	Memory decline in normal cognition (excluding comorbidities)	GCST90448878	37985223	Archer DB	266	103	0.0041	0.0193	0.1469	0.0009	no
+SCN5A	rs7373779	3	38552452	?	4e-06	memory impairment	Memory decline in normal cognition (excluding comorbidities)	GCST90448878	37985223	Archer DB	266	103	0.002	0.0133	0.1141	0.001	no
+SCN5A	rs6804918	3	38557465	?	3e-06	memory impairment	Memory decline in normal cognition (excluding comorbidities)	GCST90448878	37985223	Archer DB	266	103	0.0024	0.0154	0.1126	0.0012	no
+SCN5A	rs7645178	3	38556067	?	3e-06	memory impairment	Memory decline in normal cognition (excluding comorbidities)	GCST90448878	37985223	Archer DB	266	103	0.0003	0.006	0.0499	0.0008	no
+SCN5A	rs6799868	3	38560065	?	2e-06	memory impairment	Memory decline in normal cognition (excluding comorbidities)	GCST90448878	37985223	Archer DB	266	103	0.0001	0.0048	0.0276	0.0009	no
+SCN5A	rs11720166	3	38558321	?	2e-06	memory impairment	Memory decline in normal cognition (excluding comorbidities)	GCST90448878	37985223	Archer DB	266	103	0.0	0.0044	0.0199	0.0012	no
+SCN5A	rs9845438	3	38558965	?	9e-07	memory impairment	Memory decline in normal cognition (excluding comorbidities)	GCST90448878	37985223	Archer DB	266	103	0.0	0.005	0.0042	0.0002	no
+SCN5A	rs6793245	3	38557546	?	5e-06	memory impairment	Memory decline in normal cognition	GCST90448877	37985223	Archer DB	266	103	0.0001	0.0048	0.034	0.0014	no
+SCN5A	rs6804918	3	38557465	?	4e-06	memory impairment	Memory decline in normal cognition	GCST90448877	37985223	Archer DB	266	103	0.0024	0.0154	0.1126	0.0012	no
+SCN5A	rs12053903	3	38551902	?	4e-06	memory impairment	Memory decline in normal cognition	GCST90448877	37985223	Archer DB	266	103	0.0041	0.0193	0.1469	0.0009	no
+SCN5A	rs7373779	3	38552452	?	4e-06	memory impairment	Memory decline in normal cognition	GCST90448877	37985223	Archer DB	266	103	0.002	0.0133	0.1141	0.001	no
+SCN5A	rs7645178	3	38556067	?	3e-06	memory impairment	Memory decline in normal cognition	GCST90448877	37985223	Archer DB	266	103	0.0003	0.006	0.0499	0.0008	no
+SCN5A	rs6799868	3	38560065	?	3e-06	memory impairment	Memory decline in normal cognition	GCST90448877	37985223	Archer DB	266	103	0.0001	0.0048	0.0276	0.0009	no
+SCN5A	rs11720166	3	38558321	?	2e-06	memory impairment	Memory decline in normal cognition	GCST90448877	37985223	Archer DB	266	103	0.0	0.0044	0.0199	0.0012	no
+SCN5A	rs9845438	3	38558965	?	1e-06	memory impairment	Memory decline in normal cognition	GCST90448877	37985223	Archer DB	266	103	0.0	0.005	0.0042	0.0002	no
+SCN5A	rs13061927	3	38665861	T	9e-06	asthma	Moderate-to-severe asthma vs mild asthma	GCST90693200	37560908	Li H	266	103	0.0367	0.0257	0.8799	0.1167	no
+SCN5A	rs13061927	3	38665861	T	4e-06	asthma	Moderate-to-severe asthma vs mild asthma	GCST90693199	37560908	Li H	266	103	0.0367	0.0257	0.8799	0.1167	no
+SCN5A	rs13059004	3	38559746	A	6e-09	body weight	Weight	GCST90662910	40436827	Jee YH	266	103	0.006	0.0162	0.0897	0.0017	no
+SCN5A	rs7638275	3	38624332	?	3e-10	T wave amplitude	T amplitude of combined wave in lead II	GCST90624336	38507016	Qi M	266	103	0.0008	0.0005	0.7063	0.0026	no
+SCN5A	rs6797133	3	38614542	?	3e-10	QRS complex	R start and S end in voltage difference in lead aVR	GCST90624265	38507016	Qi M	266	103	0.0129	0.0223	0.316	0.0358	no
+SCN5A	rs55824920	3	38618461	?	3e-10	QRS complex	R start and S end in voltage difference in lead I	GCST90624261	38507016	Qi M	266	103	0.0005	0.0022	0.0315	0.0003	no
+SCN5A	rs7638275	3	38624332	?	3e-10	electrocardiography	T peak area in lead aVR	GCST90624260	38507016	Qi M	266	103	0.0008	0.0005	0.7063	0.0026	no
+SCN5A	rs6797133	3	38614542	?	3e-10	electrocardiography	R peak area in lead V4	GCST90624255	38507016	Qi M	266	103	0.0129	0.0223	0.316	0.0358	no
+SCN5A	rs7427574	3	38643344	G	4e-15	heart rate	Pulse rate (UKB data field 102)	GCST90468177	39789286	Loya H	266	103	0.0491	0.0373	0.982	0.0385	no
+SCN5A	rs41312411	3	38579746	G	9e-18	heart rate	Pulse rate (UKB data field 102)	GCST90468177	39789286	Loya H	266	103	0.0018	0.0003	0.3303	0.0134	no
+SCN5A	rs7373065	3	38668824	T	3e-15	atrial fibrillation	Atrial fibrillation (MTAG)	GCST90449054	39537608	Koskeridis F	266	103	0.0012	0.001	1.0	0.0048	no
+SCN5A	rs9818148	3	38626765	?	6e-11	electrocardiography	12-lead ECG morphology phenotype	GCST90455665	38180560	Wang X	266	103	0.0277	0.0259	0.6484	0.0255	no
+SCN5A	rs3922844	3	38582762	?	6e-11	electrocardiography	12-lead ECG morphology phenotype	GCST90455665	38180560	Wang X	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs6599230	3	38633221	?	6e-11	electrocardiography	12-lead ECG morphology phenotype	GCST90455665	38180560	Wang X	266	103	0.0416	0.0301	0.9605	0.0493	no
+SCN5A	rs41312411	3	38579746	?	5e-11	electrocardiography	12-lead ECG morphology phenotype	GCST90455665	38180560	Wang X	266	103	0.0018	0.0003	0.3303	0.0134	no
+SCN5A	rs73070977	3	38589940	?	4e-11	electrocardiography	12-lead ECG morphology phenotype	GCST90455665	38180560	Wang X	266	103	0.0022	0.0005	0.3708	0.0148	no
+SCN5A	rs3922843	3	38582852	?	2e-11	electrocardiography	12-lead ECG morphology phenotype	GCST90455665	38180560	Wang X	266	103	0.0002	0.0004	0.0701	0.0004	no
+SCN5A	rs9841329	3	38646312	?	2e-11	electrocardiography	12-lead ECG morphology phenotype	GCST90455665	38180560	Wang X	266	103	0.1309	0.1106	0.9456	0.1502	no
+SCN5A	rs7430191	3	38612533	?	1e-11	electrocardiography	12-lead ECG morphology phenotype	GCST90455665	38180560	Wang X	266	103	0.0121	0.0083	0.5266	0.0317	no
+SCN5A	rs58454174	3	38574042	?	1e-11	electrocardiography	12-lead ECG morphology phenotype	GCST90455665	38180560	Wang X	266	103	0.0016	0.0008	0.237	0.0055	no
+SCN5A	rs55824920	3	38618461	?	9e-12	electrocardiography	12-lead ECG morphology phenotype	GCST90455665	38180560	Wang X	266	103	0.0005	0.0022	0.0315	0.0003	no
+SCN5A	rs62241190	3	38565977	?	8e-12	electrocardiography	12-lead ECG morphology phenotype	GCST90455665	38180560	Wang X	266	103	0.0	0.0002	0.1366	0.0003	no
+SCN5A	rs6797133	3	38614542	?	2e-12	electrocardiography	12-lead ECG morphology phenotype	GCST90455665	38180560	Wang X	266	103	0.0129	0.0223	0.316	0.0358	no
+SCN5A	rs6599220	3	38596503	?	2e-14	electrocardiography	12-lead ECG morphology phenotype	GCST90455665	38180560	Wang X	266	103	0.0006	0.0006	0.649	0.0019	no
+SCN5A	rs9824157	3	38592199	?	9e-13	heart rate	Resting heart rate	GCST90278636	38116116	Chen CY	266	103	0.0075	0.0216	0.2197	0.0039	no
+SCN5A	rs7645178	3	38556067	?	2e-06	Vertigo	Vertigo	GCST90432100	39174713	Chen SP	266	103	0.0003	0.006	0.0499	0.0008	no
+SCN5A	rs9845438	3	38558965	?	4e-06	memory performance	Memory decline in normal cognition	GCST90448462	37984853	Eissman JM	266	103	0.0	0.005	0.0042	0.0002	no
+SCN5A	rs62241188	3	38561578	?	8e-06	memory performance	Memory decline in normal cognition	GCST90448456	37984853	Eissman JM	266	103	0.0	0.0017	0.0102	0.0	no
+SCN5A	rs7374540	3	38592651	A	2e-07	Brugada syndrome	Brugada syndrome	GCST90295916	38747976	Ishikawa T	266	103	0.0139	0.0361	0.2648	0.0112	no
+SCN5A	rs55742514	3	38646249	C	2e-11	pulse pressure measurement	Pulse pressure	GCST90310296	38689001	Keaton JM	266	103	0.054	0.0421	0.9725	0.0388	no
+SCN5A	rs7373065	3	38668824	C	1e-11	cardiovascular age measurement	Cardiovascular delta age (difference between ECG-predicted and chronological age)	GCST90239749	37604819	Shah M	266	103	0.0012	0.001	1.0	0.0048	no
+SCN5A	rs571037730	3	38651954	TTTTTG	3e-08	appendicular lean mass	Appendicular skeletal muscle index in chronic obstructive pulmonary disease	GCST90271636	36856146	Attaway AH	266	103					
+SCN5A	rs6773331	3	38642906	?	9e-09	cardiovascular age measurement	Cardiovascular delta age (difference between ECG-predicted and chronological age)	GCST90255651	36587059	Libiseller-Egger J	266	103	0.0014	0.0011	1.0	0.005	no
+SCN5A	rs55824920	3	38618461	T	1e-13	QRS-T angle	Frontal QRS-T angle	GCST90246321	36918541	Young WJ	266	103	0.0005	0.0022	0.0315	0.0003	no
+SCN5A	rs55824920	3	38618461	T	1e-19	QRS-T angle	Spatial QRS-T angle	GCST90246320	36918541	Young WJ	266	103	0.0005	0.0022	0.0315	0.0003	no
+SCN5A	rs55824920	3	38618461	T	2e-13	QRS-T angle	Frontal QRS-T angle	GCST90246319	36918541	Young WJ	266	103	0.0005	0.0022	0.0315	0.0003	no
+SCN5A	rs55824920	3	38618461	T	5e-20	QRS-T angle	Spatial QRS-T angle	GCST90246318	36918541	Young WJ	266	103	0.0005	0.0022	0.0315	0.0003	no
+SCN5A	rs7374289	3	38591580	C	8e-09	body mass index	Body mass index	GCST90255621	36581621	Huang J	266	103	0.0235	0.0527	0.2442	0.0272	no
+SCN5A	rs6768664	3	38642975	C	8e-10	body height	Height	GCST90245848	36224396	Yengo L	266	103	0.2088	0.1753	0.9512	0.2126	no
+SCN5A	rs141685422	3	38561286	?	6e-06	RS-warfarin measurement	RS-warfarin levels	GCST90129564	36210801	Asiimwe IG	266	103	0.0	0.0003	0.3459		no
+SCN5A	rs7374289	3	38591580	T	1e-08	body mass index	Body mass index (MTAG)	GCST90179150	36376304	Koskeridis F	266	103	0.0235	0.0527	0.2442	0.0272	no
+SCN5A	rs7427574	3	38643344	?	1e-10	diastolic blood pressure; systolic blood pressure	Blood pressure (pleiotropy model 2 SBP adjusted for estimated causal effects x DBP)	GCST90239829	34989438	Zhu X	266	103	0.0491	0.0373	0.982	0.0385	no
+SCN5A	rs3922844	3	38582762	?	6e-06	diastolic blood pressure; systolic blood pressure	Blood pressure (pleiotropy model 2 SBP adjusted for estimated causal effects x DBP)	GCST90239829	34989438	Zhu X	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs7427574	3	38643344	?	2e-10	systolic blood pressure; diastolic blood pressure	Blood pressure (pleiotropy model 1 DBP adjusted for estimated causal effects x SBP)	GCST90239828	34989438	Zhu X	266	103	0.0491	0.0373	0.982	0.0385	no
+SCN5A	rs3922844	3	38582762	?	3e-10	systolic blood pressure; diastolic blood pressure	Blood pressure (pleiotropy model 1 DBP adjusted for estimated causal effects x SBP)	GCST90239828	34989438	Zhu X	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs13084981	3	38604508	?	5e-11	heart rate	Pulse rate	GCST90239617	36329257	Lee CJ	266	103	0.0094	0.0055	0.4819	0.0003	no
+SCN5A	rs3935184	3	38596711	C	4e-08	Premature atrial contractions	Premature atrial contraction frequency	GCST90134637	36267918	Theriault S	266	103	0.0069	0.0207	0.2163	0.0038	no
+SCN5A	rs6599219	3	38596219	A	2e-08	Premature atrial contractions	Premature atrial contraction frequency	GCST90134637	36267918	Theriault S	266	103	0.0075	0.0217	0.2204	0.0039	no
+SCN5A	rs3924120	3	38594664	A	2e-08	Premature atrial contractions	Premature atrial contraction frequency	GCST90134637	36267918	Theriault S	266	103	0.0083	0.0243	0.2253	0.0039	no
+SCN5A	rs7373862	3	38592852	A	2e-08	Premature atrial contractions	Premature atrial contraction frequency	GCST90134637	36267918	Theriault S	266	103	0.0075	0.0223	0.2197	0.0039	no
+SCN5A	rs7374540	3	38592651	A	1e-06	Premature atrial contractions	Premature atrial contraction frequency	GCST90134637	36267918	Theriault S	266	103	0.0139	0.0361	0.2648	0.0112	no
+SCN5A	rs9824157	3	38592199	T	2e-08	Premature atrial contractions	Premature atrial contraction frequency	GCST90134637	36267918	Theriault S	266	103	0.0075	0.0216	0.2197	0.0039	no
+SCN5A	rs41312411	3	38579746	C	6e-06	Premature atrial contractions	Premature atrial contraction frequency	GCST90134637	36267918	Theriault S	266	103	0.0018	0.0003	0.3303	0.0134	no
+SCN5A	rs41312411	3	38579746	C	1e-158	QRS duration	QRS duration	GCST90179169	36050321	Young WJ	266	103	0.0018	0.0003	0.3303	0.0134	no
+SCN5A	rs41312411	3	38579746	C	3e-193	JT interval	JT interval	GCST90179157	36050321	Young WJ	266	103	0.0018	0.0003	0.3303	0.0134	no
+SCN5A	rs7373492	3	38645878	T	2e-80	QT interval	QT interval	GCST90179153	36050321	Young WJ	266	103	0.0014	0.0011	1.0	0.005	no
+SCN5A	rs7429945	3	38550198	?	2e-35	QT interval	QTc interval	GCST90128423	35389749	Nauffal V	266	103	0.0022	0.0137	0.1188	0.0016	no
+SCN5A	rs4073103	3	38578951	G	7e-09	glomerular filtration rate	Estimated glomerular filtration rate (creatinine)	GCST90100220	35710981	Liu H	266	103	0.0083	0.0207	0.1889	0.0183	no
+SCN5A	rs7621270	3	38668437	A	7e-08	educational attainment	Educational attainment	GCST90105038	35361970	Okbay A	266	103	0.3372	0.2829	0.8282	0.7166	no
+SCN5A	rs12053903	3	38551902	C	1e-26	QT interval	QT interval	GCST010919	29874175	Bihlmeyer NA	266	103	0.0041	0.0193	0.1469	0.0009	no
+SCN5A	rs6782237	3	38655062	C	1e-47	Brugada syndrome	Brugada syndrome	GCST90086158	35210625	Barc J	266	103	0.046	0.0332	0.9464	0.0977	no
+SCN5A	rs41310232	3	38647751	A	1e-15	Brugada syndrome	Brugada syndrome	GCST90086158	35210625	Barc J	266	103	0.0089	0.007	1.0	0.0177	no
+SCN5A	rs34760424	3	38641527	G	3e-23	Brugada syndrome	Brugada syndrome	GCST90086158	35210625	Barc J	266	103	0.0054	0.0042	1.0	0.0141	no
+SCN5A	rs7433206	3	38616217	A	1e-23	Brugada syndrome	Brugada syndrome	GCST90086158	35210625	Barc J	266	103	0.05	0.0873	0.3551	0.0865	no
+SCN5A	rs7374540	3	38592651	C	4e-57	Brugada syndrome	Brugada syndrome	GCST90086158	35210625	Barc J	266	103	0.0139	0.0361	0.2648	0.0112	no
+SCN5A	rs62241190	3	38565977	G	9e-14	Brugada syndrome	Brugada syndrome	GCST90086158	35210625	Barc J	266	103	0.0	0.0002	0.1366	0.0003	no
+SCN5A	rs7638909	3	38553482	G	3e-08	Brugada syndrome	Brugada syndrome	GCST90086158	35210625	Barc J	266	103	0.0022	0.0067	0.145	0.0	no
+SCN5A	rs76521806	3	38657775	A	7e-08	QT interval	QT interval	GCST90026652	34274964	Duijvenboden S	266	103					
+SCN5A	rs76521806	3	38657775	A	1e-19	QT interval	QT interval	GCST90026651	34274964	Duijvenboden S	266	103					
+SCN5A	rs76521806	3	38657775	A	1e-52	electrocardiography	Electrocardiogram morphology (amplitude at temporal datapoints)	GCST010796	32916098	Verweij N	266	103					
+SCN5A	rs572474770	3	38635089	T	1e-32	electrocardiography	Electrocardiogram morphology (amplitude at temporal datapoints)	GCST010796	32916098	Verweij N	266	103					
+SCN5A	rs571037730	3	38651954	TTTTTG	3e-20	electrocardiography	Electrocardiogram morphology (amplitude at temporal datapoints)	GCST010796	32916098	Verweij N	266	103					
+SCN5A	rs41312411	3	38579746	C	6e-46	electrocardiography	Electrocardiogram morphology (amplitude at temporal datapoints)	GCST010796	32916098	Verweij N	266	103	0.0018	0.0003	0.3303	0.0134	no
+SCN5A	rs7638275	3	38624332	A	5e-15	QT interval	QT dynamics during exercise	GCST90010359	32527199	van Duijvenboden S	266	103	0.0008	0.0005	0.7063	0.0026	no
+SCN5A	rs3922844	3	38582762	?	1e-11	electrocardiography	Electrocardiographic traits (multivariate)	GCST011010	32602732	Baldassari AR	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs7374138	3	38564241	?	7e-08	neurofibrillary tangles measurement	Neurofibrillary tangles (SNP x SNP interaction)	GCST010343	32450446	Wang H	266	103	0.0025	0.0003	0.2509	0.0001	no
+SCN5A	rs3922844	3	38582762	C	1e-34	PR interval	PR interval	GCST010321	32439900	Ntalla I	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs7373065	3	38668824	T	8e-09	TPE interval measurement	TPE interval (resting)	GCST010346	32386560	Ramirez J	266	103	0.0012	0.001	1.0	0.0048	no
+SCN5A	rs7373065	3	38668824	T	6e-13	T wave morphology measurement	T wave morphology restitution during recovery from exercise (MTAG)	GCST009017	31607149	Ramirez J	266	103	0.0012	0.001	1.0	0.0048	no
+SCN5A	rs7373065	3	38668824	T	2e-11	T wave morphology measurement	T wave morphology restitution during recovery from exercise	GCST009069	31607149	Ramirez J	266	103	0.0012	0.001	1.0	0.0048	no
+SCN5A	rs9856387	3	38645735	C	2e-12	QRS duration	QRS duration	GCST008422	31251759	Swenson BR	266	103	0.0027	0.0415	0.2137	0.0888	no
+SCN5A	rs62241190	3	38565977	G	6e-20	QRS duration	QRS duration	GCST008422	31251759	Swenson BR	266	103	0.0	0.0002	0.1366	0.0003	no
+SCN5A	rs3922844	3	38582762	C	1e-24	QRS duration	QRS duration	GCST008422	31251759	Swenson BR	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs3922844	3	38582762	?	5e-26	QRS duration	QRS duration	GCST008054	31217584	Wojcik GL	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs9851724	3	38678444	?	2e-12	QRS duration	QRS duration	GCST008054	31217584	Wojcik GL	266	103	0.0481	0.0331	0.9175	0.0942	no
+SCN5A	rs7633988	3	38681726	?	5e-12	QRS duration	QRS duration	GCST008054	31217584	Wojcik GL	266	103	0.0475	0.0326	0.912	0.0938	no
+SCN5A	rs1805126	3	38550915	?	4e-10	QRS duration	QRS duration	GCST008054	31217584	Wojcik GL	266	103	0.002	0.0131	0.113	0.0016	no
+SCN5A	rs11129795	3	38547672	?	3e-14	QRS duration	QRS duration	GCST008054	31217584	Wojcik GL	266	103	0.0001	0.0008	0.01	0.0037	no
+SCN5A	rs6599234	3	38673809	?	2e-06	QT interval	QT interval	GCST008043	31217584	Wojcik GL	266	103	0.0474	0.0326	0.9167	0.093	no
+SCN5A	rs11710077	3	38616408	?	1e-08	QT interval	QT interval	GCST008043	31217584	Wojcik GL	266	103	0.0036	0.0033	0.3622	0.0322	no
+SCN5A	rs11708996	3	38592432	?	4e-06	QT interval	QT interval	GCST008043	31217584	Wojcik GL	266	103	0.0021	0.0005	0.3618	0.0148	no
+SCN5A	rs6599232	3	38658269	?	2e-13	PR interval	PR interval	GCST008042	31217584	Wojcik GL	266	103	0.0462	0.0334	0.9466	0.0977	no
+SCN5A	rs6599222	3	38606571	?	1e-12	PR interval	PR interval	GCST008042	31217584	Wojcik GL	266	103	0.002	0.0011	0.0481	0.0026	no
+SCN5A	rs3922844	3	38582762	?	1e-48	PR interval	PR interval	GCST008042	31217584	Wojcik GL	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs11708996	3	38592432	?	2e-25	PR interval	PR interval	GCST008042	31217584	Wojcik GL	266	103	0.0021	0.0005	0.3618	0.0148	no
+SCN5A	rs9851710	3	38678410	A	3e-27	QRS duration	QRS duration	GCST007227	30679814	van Setten J	266	103	0.0481	0.0331	0.9175	0.0942	no
+SCN5A	rs7373065	3	38668824	T	3e-16	atrial fibrillation	Atrial fibrillation	GCST006414	30061737	Nielsen JB	266	103	0.0012	0.001	1.0	0.0048	no
+SCN5A	rs7374540	3	38592651	A	7e-12	atrial fibrillation	Atrial fibrillation	GCST006414	30061737	Nielsen JB	266	103	0.0139	0.0361	0.2648	0.0112	no
+SCN5A	rs66493370	3	38676744	A	1e-08	mathematical ability	Highest math class taken (MTAG)	GCST006568	30038396	Lee JJ	266	103	0.1247	0.0866	0.8999	0.454	no
+SCN5A	rs11708996	3	38592432	C	1e-68	PR interval	PR interval	GCST007045	30046033	van Setten J	266	103	0.0021	0.0005	0.3618	0.0148	no
+SCN5A	rs7374540	3	38592651	A	2e-08	atrial fibrillation	Atrial fibrillation	GCST006061	29892015	Roselli C	266	103	0.0139	0.0361	0.2648	0.0112	no
+SCN5A	rs7373065	3	38668824	T	7e-14	atrial fibrillation	Atrial fibrillation	GCST006061	29892015	Roselli C	266	103	0.0012	0.001	1.0	0.0048	no
+SCN5A	rs7638275	3	38624332	A	3e-11	electrocardiography	Global electrical heterogeneity phenotypes	GCST005905	29622589	Tereshchenko LG	266	103	0.0008	0.0005	0.7063	0.0026	no
+SCN5A	rs3922844	3	38582762	T	2e-07	supraventricular ectopy	Supraventricular ectopy	GCST005936	29618737	Napier MD	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs3922844	3	38582762	T	1e-15	QT interval	QT interval	GCST005171	29213071	Mendez-Giraldez R	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs45567533	3	38630069	A	1e-11	PR interval	PR interval	GCST005080	29127183	Seyerle AA	266	103	0.0204	0.0147	0.9127	0.0336	no
+SCN5A	rs7374004	3	38584218	A	3e-19	PR interval	PR interval	GCST005080	29127183	Seyerle AA	266	103	0.0177	0.0468	0.2203	0.0214	no
+SCN5A	rs3922844	3	38582762	T	4e-41	PR interval	PR interval	GCST005080	29127183	Seyerle AA	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs41312411	3	38579746	G	2e-40	P wave duration	P wave duration	GCST004826	28794112	Christophersen IE	266	103	0.0018	0.0003	0.3303	0.0134	no
+SCN5A	rs3922844	3	38582762	T	3e-14	P wave duration	P wave duration	GCST004826	28794112	Christophersen IE	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs7432532	3	38587170	C	8e-07	facial height measurement	Facial morphology (factor 4, facial height related to vertical position of gnathion)	GCST004308	28441456	Lee MK	266	103	0.0001	0.0004	0.0761	0.0005	no
+SCN5A	rs9851724	3	38678444	?	7e-25	QRS complex; QRS duration	QRS duration	GCST003844	27659466	van der Harst P	266	103	0.0481	0.0331	0.9175	0.0942	no
+SCN5A	rs11710077	3	38616408	?	4e-26	QRS complex; QRS duration	QRS duration	GCST003844	27659466	van der Harst P	266	103	0.0036	0.0033	0.3622	0.0322	no
+SCN5A	rs11708996	3	38592432	?	6e-23	QRS complex; QRS duration	QRS duration	GCST003844	27659466	van der Harst P	266	103	0.0021	0.0005	0.3618	0.0148	no
+SCN5A	rs41312411	3	38579746	G	1e-11	heart rate	Resting heart rate	GCST003818	27798624	Eppinga RN	266	103	0.0018	0.0003	0.3303	0.0134	no
+SCN5A	rs3922844	3	38582762	C	2e-13	QRS duration	QRS duration	GCST003598	27577874	Evans DS	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs6599222	3	38606571	C	2e-08	PR interval	PR interval	GCST000971	21347284	Smith JG	266	103	0.002	0.0011	0.0481	0.0026	no
+SCN5A	rs6599234	3	38673809	A	2e-11	QT interval	QT interval	GCST002500	24952745	Arking DE	266	103	0.0474	0.0326	0.9167	0.093	no
+SCN5A	rs11710077	3	38616408	T	1e-13	QT interval	QT interval	GCST002500	24952745	Arking DE	266	103	0.0036	0.0033	0.3622	0.0322	no
+SCN5A	rs11708996	3	38592432	C	2e-11	QT interval	QT interval	GCST002500	24952745	Arking DE	266	103	0.0021	0.0005	0.3618	0.0148	no
+SCN5A	rs6793245	3	38557546	A	4e-27	QT interval	QT interval	GCST002500	24952745	Arking DE	266	103	0.0001	0.0048	0.034	0.0014	no
+SCN5A	rs7633988	3	38681726	T	2e-06	QRS duration	QRS duration	GCST002533	25035420	Hong KW	266	103	0.0475	0.0326	0.912	0.0938	no
+SCN5A	rs11708996	3	38592432	C	1e-14	Brugada syndrome	Brugada syndrome	GCST002098	23872634	Bezzina CR	266	103	0.0021	0.0005	0.3618	0.0148	no
+SCN5A	rs1805126	3	38550915	A	3e-20	QRS duration	Electrocardiographic conduction measures	GCST001893	23463857	Ritchie MD	266	103	0.002	0.0131	0.113	0.0016	no
+SCN5A	rs6763048	3	38639903	A	4e-12	PR interval	PR interval	GCST001735	23139255	Butler AM	266	103	0.0195	0.0191	0.8911	0.0355	no
+SCN5A	rs3922844	3	38582762	T	5e-43	PR interval	PR interval	GCST001735	23139255	Butler AM	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs3922844	3	38582762	C	3e-23	PR interval	PR interval	GCST000971	21347284	Smith JG	266	103	0.0048	0.0109	0.2286	0.0033	no
+SCN5A	rs11710077	3	38616408	T	6e-22	heart function attribute	QRS duration	GCST000872	21076409	Sotoodehnia N	266	103	0.0036	0.0033	0.3622	0.0322	no
+SCN5A	rs9851724	3	38678444	C	2e-20	heart function attribute	QRS duration	GCST000872	21076409	Sotoodehnia N	266	103	0.0481	0.0331	0.9175	0.0942	no
+SCN5A	rs11708996	3	38592432	C	1e-16	heart function attribute	QRS duration	GCST000872	21076409	Sotoodehnia N	266	103	0.0021	0.0005	0.3618	0.0148	no
+SCN5A	rs11708996	3	38592432	C	6e-26	PR interval	PR interval	GCST000562	20062060	Pfeufer A	266	103	0.0021	0.0005	0.3618	0.0148	no
+SCN5A	rs12053903	3	38551902	T	1e-07	PR interval	Electrocardiographic traits	GCST000561	20062063	Holm H	266	103	0.0041	0.0193	0.1469	0.0009	no
+SCN5A	rs11129795	3	38547672	G	5e-10	QRS duration	Electrocardiographic traits	GCST000561	20062063	Holm H	266	103	0.0001	0.0008	0.01	0.0037	no
+SCN5A	rs7638909	3	38553482	G	2e-06	PR interval; electrocardiography	Electrocardiographic conduction measures	GCST000344	19389651	Smith JG	266	103	0.0022	0.0067	0.145	0.0	no
+SCN5A	rs11129795	3	38547672	A	5e-14	QT interval	QT interval	GCST000364	19305409	Pfeufer A	266	103	0.0001	0.0008	0.01	0.0037	no
+SCN5A	rs12053903	3	38551902	C	1e-14	QT interval	QT interval	GCST000363	19305408	Newton-Cheh C	266	103	0.0041	0.0193	0.1469	0.0009	no
+SCN10A	rs6599261	3	38793351	A	1e-07	COVID-19	COVID-19 severity	GCST91000571	38750426	Amri O	266	103	0.0023	0.0069	0.0879	0.0086	no
+SCN10A	rs6801957	3	38725824	T	7e-34	heart rate	heart rate (HR, mean, inv-normal transformed)	GCST90476338	39024449	Verma A	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs10428132	3	38736063	T	7e-21	atrioventricular block	Atrioventricular [AV] block (PheCode 426.2)	GCST90480156	39024449	Verma A	266	103	0.0033	0.0142	0.0901	0.0041	no
+SCN10A	rs10428132	3	38736063	T	1e-33	First degree atrioventricular block	First degree AV block (PheCode 426.21)	GCST90480152	39024449	Verma A	266	103	0.0033	0.0142	0.0901	0.0041	no
+SCN10A	rs6801957	3	38725824	T	3e-33	atrial fibrillation; atrial flutter	Atrial fibrillation and flutter (PheCode 427.2)	GCST90480170	39024449	Verma A	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6801957	3	38725824	T	8e-36	atrial fibrillation	Atrial fibrillation (PheCode 427.21)	GCST90480168	39024449	Verma A	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6801957	3	38725824	T	4e-53	atrial fibrillation	Atrial fibrillation (PheCode 427.21)	GCST90475970	39024449	Verma A	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6801957	3	38725824	T	5e-50	atrial fibrillation; atrial flutter	Atrial fibrillation and flutter (PheCode 427.2)	GCST90475967	39024449	Verma A	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6801957	3	38725824	T	7e-20	cardiac arrhythmia	Cardiac dysrhythmias (PheCode 427)	GCST90475963	39024449	Verma A	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6801957	3	38725824	?	1e-15	First degree atrioventricular block	First degree AV block (PheCode 426.21)	GCST90837441	41298473	Koyama S	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6801957	3	38725824	?	8e-13	atrioventricular block	Atrioventricular [AV] block (PheCode 426.2)	GCST90837440	41298473	Koyama S	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6790396	3	38730434	?	1e-09	atrial fibrillation	Atrial fibrillation (recurrent event)	GCST90832154	38725839	Hall M	266	103	0.0029	0.0131	0.0855	0.0041	no
+SCN10A	rs10428132	3	38736063	G	5e-45	atrial fibrillation	Atrial fibrillation	GCST90559230	40050429	Roselli C	266	103	0.0033	0.0142	0.0901	0.0041	no
+SCN10A	rs4420805	3	38772742	A	4e-08	systolic blood pressure	Systolic blood pressure	GCST90662908	40436827	Jee YH	266	103	0.007	0.0236	0.1067	0.0157	no
+SCN10A	rs6801957	3	38725824	T	1e-87	atrial fibrillation	Atrial fibrillation	GCST90624412	40645996	Yuan S	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6801957	3	38725824	T	1e-96	atrial fibrillation	Atrial fibrillation	GCST90624411	40645996	Yuan S	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs62244107	3	38778263	T	6e-07	treatment-resistant hypertension	Apparent treatment-resistant hypertension	GCST90454268	38162683	Armstrong ND	266	103	0.001	0.0	0.1499	0.0125	no
+SCN10A	rs11711860	3	38776013	A	6e-08	treatment-resistant hypertension	Apparent treatment-resistant hypertension	GCST90454267	38162683	Armstrong ND	266	103	0.0009	0.0001	0.1428	0.0125	no
+SCN10A	rs6801957	3	38725824	C	8e-19	heart rate	Pulse rate (UKB data field 102)	GCST90468177	39789286	Loya H	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs60349808	3	38749683	A	3e-09	tobacco smoke exposure measurement; gut microbiome measurement	Gut microbial network clusters (BlueViolet (at 3 months) x Homesmokers interaction	GCST90569276	40187613	Stickley SA	266	103	0.0007	0.0001	0.0263	0.0	no
+SCN10A	rs10428132	3	38736063	T	2e-19	atrial fibrillation	Atrial fibrillation (MTAG)	GCST90449054	39537608	Koskeridis F	266	103	0.0033	0.0142	0.0901	0.0041	no
+SCN10A	rs6783110	3	38711444	?	3e-11	electrocardiography	12-lead ECG morphology phenotype	GCST90455665	38180560	Wang X	266	103	0.003	0.0136	0.0844	0.0032	no
+SCN10A	rs80002357	3	38774674	?	2e-12	electrocardiography	12-lead ECG morphology phenotype	GCST90455665	38180560	Wang X	266	103	0.0026	0.0024	0.6481	0.0039	no
+SCN10A	rs6801957	3	38725824	C	6e-217	Brugada syndrome	Brugada syndrome	GCST90295917	38747976	Ishikawa T	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs10428132	3	38736063	G	2e-38	Brugada syndrome	Brugada syndrome	GCST90295916	38747976	Ishikawa T	266	103	0.0033	0.0142	0.0901	0.0041	no
+SCN10A	rs4076737	3	38723291	?	4e-31	magnetic resonance imaging of the heart	Cardiac MRI latent space	GCST90250898	37105979	Radhakrishnan A	266	103	0.0028	0.0152	0.0796	0.0032	no
+SCN10A	rs6801957	3	38725824	?	6e-107	electrocardiography	ECG latent space	GCST90250897	37105979	Radhakrishnan A	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6801957	3	38725824	?	7e-107	electrocardiography; magnetic resonance imaging of the heart	ECG cardiac MRI latent space	GCST90250896	37105979	Radhakrishnan A	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6801957	3	38725824	C	1e-13	pulse pressure measurement	Pulse pressure	GCST90310296	38689001	Keaton JM	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6599251	3	38744318	G	7e-11	heart rate response to exercise	Cardiorespiratory fitness	GCST90310239	37400433	Cai L	266	103	0.0048	0.0099	0.148	0.0032	no
+SCN10A	rs6800541	3	38733341	T	8e-13	pulse pressure measurement	Pulse pressure	GCST90292476	33230300	Surendran P	266	103	0.0048	0.0197	0.0977	0.004	no
+SCN10A	rs6795970	3	38725184	A	1e-13	pulse pressure measurement	Pulse pressure	GCST90292476	33230300	Surendran P	266	103	0.0054	0.0209	0.1034	0.0042	no
+SCN10A	rs6800541	3	38733341	T	5e-09	pulse pressure measurement	Pulse pressure	GCST90000061	33230300	Surendran P	266	103	0.0048	0.0197	0.0977	0.004	no
+SCN10A	rs6795970	3	38725184	A	6e-10	pulse pressure measurement	Pulse pressure	GCST90000061	33230300	Surendran P	266	103	0.0054	0.0209	0.1034	0.0042	no
+SCN10A	rs6795970	3	38725184	A	4e-10	right ventricular function	Right ventricular peak atrial filling rate	GCST90268119	37126556	Schmidt AF	266	103	0.0054	0.0209	0.1034	0.0042	no
+SCN10A	rs6801957	3	38725824	?	2e-08	cardiovascular age measurement	Cardiovascular delta age (difference between ECG-predicted and chronological age)	GCST90255651	36587059	Libiseller-Egger J	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6801957	3	38725824	C	2e-24	atrial fibrillation	Atrial fibrillation	GCST90204201	36653681	Miyazawa K	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6775197	3	38713156	?	9e-06	R-warfarin measurement	R-warfarin levels	GCST90129563	36210801	Asiimwe IG	266	103	0.0001	0.0038	0.0107	0.0015	no
+SCN10A	rs6795970	3	38725184	A	3e-08	sick sinus syndrome	Sick sinus syndrome	GCST90225551	36282123	Thorolfsdottir RB	266	103	0.0054	0.0209	0.1034	0.0042	no
+SCN10A	rs7627881	3	38805661	?	5e-06	orofacial cleft; sex interaction measurement	Nonsyndromic orofacial cleft x sex interaction (2df)	GCST90093362	34689653	Awotoye W	266	103	0.0017	0.0133	0.1078	0.0087	no
+SCN10A	rs9848976	3	38783779	?	4e-06	lipid measurement	5alpha-androstan-3alpha,17beta-diol monosulfate (1) levels in elite athletes	GCST90133842	31882771	Al-Khelaifi F	266	103	0.0015	0.0017	0.292	0.0018	no
+SCN10A	rs10428132	3	38736063	T	7e-19	atrial fibrillation	Atrial fibrillation (MTAG)	GCST90132229	35872910	Carcel-Marquez J	266	103	0.0033	0.0142	0.0901	0.0041	no
+SCN10A	rs6801957	3	38725824	T	1e-180	Brugada syndrome	Brugada syndrome	GCST90086158	35210625	Barc J	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs9809798	3	38732314	A	2e-08	maximal oxygen uptake measurement	Cardiorespiratory fitness (vo2 max)	GCST90093317	34753499	Hanscombe KB	266	103	0.002	0.0108	0.0869	0.0028	no
+SCN10A	rs6801957	3	38725824	T	2e-10	maximal oxygen uptake measurement	Cardiorespiratory fitness (vo2 max)	GCST90093316	34753499	Hanscombe KB	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs11924846	3	38715075	T	4e-10	pulse pressure measurement	Pulse pressure	GCST90018970	34594039	Sakaue S	266	103	0.003	0.014	0.0844	0.0032	no
+SCN10A	rs6801957	3	38725824	C	3e-11	atrial fibrillation	Atrial fibrillation/atrial flutter	GCST90018796	34594039	Sakaue S	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6795970	3	38725184	A	3e-08	familial sick sinus syndrome	Sick sinus syndrome	GCST011360	33580673	Thorolfsdottir RB	266	103	0.0054	0.0209	0.1034	0.0042	no
+SCN10A	rs112718371	3	38708969	T	5e-08	health-related quality of life measurement	Physical health related quality of life	GCST011361	33578652	Adjei AA	266	103	0.0062	0.0084	0.511	0.0156	no
+SCN10A	rs10428132	3	38736063	T	3e-10	Brugada syndrome	Brugada syndrome	GCST011054	32619740	Makarawate P	266	103	0.0033	0.0142	0.0901	0.0041	no
+SCN10A	rs6801957	3	38725824	T	3e-133	electrocardiography	Electrocardiogram morphology (amplitude at temporal datapoints)	GCST010796	32916098	Verweij N	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6801957	3	38725824	?	1e-11	electrocardiography	Electrocardiographic traits (multivariate)	GCST011010	32602732	Baldassari AR	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs4414778	3	38770674	?	5e-08	PHF-tau measurement	Total PHF-tau (SNP x SNP interaction)	GCST010340	32450446	Wang H	266	103	0.0009	0.0048	0.1011	0.0004	no
+SCN10A	rs803446	3	38770674	?	4e-10	PHF-tau measurement	Total PHF-tau (SNP x SNP interaction)	GCST010340	32450446	Wang H	266	103	0.0009	0.0048	0.1011	0.0004	no
+SCN10A	rs6801957	3	38725824	T	6e-45	PR interval	PR interval	GCST010321	32439900	Ntalla I	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs7428232	3	38737127	T	2e-11	T wave morphology measurement	T wave morphology restitution during exercise (MTAG)	GCST009068	31607149	Ramirez J	266	103	0.0045	0.0157	0.1072	0.004	no
+SCN10A	rs7428232	3	38737127	T	4e-09	T wave morphology measurement	T wave morphology restitution during exercise	GCST009016	31607149	Ramirez J	266	103	0.0045	0.0157	0.1072	0.004	no
+SCN10A	rs10428132	3	38736063	T	1e-15	QRS duration	QRS duration	GCST008422	31251759	Swenson BR	266	103	0.0033	0.0142	0.0901	0.0041	no
+SCN10A	rs6795970	3	38725184	?	1e-12	QRS duration	QRS duration	GCST008054	31217584	Wojcik GL	266	103	0.0054	0.0209	0.1034	0.0042	no
+SCN10A	rs6801957	3	38725824	?	2e-09	QT interval	QT interval	GCST008043	31217584	Wojcik GL	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs7433306	3	38729148	?	3e-47	PR interval	PR interval	GCST008042	31217584	Wojcik GL	266	103	0.0048	0.0197	0.0977	0.004	no
+SCN10A	rs6801957	3	38725824	?	1e-59	PR interval	PR interval	GCST008042	31217584	Wojcik GL	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6800541	3	38733341	?	1e-47	PR interval	PR interval	GCST008042	31217584	Wojcik GL	266	103	0.0048	0.0197	0.0977	0.004	no
+SCN10A	rs6798015	3	38757345	?	7e-49	PR interval	PR interval	GCST008042	31217584	Wojcik GL	266	103	0.0042	0.016	0.095	0.0075	no
+SCN10A	rs6795970	3	38725184	?	1e-46	PR interval	PR interval	GCST008042	31217584	Wojcik GL	266	103	0.0054	0.0209	0.1034	0.0042	no
+SCN10A	rs6599251	3	38744318	T	1e-10	pulse pressure measurement	Pulse pressure	GCST007269	30578418	Giri A	266	103	0.0048	0.0099	0.148	0.0032	no
+SCN10A	rs6801957	3	38725824	C	5e-107	PR interval	PR interval	GCST007226	30679814	van Setten J	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6795970	3	38725184	A	9e-67	QRS duration	QRS duration	GCST007103	30012220	Prins BP	266	103	0.0054	0.0209	0.1034	0.0042	no
+SCN10A	rs6795970	3	38725184	A	1e-110	QRS duration	QRS duration	GCST007104	30012220	Prins BP	266	103	0.0054	0.0209	0.1034	0.0042	no
+SCN10A	rs6801957	3	38725824	T	5e-14	pulse pressure measurement	Pulse pressure	GCST006629	30224653	Evangelou E	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6790396	3	38730434	G	2e-20	atrial fibrillation	Atrial fibrillation	GCST006414	30061737	Nielsen JB	266	103	0.0029	0.0131	0.0855	0.0041	no
+SCN10A	rs6599250	3	38742538	T	4e-242	PR interval	PR interval	GCST007045	30046033	van Setten J	266	103	0.0068	0.024	0.1165	0.0037	no
+SCN10A	rs6790396	3	38730434	G	6e-15	atrial fibrillation	Atrial fibrillation	GCST006061	29892015	Roselli C	266	103	0.0029	0.0131	0.0855	0.0041	no
+SCN10A	rs6795970	3	38725184	A	3e-08	heart rate response to recovery post exercise	Heart rate response to recovery post exercise	GCST005788	29769521	Ramirez J	266	103	0.0054	0.0209	0.1034	0.0042	no
+SCN10A	rs7433723	3	38743466	G	5e-08	heart rate response to exercise	Heart rate response to exercise	GCST005787	29769521	Ramirez J	266	103	0.0043	0.0165	0.1036	0.0033	no
+SCN10A	rs9827945	3	38803890	C	9e-07	supraventricular ectopy	Supraventricular ectopy	GCST005936	29618737	Napier MD	266	103	0.0006	0.0178	0.1131	0.0039	no
+SCN10A	rs6801957	3	38725824	T	1e-55	PR interval	PR interval	GCST005080	29127183	Seyerle AA	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6790396	3	38730434	C	2e-39	P wave duration	P wave duration	GCST004826	28794112	Christophersen IE	266	103	0.0029	0.0131	0.0855	0.0041	no
+SCN10A	rs13065560	3	38826862	G	9e-06	interleukin 18 measurement	Interleukin-18 levels	GCST004441	27989323	Ahola-Olli AV	266	103	0.0001	0.0036	0.0267	0.0059	no
+SCN10A	rs6795970	3	38725184	?	9e-39	QRS complex; QRS duration	QRS duration	GCST003844	27659466	van der Harst P	266	103	0.0054	0.0209	0.1034	0.0042	no
+SCN10A	rs6801957	3	38725824	?	7e-40	QRS complex; QRS duration	QRS duration	GCST003844	27659466	van der Harst P	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6599255	3	38754924	C	2e-10	heart rate	Resting heart rate	GCST003818	27798624	Eppinga RN	266	103	0.0032	0.0145	0.0876	0.0035	no
+SCN10A	rs6801957	3	38725824	T	2e-30	QRS duration	QRS duration	GCST003598	27577874	Evans DS	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6798015	3	38757345	C	2e-12	PR interval	PR interval	GCST000971	21347284	Smith JG	266	103	0.0042	0.016	0.095	0.0075	no
+SCN10A	rs6801957	3	38725824	T	1e-10	QT interval	QT interval	GCST002500	24952745	Arking DE	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs7433306	3	38729148	C	1e-14	PR interval	PR interval	GCST002535	25035420	Hong KW	266	103	0.0048	0.0197	0.0977	0.004	no
+SCN10A	rs6801957	3	38725824	T	3e-07	PR interval	Electrocardiographic traits	GCST002542	25055868	Sano M	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6801957	3	38725824	T	7e-41	PR segment	PR segment duration	GCST002456	24850809	Verweij N	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6801957	3	38725824	T	8e-27	P wave duration	P wave duration	GCST002457	24850809	Verweij N	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs4453791	3	38841028	C	9e-09	social communication impairment	Social communication problems	GCST002367	24564958	St Pourcain B	266	103	0.0	0.0001	0.0753	0.0017	no
+SCN10A	rs10428132	3	38736063	T	1e-68	Brugada syndrome	Brugada syndrome	GCST002098	23872634	Bezzina CR	266	103	0.0033	0.0142	0.0901	0.0041	no
+SCN10A	rs3923518	3	38844922	A	8e-06	migraine disorder	Migraine	GCST002081	23793025	Anttila V	266	103	0.0019	0.0003	0.0514	0.0026	no
+SCN10A	rs6795970	3	38725184	A	5e-27	QRS duration	Electrocardiographic conduction measures	GCST001893	23463857	Ritchie MD	266	103	0.0054	0.0209	0.1034	0.0042	no
+SCN10A	rs11717455	3	38802156	T	7e-06	systemic lupus erythematosus	Systemic lupus erythematosus	GCST001795	23273568	Yang W	266	103	0.0006	0.0026	0.0294	0.0001	no
+SCN10A	rs6801957	3	38725824	T	9e-09	PR interval	PR interval	GCST001735	23139255	Butler AM	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6801957	3	38725824	T	1e-28	heart function attribute	QRS duration	GCST000872	21076409	Sotoodehnia N	266	103	0.0029	0.013	0.085	0.0042	no
+SCN10A	rs6800541	3	38733341	C	5e-07	heart function attribute	Atrioventricular conduction	GCST000852	21041692	Denny JC	266	103	0.0048	0.0197	0.0977	0.004	no
+SCN10A	rs6800541	3	38733341	C	2e-74	PR interval	PR interval	GCST000562	20062060	Pfeufer A	266	103	0.0048	0.0197	0.0977	0.004	no
+SCN10A	rs6795970	3	38725184	A	4e-09	QRS complex	Electrocardiographic traits	GCST000561	20062063	Holm H	266	103	0.0054	0.0209	0.1034	0.0042	no
+SCN10A	rs6795970	3	38725184	A	1e-58	PR interval	Electrocardiographic traits	GCST000561	20062063	Holm H	266	103	0.0054	0.0209	0.1034	0.0042	no
+SCN10A	rs6795970	3	38725184	A	3e-15	PR interval; electrocardiography	Electrocardiographic traits	GCST000564	20062061	Chambers JC	266	103	0.0054	0.0209	0.1034	0.0042	no

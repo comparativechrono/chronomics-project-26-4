@@ -1,0 +1,67 @@
+<!-- id: h-glossary | title: Glossary | group: The project | stage: 14 | tab: yes | tablabel: Words | tabtitle: Glossary | summary: Every term this project uses, defined in one or two sentences, with the stage it first appears in | keys: glossary definitions terms allele variant snp indel haplotype phase build linkage disequilibrium d prime r2 block recombination hotspot ehh gwas summary statistics beta standard error z score eqtl nes conditional analysis tagging pangenome assembly archaic introgression effect allele maf superpopulation -->
+<h1>Glossary</h1>
+<p class="lede">Every term the project uses. The stage number says where it first matters – a term you have not met yet will make more sense when you get there.</p>
+
+<h2>Variants and genomes</h2>
+<dl class="glossary">
+<dt>allele <span class="st">1</span></dt><dd>One of the alternative forms of a position in the genome. At a position where some people have <code>G</code> and some have <code>A</code>, those are the two alleles.</dd>
+<dt>reference and alternative allele <span class="st">1</span></dt><dd>The reference allele is the letter at that position in the reference genome; the alternative is the other one. Which is which is a fact about the reference, not about which is commoner or ancestral.</dd>
+<dt>variant <span class="st">1</span></dt><dd>A position where the sequence differs between people, together with the alleles. A <b>SNP</b> or single-nucleotide variant changes one letter; an <b>indel</b> inserts or deletes letters; a <b>structural variant</b> is usually defined as 50 bases or more.</dd>
+<dt>rsID <span class="st">1</span></dt><dd>A stable identifier for a variant, assigned by dbSNP, like <code>rs41310749</code>. Preferable to a position because it does not change between genome builds.</dd>
+<dt>genome build <span class="st">1</span></dt><dd>A version of the reference genome. GRCh37 and GRCh38 number the same positions differently; at this locus the difference is 41,491 bases. A position without a build is meaningless.</dd>
+<dt>VCF <span class="st">1</span></dt><dd>Variant Call Format: a text file with a header of <code>##</code> lines, then one line per variant and one column per person. A position may appear on more than one line if more than one variant is called there.</dd>
+<dt>symbolic allele <span class="st">2</span></dt><dd>An allele written as a placeholder such as <code>&lt;DEL&gt;</code> rather than as a sequence. Some tools count these as variants and some drop them, which is why two programs can give different variant counts for the same file.</dd>
+<dt>minor allele frequency (MAF) <span class="st">2</span></dt><dd>The frequency of the rarer of the two alleles. The 1000 Genomes file in this bundle keeps only variants with MAF ≥ 0.01.</dd>
+<dt>superpopulation <span class="st">2</span></dt><dd>The five continental groupings of the 1000 Genomes populations: AFR, AMR, EAS, EUR, SAS. Coarse labels that hide real structure – always check the 26 populations underneath.</dd>
+</dl>
+
+<h2>Haplotypes and linkage</h2>
+<dl class="glossary">
+<dt>haplotype <span class="st">1</span></dt><dd>The particular combination of alleles carried on one physical chromosome. A person has two haplotypes at any locus, one from each parent.</dd>
+<dt>phase <span class="st">1</span></dt><dd>Knowing which of a person's two chromosomes carries which allele. In a VCF, <code>0|1</code> is phased and <code>0/1</code> is not. The 1000 Genomes phase is <b>statistically inferred</b>; assembly-based phase is <b>observed</b>.</dd>
+<dt>linkage disequilibrium (LD) <span class="st">3</span></dt><dd>The tendency of alleles at nearby positions to be inherited together more often than chance would give. Measured by D, D′ and r².</dd>
+<dt>D <span class="st">3</span></dt><dd><i>p<sub>AB</sub></i> − <i>p<sub>A</sub>p<sub>B</sub></i>: how much more often two alleles occur together than if they were independent. Hard to interpret alone because its range depends on the frequencies.</dd>
+<dt>D′ <span class="st">3</span></dt><dd>D divided by the largest value it could have taken given the frequencies. D′ = 1 means recombination has never been observed to separate the two – which is the signature of one allele having arisen on a chromosome already carrying the other.</dd>
+<dt>r² <span class="st">3</span></dt><dd>The squared correlation between the two alleles across chromosomes. r² = 1 means each perfectly predicts the other. r² depends on both recombination <i>and</i> the frequencies, so D′ = 1 with r² = 0.1 is entirely possible – and happens in this project.</dd>
+<dt>haplotype block <span class="st">4</span></dt><dd>A stretch of chromosome within which variants are in strong LD and which is usually inherited as a unit. There is no exact definition: a block's boundaries depend on the measure and the threshold you choose, so always state yours.</dd>
+<dt>recombination hotspot <span class="st">4</span></dt><dd>A short stretch where crossing-over is far more likely than average. Block boundaries tend to coincide with them.</dd>
+<dt>extended haplotype homozygosity (EHH) <span class="st">6</span></dt><dd>Starting from a core, the probability that two randomly chosen carrier chromosomes are still identical out to a given distance. Starts at 1 and decays. A long, slow decay means a young haplotype, because recombination has not had time to break it.</dd>
+<dt>ancestral and derived <span class="st">3</span></dt><dd>The ancestral allele is the older one, usually inferred by comparison with other primates; the derived allele arose later by mutation. Not the same as reference and alternative.</dd>
+</dl>
+
+<h2>The pangenome</h2>
+<dl class="glossary">
+<dt>short-read sequencing <span class="st">7</span></dt><dd>Reading DNA in fragments of a few hundred bases and aligning them to a reference. Cheap and accurate per base, but poor at repeats and at anything very different from the reference.</dd>
+<dt>long-read sequencing and assembly <span class="st">7</span></dt><dd>Reading fragments tens of thousands of bases long, enough to reconstruct each chromosome as a continuous sequence without using a reference. The phase comes out of the assembly rather than from a model.</dd>
+<dt>pangenome <span class="st">7</span></dt><dd>A reference that holds many genomes at once. Shared sequence is one path and differences are branches, so a variant common in the species but absent from any single reference is still visible.</dd>
+<dt>reference bias <span class="st">7</span></dt><dd>The systematic tendency to find variation that resembles the reference and miss variation that does not. The reason a pangenome exists.</dd>
+<dt>short tandem repeat <span class="st">7</span></dt><dd>A short motif repeated many times, where the number of copies varies between people. The hardest class of variant for short reads: at 38,667,308 the short-read panel offers five incompatible descriptions of the same repeat and the assemblies give one.</dd>
+<dt>archaic introgression <span class="st">8</span></dt><dd>DNA inherited by modern humans from Neanderthals or Denisovans. A long haplotype that is common outside Africa and rare within it fits the profile – which is why it is worth testing, and why this project tests it and finds the answer is no.</dd>
+</dl>
+
+<h2>Phenotypes and association</h2>
+<dl class="glossary">
+<dt>GWAS <span class="st">9</span></dt><dd>Genome-wide association study: testing every common variant against a trait in a large sample.</dd>
+<dt>summary statistics <span class="st">9</span></dt><dd>The per-variant results of a GWAS – effect size, standard error, P-value – published without individual-level data. What makes this project possible.</dd>
+<dt>effect allele <span class="st">9</span></dt><dd>The allele that the reported effect size refers to. If a file's effect allele is the other one, the sign of the effect flips. The commonest source of silent errors in this kind of work.</dd>
+<dt>beta and standard error <span class="st">9</span></dt><dd>The estimated change in the trait per copy of the effect allele, and its uncertainty. For a binary trait the effect is usually a log-odds.</dd>
+<dt>z score <span class="st">9</span></dt><dd>beta divided by its standard error: the signal in units of its own noise. A z of 5 is about P = 6 × 10<sup>−7</sup>. Easier to reason about than a P-value when comparing variants.</dd>
+<dt>PR interval, QRS duration, QT interval <span class="st">9</span></dt><dd>Measurements from the electrocardiogram. The PR interval covers conduction from the atria to the ventricles; QRS duration is the time the ventricles take to depolarise; the QT interval covers depolarisation and recovery. Sodium-channel function affects all three.</dd>
+<dt>Brugada syndrome <span class="st">9</span></dt><dd>An inherited arrhythmia syndrome with a characteristic electrocardiogram and a risk of sudden death, most often associated with loss-of-function variants in <i>SCN5A</i>.</dd>
+<dt>multiple testing <span class="st">9</span></dt><dd>Doing many tests makes small P-values likely by chance. The correction should be for the number of <i>independent</i> tests – and 21 variants of one haplotype are close to one test, not 21.</dd>
+</dl>
+
+<h2>Expression and causality</h2>
+<dl class="glossary">
+<dt>eQTL <span class="st">8</span></dt><dd>Expression quantitative trait locus: a variant whose genotype predicts how much of a gene is made. Measured per tissue, so an eQTL in blood says nothing directly about heart.</dd>
+<dt>normalised effect size (NES) <span class="st">8</span></dt><dd>GTEx's effect size for an eQTL: the change in normalised expression per copy of the alternative allele. Negative means the allele goes with less expression.</dd>
+<dt>enhancer and promoter <span class="st">8</span></dt><dd>A promoter is the sequence immediately before a gene where transcription starts; an enhancer can be far away and acts by contacting the promoter. rs6801957 is an enhancer inside <i>SCN10A</i> that regulates <i>SCN5A</i> – 115 kb away.</dd>
+<dt>lead variant <span class="st">10</span></dt><dd>The variant with the strongest association at a locus. Not necessarily the causal one: it is simply the one that happened to be best correlated with whatever is causal.</dd>
+<dt>tagging <span class="st">10</span></dt><dd>Showing an association only because of correlation with the real cause. A variant correlated at r with a lead of z = 50 inherits a z of 50r all by itself – which is how a weak correlation with a huge signal manufactures a convincing-looking result.</dd>
+<dt>conditional analysis <span class="st">10</span></dt><dd>Estimating what a variant's association would be with the lead variant held fixed, using summary statistics and an LD matrix. Assumes the LD matrix is known exactly, which it is not – and when the lead's z is very large, that assumption fails badly.</dd>
+<dt>LD reference panel <span class="st">10</span></dt><dd>The sample used to estimate correlations between variants, standing in for the (unavailable) GWAS sample. Here it is 503 Europeans, so each correlation carries a standard error of about 0.03 – the limitation at the centre of stage 10.</dd>
+<dt>colocalisation <span class="st">10</span></dt><dd>Asking whether two traits – or a trait and a gene's expression – share a causal variant at a locus, in a framework that handles the uncertainty properly. The method you would reach for next.</dd>
+</dl>
+
+<div class="callout log"><div class="co-t">Use this actively</div><p>Try writing the definition of r², D′, tagging and EHH in your own words, then compare with the entries here. A term you can define in your own words is one you can use in a paper; a term you can only recognise is one that will let you write something wrong.</p></div>
+<div class="stage-nav"><button type="button" data-goto="h-reading"><small>Back</small>← The reading list</button><button class="next" type="button" data-goto="h-home"><small>Next</small>Back to the start →</button></div>

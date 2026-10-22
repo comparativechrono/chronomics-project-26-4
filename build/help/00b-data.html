@@ -1,0 +1,68 @@
+<!-- id: h-data | title: The project data | group: The project | stage: 12 | tab: yes | tablabel: Data | tabtitle: The project data | summary: Every file in the bundle: where it came from, what is in it, what was filtered out, and the accession you would cite; plus the one number you must never forget | keys: data bundle files 1000 genomes hprc pangenome gwas summary statistics annotation accession provenance filter maf build grch37 grch38 offset 41491 citation licence -->
+<h1>The project data</h1>
+<p class="lede">Everything in <code>/data/examples/scn5a</code>, where it came from and what was done to it before you got it. Read this once now and come back to it whenever you need an accession for your methods section.</p>
+
+<div class="callout warn"><div class="co-t"><!--ICON:info-->The one number to remember</div><p>All positions in this bundle are on <b>GRCh38</b>. Four of the eleven GWAS files are on <b>GRCh37</b>, and across this locus the two differ by exactly <b>41,491</b> bases: <code>GRCh37 = GRCh38 + 41,491</code>. That offset holds here and nowhere else in the genome. Every build conversion you do in this project is that one subtraction – and getting it wrong gives you a different variant with perfectly plausible numbers.</p></div>
+
+<h2>1000g/ — the short-read panel</h2>
+<table class="table"><tbody>
+<tr><th>what it is</th><td>Phased genotypes of the 1000 Genomes Project, 30× high-coverage resequencing (New York Genome Center, release 20220422), across chr3:38,400,000–38,900,000.</td></tr>
+<tr><th>people</th><td>The <b>2,504 unrelated</b> individuals, from 26 populations in five superpopulations. The full release has 3,202 including relatives; the related samples were removed because they would bias every frequency and every LD estimate.</td></tr>
+<tr><th>filtering</th><td>Minor allele frequency ≥ 0.01, biallelic sites only. <b>2,392 records</b> survive. Rarer variants were dropped to keep the file small – so this bundle cannot be used to study rare variation, and your haplotype membership list has a 1% floor built into it.</td></tr>
+<tr><th>files</th><td><code>scn5a_locus.vcf.gz</code> (+ <code>.tbi</code> index), <code>samples.tsv</code> (sample, population, superpopulation), <code>unrelated.txt</code>.</td></tr>
+<tr><th>cite</th><td>Byrska-Bishop et al., <i>Cell</i> 2022; data from the International Genome Sample Resource.</td></tr>
+</tbody></table>
+<div class="callout check"><div class="co-t">Check it yourself</div><p><code>bcftools view -H … | wc -l</code> gives 2,392 and <code>bcftools query -l … | wc -l</code> gives 2,504. One record carries the symbolic allele <code>&lt;DEL&gt;</code>, which some tools count and some drop – see stage 2.</p></div>
+
+<h2>hprc/ — the pangenome assemblies</h2>
+<table class="table"><tbody>
+<tr><th>what it is</th><td>Variant calls from the Human Pangenome Reference Consortium release 2 Minigraph-Cactus graph, decomposed to one record per allele, across the same 500 kb.</td></tr>
+<tr><th>people</th><td><b>231 samples</b> – 462 assembled haplotypes. Each person's two chromosomes were assembled separately from long reads, so the phase is <b>observed, not inferred</b>. That is the whole point of including this dataset.</td></tr>
+<tr><th>filtering</th><td>None beyond the region cut. <b>6,160 records</b>, including insertions and deletions of every size, which is why the structural-variant question in stage 7 can be asked at all.</td></tr>
+<tr><th>files</th><td><code>scn5a_locus.vcf.gz</code> (+ <code>.tbi</code>), <code>hprc_samples.csv</code>.</td></tr>
+<tr><th>cite</th><td>Liao et al., <i>Nature</i> 2023 (the draft pangenome); HPRC release 2.</td></tr>
+</tbody></table>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->Two caveats about the assemblies</div><p>231 people is a tenth of the 1000 Genomes panel, so every frequency from it has wide confidence intervals – with 40 carriers, a frequency of 0.087 has a 95% interval of roughly 0.063 to 0.117. And the populations are not sampled in the same proportions as the 1000 Genomes panel, so a frequency difference between the two datasets may be about who was sampled rather than about the data.</p></div>
+
+<h2>gwas/ — eleven sets of summary statistics</h2>
+<p>Each file is the published summary statistics of a genome-wide association study, cut to the 500 kb window. Accessions and URLs are in <code>sources.tsv</code>; the build column there is the one you need.</p>
+<table class="table"><thead><tr><th>trait</th><th>accession</th><th>build</th></tr></thead>
+<tbody>
+<tr><td>PR interval (Ntalla et al. 2020)</td><td>GCST010320</td><td>37</td></tr>
+<tr><td>QRS duration (Sieliwonczyk et al. 2025)</td><td>GCST90624624</td><td>37</td></tr>
+<tr><td>QT interval (Hoffmann et al. 2022)</td><td>GCST90165291</td><td>38</td></tr>
+<tr><td>resting heart rate (Zhu et al. 2019)</td><td>GCST007609</td><td>37</td></tr>
+<tr><td>atrial fibrillation (Yuan et al. 2025)</td><td>GCST90624411</td><td>38</td></tr>
+<tr><td>Brugada syndrome (Barc et al. 2022)</td><td>GCST90086158</td><td>38</td></tr>
+<tr><td>chronotype (Jones et al. 2019)</td><td>GCST007576</td><td>37</td></tr>
+<tr><td>morning person (Jones et al. 2019)</td><td>GCST007565</td><td>37</td></tr>
+<tr><td>sleep duration (Dashti et al. 2019)</td><td>GCST007561</td><td>37</td></tr>
+<tr><td>insomnia (Lane et al. 2019)</td><td>GCST007387</td><td>37</td></tr>
+<tr><td>daytime napping (Dashti et al. 2021)</td><td>GCST011494</td><td>37</td></tr>
+</tbody></table>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->These files do not share a format</div><p>Column names differ between studies: the position may be <code>base_pair_location</code> or <code>BP</code> or <code>pos</code>; the effect may be <code>beta</code> or <code>LOGOR</code>; the P-value may be <code>p_value</code> or <code>P_BOLT_LMM</code>. Two files are space-delimited rather than tab-delimited. Never assume; read each header. And every study is of predominantly European-ancestry participants – which matters, because the haplotype you are studying is commonest in South Asians.</p></div>
+
+<h2>annotation/ — derived tables</h2>
+<p>These are the <i>answers</i> to parts of the project, provided so that you can check your own work against them. Do the analysis first and compare afterwards; looking first wastes the stage.</p>
+<table class="table"><tbody>
+<tr><th><code>haplotype_variants.tsv</code></th><td>The 21 variants, their frequencies on and off the haplotype in both datasets, which dataset calls each one "defining", and the Variant Effect Predictor output. Used from stage 8 on.</td></tr>
+<tr><th><code>genes.tsv</code></th><td><i>SCN5A</i> and <i>SCN10A</i>: coordinates, strand, description. Both are on the <b>minus</b> strand, so their transcription starts at their highest coordinate.</td></tr>
+<tr><th><code>archaic_alleles.tsv</code></th><td>The Vindija Neanderthal genotype at each of the 21 positions, with read depth. Stage 8.</td></tr>
+<tr><th><code>gwas_catalog_locus.tsv</code></th><td>Every association reported in the GWAS Catalog within the locus – 266 unique study–trait–variant rows across 103 variants. Use it to find out what is already known before claiming anything new.</td></tr>
+<tr><th><code>ehh_decay.tsv</code></th><td>Extended haplotype homozygosity against distance, by population and direction, for the haplotype and for all other chromosomes. Stage 6.</td></tr>
+<tr><th><code>tagging_diagnostic.tsv</code></th><td>The stage 10 diagnostic for all 21 variants and all traits: the lead variant, the correlation with it, the expected z and its standard error, the residual and its P-value.</td></tr>
+<tr><th><code>gtex_eqtls.tsv</code>, <code>gtex_tagging.tsv</code></th><td>GTEx v8 significant eQTLs of <i>SCN5A</i> and <i>SCN10A</i> that fall on the haplotype, and the same tagging diagnostic applied to the whole-blood expression signal. Stages 8 and 10.</td></tr>
+</tbody></table>
+
+<h2>variants.tsv — the project's variants</h2>
+<p>One row per variant: identifier, both builds, alleles, and whether it is one of the two promoter variants or one you are going to discover. Twenty-three variants plus a header. In stage 1 you should look only at the first two rows.</p>
+
+<h2>What is not here, and why</h2>
+<ul>
+<li><b>Individual-level phenotypes.</b> Nobody's trait values are public. That is why the project uses summary statistics, and it is the reason a student can work with half a million people's data at all.</li>
+<li><b>Rare variants.</b> Filtered out of the 1000 Genomes file at 1%. A rare causal variant on this haplotype would be invisible to you.</li>
+<li><b>Cardiac expression data with real power.</b> GTEx has a few hundred heart donors and finds no eQTLs for <i>SCN5A</i> there at all. The mechanism question cannot be settled with public data as it stands.</li>
+<li><b>Any data you would need ethical approval for.</b> Everything here is openly published. If a question you want to ask needs something else, that is a finding too – write it in your discussion as the next step.</li>
+</ul>
+<div class="callout log"><div class="co-t">For your methods section</div><p>Copy the accession table above, add the two dataset citations, state the build and the 41,491 offset, and state the two filters (unrelated samples; MAF ≥ 0.01). That is a complete data-provenance paragraph, and it took you one page.</p></div>
+<div class="stage-nav"><button type="button" data-goto="h-s11"><small>Back</small>← Stage 11 · Write it up</button><button class="next" type="button" data-goto="h-reading"><small>Next</small>The reading list →</button></div>

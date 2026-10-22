@@ -1,0 +1,49 @@
+<!-- id: h-science | title: The science: the heart's sodium channel, and what a haplotype is | group: The project | stage: 0 | summary: How the heart conducts; what SCN5A does and what happens when it does less; recombination, linkage disequilibrium, haplotype blocks; and why the circadian question is here at all | keys: science scn5a nav1.5 sodium channel cardiac conduction pr interval qrs brugada arrhythmia promoter enhancer expression recombination linkage disequilibrium r2 d prime haplotype block ancestral derived scn10a circadian clock night -->
+<h1>The science</h1>
+<div class="stage-meta"><span class="when">Week 1</span><span>about 2 hours reading</span></div>
+<p class="lede">Three things to understand before you start: what the gene does, what a haplotype is, and why a chronobiology group is interested in a heart gene.</p>
+
+<h2>1. The heart's sodium channel</h2>
+<p>Every heartbeat begins as an electrical wave. In each working heart muscle cell the wave starts when <b>sodium channels</b> open and let sodium ions rush in, flipping the voltage across the membrane in about a millisecond. That flip opens the channels in the neighbouring cell, and so the signal spreads. How many channels a cell has, and how readily they open, sets how fast the wave travels.</p>
+<p>The main cardiac sodium channel is <b>Nav1.5</b>, made by the gene <i>SCN5A</i> on chromosome 3. Less Nav1.5 means a slower wave. On an electrocardiogram that shows up as a longer <b>PR interval</b> (the time from the atria starting to the ventricles starting) and a wider <b>QRS complex</b> (the time the ventricles take to activate).</p>
+<p>When Nav1.5 falls far enough, the heart becomes vulnerable. Loss-of-function changes in <i>SCN5A</i> cause <b>Brugada syndrome</b>, in which the electrocardiogram shows a characteristic pattern and the person is at risk of a dangerous ventricular rhythm. The same gene, changed a different way, causes long QT syndrome type 3, and progressive conduction disease. One gene, several diseases, depending on which way the channel is pushed.</p>
+<div class="callout science"><div class="co-t">Why a promoter matters</div>
+<p>Most known <i>SCN5A</i> disease variants change the protein. The two variants of this project do not: they sit <b>upstream</b> of the gene, in the stretch of DNA that controls how much of it is made. A variant there cannot change the shape of the channel, only the number of them. That is a quieter kind of effect – and a plausible one, because how much Nav1.5 a cell has is exactly what sets conduction speed.</p>
+</div>
+
+<h2>2. The 2012 finding</h2>
+<p>A family carried a loss-of-function mutation in <i>SCN5A</i>. Some members were barely affected; others had serious arrhythmia. Looking for something that might explain the difference, the authors sequenced 2.8 kb of the <i>SCN5A</i> promoter and found two variants, <b>rs41310749</b> and <b>rs41310239</b>, in complete linkage disequilibrium with each other. The three most severely affected members carried them on both chromosomes. The suggestion was that a promoter that makes less channel, on top of a broken copy of the gene, tips a mild problem into a serious one.</p>
+<p>It is one family, and twenty-two mutation carriers. That is thin evidence, as the authors said. It is also the kind of observation that is worth taking seriously enough to test properly, which is what you are going to do.</p>
+
+<h2>3. Haplotypes, recombination and linkage disequilibrium</h2>
+<p>You have two copies of each chromosome, one from each parent. When you make eggs or sperm, the two copies <b>recombine</b>: they swap segments. A segment that is not cut survives intact into the next generation. Over many generations the surviving segments get shorter and shorter, because every generation is another chance to cut.</p>
+<p>A stretch of DNA inherited as one intact unit is a <b>haplotype</b>. The variants on it are inherited together, so knowing one tells you the others – this is <b>linkage disequilibrium</b>, LD. Two measures are used, and they answer different questions:</p>
+<ul>
+<li><b>D′</b> asks: <i>has recombination happened between these two variants?</i> It is 1 when some combination of alleles has never been seen, which is what you expect if they have never been separated. D′ can be 1 even when the two variants have very different frequencies.</li>
+<li><b>r²</b> asks: <i>if I know one, do I know the other?</i> It is 1 only when the two are perfect proxies – same frequency, always together. r² is the one that matters when you want to use one variant to stand in for another.</li>
+</ul>
+<p>You will meet a textbook example in stage 3: the two promoter variants have D′ = 1 in Africans but r² of about 0.1, because one of them is much commoner than the other there. The same pair in Europeans has r² = 1. The <i>pair</i> did not change; the populations did.</p>
+<div class="callout think"><div class="co-t">Think</div><p>If a derived allele arises once, on one chromosome, every copy of it alive today descends from that chromosome. What does that imply about the DNA on either side of it? And what would make that stretch shorter – time, or recombination rate, or both?</p></div>
+
+<h2>4. The awkward neighbour</h2>
+<p>About 45 kb downstream of <i>SCN5A</i> sits <i>SCN10A</i>, which makes a different sodium channel, Nav1.8. Inside <i>SCN10A</i> there is a stretch that acts as an <b>enhancer</b> for <i>SCN5A</i>: it reaches back and helps switch the neighbouring gene on. A common variant in it, <b>rs6801957</b>, is one of the strongest signals in all of cardiac genetics – it shifts the PR interval by about 3.5 ms per allele, and its association with the PR interval has a p-value around 10<sup>−578</sup>.</p>
+<p>That is a problem for you. When a signal that strong sits 100 kb away, any variant that is even slightly correlated with it will look associated too. Much of stage 10 is about telling a real, separate signal from the shadow of a huge one – and about recognising when the data you can get cannot settle the question.</p>
+
+<h2>5. Why a chronobiology group</h2>
+<p>Two reasons. The first is that the heart has a clock. Cardiac ion channel genes, <i>Scn5a</i> among them, are expressed rhythmically over the day in mice, and the electrocardiogram changes with time of day in people. The second is clinical: in Brugada syndrome, dangerous rhythms happen overwhelmingly at <b>night</b>, often during sleep. A variant that lowers sodium channel expression might plausibly interact with whatever makes the night dangerous.</p>
+<p>That is a hypothesis, not a finding, and this project will not prove it. What it can do is ask the simpler question first: in the hundreds of thousands of people with public genetic and sleep data, does this haplotype move any circadian or sleep measure at all? A clean negative is worth having, and it is the honest starting point for anything more ambitious.</p>
+
+<div class="callout log"><div class="co-t">For your logbook</div>
+<ul>
+<li>In your own words: what Nav1.5 does, and what happens when there is less of it.</li>
+<li>The difference between D′ and r², with an example where they disagree.</li>
+<li>Why the neighbouring enhancer makes this project harder.</li>
+<li>Two predictions you would make before seeing any data, so that you can check later whether you were right.</li>
+</ul></div>
+
+<ul class="checklist">
+<li data-check="sci-read">I have read this page and can explain a haplotype block to someone else.</li>
+<li data-check="sci-paper">I have read the 2012 paper in the <a href="#h-reading">reading list</a>.</li>
+<li data-check="sci-predict">I have written down my predictions.</li>
+</ul>
+<div class="stage-nav"><button type="button" data-goto="h-home"><small>Back</small>← Start here</button><button class="next" type="button" data-goto="h-s01"><small>Next</small>Stage 1 · Two variants →</button></div>

@@ -1,0 +1,92 @@
+<!-- id: h-s02 | title: Stage 2 · Two thousand five hundred genomes | group: The project | stage: 2 | tab: yes | tabtitle: Stage 2 – Two thousand five hundred genomes | summary: The 1000 Genomes panel and its populations; PLINK 2; allele frequencies overall and by population; why a variant can be common in one continent and absent in another | keys: stage 2 1000 genomes panel population superpopulation afr amr eas eur sas plink2 pgen pvar psam make-pgen freq allele frequency keep within unrelated phased vcf sort uniq awk join -->
+<h1>Stage 2 · Two thousand five hundred genomes</h1>
+<div class="stage-meta"><span class="when">Weeks 2–3</span><span>about 5 hours</span><span class="stage-progress"></span></div>
+<p class="lede">Two variants and 2,504 people. Before asking how the variants travel together, find out how common each one is – and learn that "how common" is a question with five different answers.</p>
+<div class="skills"><b>You will learn</b><ul>
+<li>what the 1000 Genomes Project is, and what its populations are</li>
+<li>PLINK 2: turning a VCF into its own fast format, filtering, counting alleles</li>
+<li>to compute a frequency within each population and compare them</li>
+<li>that allele frequencies differ between continents, and to be careful about why</li>
+</ul></div>
+
+<h2>1. The people</h2>
+<p>The 1000 Genomes Project sequenced people from 26 populations, grouped into five <b>superpopulations</b>: AFR (African), AMR (admixed American), EAS (East Asian), EUR (European) and SAS (South Asian). This bundle uses the 2,504 who are unrelated to each other.</p>
+<pre class="code" data-run="term"><code>head -3 /data/examples/scn5a/1000g/samples.tsv
+cut -f 3 /data/examples/scn5a/1000g/samples.tsv | tail -n +2 | sort | uniq -c | sort -rn
+cut -f 2 /data/examples/scn5a/1000g/samples.tsv | tail -n +2 | sort | uniq -c | sort -rn | head -6</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>Five superpopulations, 26 populations: <b>661</b> AFR, <b>504</b> EAS, <b>503</b> EUR, <b>489</b> SAS and <b>347</b> AMR – 2,504 in all. The largest single populations have about a hundred people each.</p></div>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->These labels are coarse</div><p>"European" covers Finns, Tuscans, Britons, Iberians and Utah residents of northern European ancestry. "African" includes West Africans and African-Americans, whose genomes carry European ancestry too. The labels are useful for a first look and misleading if pushed. When something interesting turns up at the superpopulation level, always look at the 26 populations underneath.</p></div>
+
+<h2>2. PLINK 2</h2>
+<p>bcftools reads VCF files; <b>PLINK</b> is built to do arithmetic across thousands of people and variants at once. Its first job is to convert the VCF into its own three files, which are much faster to read:</p>
+<pre class="code" data-run="term"><code>cd ~/project
+plink2 --vcf /data/examples/scn5a/1000g/scn5a_locus.vcf.gz --make-pgen --out scn5a
+ls -la scn5a.*
+head -3 scn5a.pvar
+head -3 scn5a.psam</code></pre>
+<p><code>scn5a.pgen</code> holds the genotypes packed tightly, <code>scn5a.pvar</code> the variants, <code>scn5a.psam</code> the people, and <code>scn5a.log</code> a record of exactly what was done – keep your logs, they are the honest account of your analysis.</p>
+<div class="callout check"><div class="co-t">Check</div><p><b>2,504 samples</b>, and about <b>2,392 variants</b> – the ones carried by at least 1% of chromosomes in this 500 kb; rarer ones were left out to keep the file small. Read <code>scn5a.log</code> rather than trusting the number: one record in this file has the symbolic allele <code>&lt;DEL&gt;</code> instead of a sequence, and tools disagree about whether to count it. <code>bcftools view -H … | wc -l</code> gives 2,392; something that insists on real sequence will give 2,391.</p></div>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->Read the log, every time</div><p>Each PLINK run writes a <code>.log</code> file saying how many variants and samples it actually used and what it skipped. Two tools given the same file can honestly disagree, and the log is where you find out. A number you took from a tool without reading its log is a number you cannot defend.</p></div>
+
+<h2>3. How common are they?</h2>
+<p><code>--freq</code> counts alleles. <code>--snp</code> picks a single variant by its identifier – the identifiers here are built from position and alleles, like <code>3:38651526:G:A</code> – and <code>--chr</code> with <code>--from-bp</code>/<code>--to-bp</code> takes a whole stretch. Try both:</p>
+<pre class="code" data-run="term"><code>plink2 --pfile scn5a --snp 3:38651526:G:A --freq --out one_variant
+cat one_variant.afreq</code></pre>
+<p>Now the whole promoter stretch, so you can see what else is nearby:</p>
+<pre class="code" data-run="term"><code>plink2 --pfile scn5a --chr 3 --from-bp 38650537 --to-bp 38651526 --freq --out promoter
+cat promoter.afreq</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>Eight variants lie in that 989-base stretch. The two you care about are at the ends: rs41310239 at 38,650,537 with an alternative allele frequency of <b>0.1116</b>, and rs41310749 at 38,651,526 with <b>0.1390</b>.</p>
+<p>Note that position 38,650,537 carries <b>two</b> entries: an insertion of two bases, and the A-to-G change that is rs41310239. A position in a VCF file is not the same thing as a variant, and a careless region query will pick up both. Check the REF and ALT columns, always.</p></div>
+<div class="callout think"><div class="co-t">Think</div><p>The 2012 paper said the two variants were in complete linkage disequilibrium – never apart. If that were exactly true everywhere, what would have to be true of these two frequencies?</p></div>
+
+<h2>4. The same question, five answers</h2>
+<p><code>--loop-cats</code> repeats an analysis within each category of a column. Add the population labels to the sample file first. The <code>psam</code> file wants a column called <code>SUPERPOP</code>; build it with <code>awk</code> and <code>join</code>:</p>
+<pre class="code" data-run="term"><code>awk -F'\t' 'BEGIN{OFS="\t"; print "#IID","SUPERPOP"} NR>1 {print $1,$3}' \
+  /data/examples/scn5a/1000g/samples.tsv > superpop.txt
+head -3 superpop.txt
+plink2 --pfile scn5a --chr 3 --from-bp 38650537 --to-bp 38651526 \
+       --pheno superpop.txt --loop-cats SUPERPOP --freq --out bypop
+ls bypop.*.afreq
+grep -H 38651526 bypop.*.afreq | cut -f 1,5,6</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>For <b>rs41310749</b>: AFR 0.130, AMR 0.144, EAS 0.068, EUR 0.163, SAS 0.196. For <b>rs41310239</b>: AFR <b>0.015</b>, AMR 0.134, EAS 0.088, EUR 0.163, SAS 0.197.</p></div>
+<div class="callout science"><div class="co-t">The first real result</div>
+<p>Look at the African column. rs41310749 is at 13% there – as common as anywhere – but rs41310239 is at 1.5%. Everywhere else the two frequencies are nearly equal. Two variants that are supposedly inseparable are plainly not inseparable in Africa.</p>
+<p>That single observation shapes the rest of the project. Keep it in front of you.</p></div>
+
+<h2>5. Doing it yourself</h2>
+<p>PLINK is quick, but you should know what it is counting. An allele frequency is just the number of alternative alleles divided by the number of chromosomes. Count them straight from the genotypes:</p>
+<pre class="code" data-run="term"><code>bcftools query -f '[%GT ]\n' -r chr3:38651526 /data/examples/scn5a/1000g/scn5a_locus.vcf.gz \
+  | tr ' ' '\n' | grep -c '1'
+bcftools query -f '[%GT ]\n' -r chr3:38651526 /data/examples/scn5a/1000g/scn5a_locus.vcf.gz \
+  | tr '|' '\n' | tr ' ' '\n' | grep -c '^1$'</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>The second command counts single alleles and gives <b>696</b>. There are 2 × 2,504 = <b>5,008</b> chromosomes, so the frequency is 696 / 5008 = <b>0.139</b> – what PLINK said. The first command gives <b>635</b>: that is the number of <i>people</i> carrying at least one copy, because it counts genotype strings rather than alleles. The two questions have different answers (635 people, 696 alleles, because 61 people carry two), and mixing them up is a classic way to produce a frequency that is quietly wrong.</p></div>
+<div class="task"><div class="task-t">Your turn</div>
+<p>Work out the frequency of rs41310239 the same way by hand, and then its frequency in Africans only. For the second you will need to keep only African samples: build a list with <code>awk</code> and pass it to <code>bcftools view -S</code>.</p>
+<details class="hint answer"><summary>Show a hint</summary>
+<pre class="code" data-run="term"><code>awk -F'\t' 'NR>1 && $3=="AFR" {print $1}' /data/examples/scn5a/1000g/samples.tsv > afr.txt
+wc -l afr.txt
+bcftools view -S afr.txt -r chr3:38650537 /data/examples/scn5a/1000g/scn5a_locus.vcf.gz \
+  | bcftools query -f '[%GT ]\n' | tr '|' '\n' | tr ' ' '\n' | grep -c '^1$'</code></pre>
+<p>661 Africans, so 1,322 chromosomes. Careful: that region query returns both records at the position, so keep only the one whose REF is <code>A</code> and ALT is <code>G</code> – <code>awk -F'\t' '$4=="A" &amp;&amp; $5=="G"'</code>. It has <b>20</b> alternative alleles, giving 20/1322 = <b>0.0151</b>.</p></details></div>
+
+<div class="callout log"><div class="co-t">For your logbook</div>
+<ul>
+<li>What the 1000 Genomes populations are, and why the labels need care.</li>
+<li>The PLINK commands you used, and what the three output files are.</li>
+<li>A small table: the frequency of each variant in each superpopulation.</li>
+<li>The African anomaly, and two possible explanations you can think of.</li>
+</ul></div>
+
+<h2>Going further</h2>
+<ul>
+<li><b>The 26 populations.</b> Repeat the frequency comparison with the finer labels (column 2 instead of 3). Is the African pattern the same in all African populations, including the African-American ones?</li>
+<li><b>How unusual is this?</b> Pick ten other common variants in the file at random and compare their frequencies across superpopulations. Is a 10-fold difference between continents remarkable, or ordinary?</li>
+</ul>
+<ul class="checklist">
+<li data-check="s2-panel">I know who is in the panel and how the populations are grouped.</li>
+<li data-check="s2-plink">I converted the VCF with PLINK and can read its three files.</li>
+<li data-check="s2-freq">I computed the frequency of both variants, overall and by population.</li>
+<li data-check="s2-hand">I checked one frequency by hand from the genotypes.</li>
+<li data-check="s2-afr">I noticed the African difference and wrote down what it might mean.</li>
+</ul>
+<div class="stage-nav"><button type="button" data-goto="h-s01"><small>Back</small>← Stage 1 · Two variants</button><button class="next" type="button" data-goto="h-s03"><small>Next</small>Stage 3 · Measuring linkage →</button></div>

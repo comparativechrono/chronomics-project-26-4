@@ -1,0 +1,12 @@
+trait	domain	n_haplotype_variants_tested	strongest_marginal_rsid	strongest_marginal_beta	strongest_marginal_p	n_independent_signals	lead_rsid	lead_z	single_lead_residual_rsid	single_lead_residual_t	single_lead_residual_p	conditional_p_1_signals	conditional_rsid_1_signals	conditional_p_2_signals	conditional_rsid_2_signals	conditional_p_3_signals	conditional_rsid_3_signals	stability	log10_swing_across_steps
+PR interval	cardiac	17	rs62242851	0.6368	7.52e-15	3	rs6801957	-51.45	rs62242851	2.553	0.0107	1.16e-06	rs62242851	2.27e-14	rs62242851	1.67e-42	rs62242851	unstable: the conditional p-value moves by 36 orders of magnitude	35.84
+QRS duration	cardiac	18	rs62242851	0.02249	0.0135	3	rs41312411	12.31	rs7373686	3.635	0.000278	8.91e-05	rs7373686	0.00152	rs7373686	0.283	rs56053699	moderate: moves by 4 orders	3.5
+QT interval	cardiac	19	rs74958514	0.47	3.2e-05	3	rs7373492	11.55	rs75073937	3.093	0.00198	0.00097	rs75073937	0.000637	rs7373686	0.186	rs75073937	moderate: moves by 2 orders	2.47
+atrial fibrillation	cardiac	19	rs75073937	-0.0226	5.42e-07	3	rs6801957	20.91	rs75073937	-2.76	0.00578	0.000932	rs75073937	0.0083	rs75073937	0.0108	rs75073937	stable	1.06
+Brugada syndrome	cardiac	17	rs62242851	0.2801	1.29e-11	3	rs6801957	-28.69	rs62242851	3.815	0.000136	2.67e-07	rs62242851	2.15e-10	rs73825723	0.0414	rs62242851	unstable: the conditional p-value moves by 8 orders of magnitude	8.28
+resting heart rate	cardiac	17	rs7373686	0.03108	0.2	3	rs6801957	10.25	rs7374392	1.68	0.093	0.0766	rs7374392	0.46	rs62242851	0.00141	rs62242851	moderate: moves by 3 orders	2.51
+chronotype (morningness)	circadian	17	rs7373686	0.00326	0.33	0	rs4679066	4.11	rs7373686	0.66	0.509							no conditioning needed	
+morning person	circadian	17	rs7373686	0.00946	0.11	0	rs13094715	-3.89	rs7373686	1.359	0.174							no conditioning needed	
+sleep duration	circadian	17	rs56053699	0.00345	0.22	0	rs149197753	-3.51	rs56053699	1.516	0.129							no conditioning needed	
+insomnia	circadian	17	rs41310749	0.00263	0.16	0	rs138653281	-3.91	rs74958514	1.448	0.148							no conditioning needed	
+daytime napping	circadian	19	rs56053699	0.002	0.14	0	rs56371215	-3.63	rs56053699	1.16	0.246							no conditioning needed	

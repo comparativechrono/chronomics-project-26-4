@@ -1,0 +1,107 @@
+<!-- id: h-s05 | title: Stage 5 · The haplotype itself | group: The project | stage: 5 | tab: yes | tabtitle: Stage 5 – The haplotype itself | summary: Split the chromosomes into carriers and non-carriers, then scan every variant for the ones that are near-fixed on one side and rare on the other; this is the haplotype, and it has 18 members over 50.6 kb | keys: stage 5 haplotype definition carrier scan near fixed defining variants threshold 0.9 0.1 awk bcftools r matrix heatmap 50.6 kb 18 variants core -->
+<h1>Stage 5 · The haplotype itself</h1>
+<div class="stage-meta"><span class="when">Weeks 5–6</span><span>about 6 hours</span><span class="stage-progress"></span></div>
+<p class="lede">Stop asking which variants correlate with rs41310749 and ask a sharper question: take the chromosomes that carry both promoter variants, and find out what <i>else</i> every one of them carries. This is the stage where the haplotype stops being a hypothesis.</p>
+<div class="skills"><b>You will learn</b><ul>
+<li>to define a group of chromosomes and compare it with the rest</li>
+<li>the difference between "correlated with" and "carried by"</li>
+<li>to choose a threshold, state it, and test whether your answer depends on it</li>
+<li>to draw a haplotype heat map – the picture that shows a block exists</li>
+</ul></div>
+
+<h2>1. Splitting the chromosomes in two</h2>
+<p>A chromosome is a <b>carrier</b> if it has the alternative allele at both promoter variants. You already have the two allele vectors from stage 3:</p>
+<pre class="code" data-run="r"><code>read_alleles &lt;- function(path) as.integer(strsplit(readLines(path)[1], "")[[1]])
+a &lt;- read_alleles("~/project/rs41310749.txt")
+b &lt;- read_alleles("~/project/rs41310239.txt")
+carrier &lt;- a == 1 &amp; b == 1
+sum(carrier); mean(carrier)</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p><b>533</b> of the 5,008 chromosomes are carriers – a frequency of <b>0.1064</b>. The other 4,475 are not.</p></div>
+
+<h2>2. The whole matrix</h2>
+<p>To compare the two groups at every variant you need the whole genotype matrix, not two rows. Write it out from the terminal, then read it in:</p>
+<pre class="code" data-run="term"><code>cd ~/project
+bcftools query -f '%POS\t%REF\t%ALT[\t%GT]\n' /data/examples/scn5a/1000g/scn5a_locus.vcf.gz \
+  > matrix.tsv
+wc -l matrix.tsv
+cut -f 1-3 matrix.tsv | head -3</code></pre>
+<pre class="code" data-run="r"><code>raw &lt;- read.delim("~/project/matrix.tsv", header = FALSE,
+                  colClasses = c("integer", "character", "character", rep("character", 2504)))
+pos &lt;- raw[[1]]; ref &lt;- raw[[2]]; alt &lt;- raw[[3]]
+# turn "0|1" into two columns of 0/1
+gt &lt;- as.matrix(raw[, -(1:3)])
+H  &lt;- matrix(as.integer(unlist(strsplit(as.vector(t(gt)), "\\|"))),
+             nrow = nrow(gt), byrow = TRUE)
+dim(H)</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p><code>dim(H)</code> gives <b>2392 by 5008</b> – one row per variant, one column per chromosome, in the same order as your carrier vector. If the second number is not 5,008, your strsplit lost the phase bar; check <code>H[1, 1:10]</code>.</p></div>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->The commonest bug in this whole project</div><p>Turning phased genotypes into haplotypes means splitting on <code>|</code> and keeping the order. If you strip the bar without splitting, or let R recycle a vector of the wrong length, you get a matrix of plausible-looking numbers that is silently wrong – and allele frequencies above 1, or below 0, are the symptom. Check the dimensions and check two or three genotypes by eye against the VCF before you go on.</p></div>
+
+<h2>3. On the haplotype, and off it</h2>
+<p>Now the key calculation. For every variant, the frequency among carriers and among non-carriers:</p>
+<pre class="code" data-run="r"><code>f_on  &lt;- rowMeans(H[, carrier])
+f_off &lt;- rowMeans(H[, !carrier])
+defining &lt;- which(f_on &gt;= 0.9 &amp; f_off &lt;= 0.1)
+length(defining)
+range(pos[defining]); diff(range(pos[defining])) / 1000
+data.frame(pos = pos[defining], ref = ref[defining], alt = alt[defining],
+           on = round(f_on[defining], 4), off = round(f_off[defining], 4))</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p><b>18 variants</b> are carried by at least 90% of the 533 carrier chromosomes and by at most 10% of the rest. They run from <b>38,631,501 to 38,682,101</b> – a span of <b>50.6 kb</b>. The two promoter variants are in the list; sixteen more were not known to be part of it.</p></div>
+<div class="callout science"><div class="co-t">This is the answer to the project's question</div>
+<p>The two variants of the 2012 paper are not an isolated pair. They are two members of an 18-variant block spanning fifty kilobases, which is inherited as a unit and carried by about one chromosome in ten worldwide. Everything from here on is about that block: where it came from, what is on it, and whether it does anything.</p>
+<p>Notice what made it visible. Correlation with a single variant (stage 4) found nothing when populations were pooled. Asking what carriers share found the block immediately, in the same pooled data. The question you ask of a dataset determines what it can tell you.</p></div>
+
+<h2>4. Is 0.9 and 0.1 the right threshold?</h2>
+<p>Those two numbers were a choice. A result that depends on them is not a result:</p>
+<pre class="code" data-run="r"><code>for (on in c(0.8, 0.9, 0.95)) for (off in c(0.05, 0.1, 0.2)) {
+  d &lt;- which(f_on &gt;= on &amp; f_off &lt;= off)
+  cat(sprintf("on>=%.2f off<=%.2f : %2d variants, %5.1f kb\n",
+              on, off, length(d), diff(range(pos[d])) / 1000))
+}</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>The count moves – more variants at a looser threshold, fewer at a stricter one – but the <b>span barely moves</b>. The block's edges are a real feature of the data; the membership list at the edges is a judgement call. Report both, and say which number you chose.</p></div>
+<div class="task"><div class="task-t">Your turn</div>
+<p>Two of the variants that just miss the cut are interesting: one at 38,658,460 with <code>f_off</code> = 0.129, and one at 38,666,394 with <code>f_off</code> = 0.1008 – which fails by eight ten-thousandths. Look them up. Should they be on the list? Write down your decision and your reason; in stage 7 you will get independent evidence, and you can see whether it agrees with you.</p>
+<details class="hint answer"><summary>Show a hint</summary>
+<pre class="code" data-run="r"><code>near &lt;- which(f_on &gt;= 0.85 &amp; f_off &lt;= 0.15)
+data.frame(pos = pos[near], on = round(f_on[near], 4), off = round(f_off[near], 4))[
+  !(pos[near] %in% pos[defining]), ]</code></pre>
+<p>There is no statistical answer to "should they be on the list". There is a scientific one: a variant on 93% of carriers and 13% of non-carriers is either a block member that short-read phasing has blurred, or a nearby variant that is often but not always co-inherited. Only data of a different kind can tell the two apart – which is what stage 7 is for.</p></details></div>
+
+<h2>5. The picture</h2>
+<p>Draw the block. Order the chromosomes with carriers first, take the variants in the region, and plot the matrix:</p>
+<pre class="code" data-run="r"><code>library(ggplot2)
+sel &lt;- which(pos &gt;= 38620000 &amp; pos &lt;= 38695000)
+ord &lt;- c(which(carrier), sample(which(!carrier), 400))
+m &lt;- expand.grid(v = seq_along(sel), h = seq_along(ord))
+m$allele &lt;- as.vector(H[sel, ord])
+m$pos &lt;- pos[sel][m$v]
+ggplot(m, aes(pos / 1e6, h, fill = factor(allele))) +
+  geom_raster() +
+  geom_hline(yintercept = sum(carrier) + 0.5, linewidth = 0.4) +
+  scale_fill_manual(values = c("0" = "grey92", "1" = "#2F4B6B"), name = "allele") +
+  labs(x = "position on chromosome 3 (Mb)", y = "chromosome (carriers below the line)") +
+  theme_minimal(base_size = 11)</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>A solid dark band across the carrier chromosomes, between 38.63 and 38.68 Mb, and speckle everywhere else. That band is the haplotype. Put this figure in your report next to the LD scan from stage 4 – they are the same fact seen two ways, and together they are convincing in a way neither is alone.</p></div>
+
+<div class="callout log"><div class="co-t">For your logbook</div>
+<ul>
+<li>The 18 variants, with their positions, alleles and on/off frequencies – a proper table.</li>
+<li>The span, 50.6 kb, and the threshold you used to get it.</li>
+<li>Your threshold sensitivity table.</li>
+<li>Your decision about the two borderline variants, with the reason, <i>written before stage 7</i>.</li>
+<li>The heat map.</li>
+</ul></div>
+
+<h2>Going further</h2>
+<ul>
+<li><b>Define the haplotype a third way.</b> Instead of the two promoter variants, use the 22 European variants from stage 4 as the core: a chromosome is a carrier if it has all 22. How many chromosomes qualify, and do you recover the same 18?</li>
+<li><b>Within Europeans only.</b> Repeat the on/off scan using only European chromosomes. Does the block get longer, shorter, or stay the same? Why would you expect that?</li>
+<li><b>How many distinct versions?</b> Among the 533 carriers, how many distinct allele strings are there across the 18 variants? If the block were perfectly inherited there would be one. Count them, and you have measured how much recombination and mutation have chipped at it.</li>
+</ul>
+<ul class="checklist">
+<li data-check="s5-carrier">I split the chromosomes into carriers and non-carriers.</li>
+<li data-check="s5-matrix">I built the genotype matrix and checked its dimensions.</li>
+<li data-check="s5-define">I found the 18 defining variants and the 50.6 kb span.</li>
+<li data-check="s5-thresh">I tested whether my threshold changed the answer.</li>
+<li data-check="s5-plot">I drew the haplotype heat map.</li>
+</ul>
+<div class="stage-nav"><button type="button" data-goto="h-s04"><small>Back</small>← Stage 4 · How far does it reach?</button><button class="next" type="button" data-goto="h-s06"><small>Next</small>Stage 6 · Where in the world →</button></div>

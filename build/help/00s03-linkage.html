@@ -1,0 +1,110 @@
+<!-- id: h-s03 | title: Stage 3 · Measuring linkage | group: The project | stage: 3 | tab: yes | tabtitle: Stage 3 – Measuring linkage | summary: Your first R notebook; the two-by-two table of haplotypes; work out D and D prime and r squared by hand, then with PLINK; why the two measures disagree, and what that says about the two variants | keys: stage 3 r notebook webr linkage disequilibrium ld d prime dprime r2 haplotype table matrix read.delim strsplit two by two contingency allele phase plink2 r2-phased ld-window european african -->
+<h1>Stage 3 · Measuring linkage</h1>
+<div class="stage-meta"><span class="when">Weeks 3–4</span><span>about 6 hours</span><span class="stage-progress"></span></div>
+<p class="lede">"In complete linkage disequilibrium" is a claim with two meanings, and the two give different answers for these variants. Work them out by hand on 5,008 chromosomes, then learn the formulas, then let PLINK confirm it.</p>
+<div class="skills"><b>You will learn</b><ul>
+<li>R notebooks: reading data, making tables, writing a function</li>
+<li>to turn phased genotypes into haplotypes you can count</li>
+<li>what D, D′ and r² are, and to compute all three yourself</li>
+<li>why two measures of the same thing can say 1.0 and 0.1</li>
+</ul></div>
+
+<h2>1. Getting the two variants into R</h2>
+<p>Open the notebook for this stage. The terminal and the notebook share your files, so prepare a small text file in the terminal first – two lines, one per variant, each a string of 5,008 alleles:</p>
+<div class="tryrow"><button class="do" type="button" data-stage-nb="r|stage03-linkage|Stage 3 – Measuring linkage">Open my stage 3 notebook</button></div>
+<pre class="code" data-run="term"><code>cd ~/project
+bcftools view -r chr3:38651526 /data/examples/scn5a/1000g/scn5a_locus.vcf.gz \
+  | bcftools query -f '[%GT ]\n' | tr -d ' |' > rs41310749.txt
+bcftools view -r chr3:38650537 /data/examples/scn5a/1000g/scn5a_locus.vcf.gz \
+  | bcftools view -H | awk -F'\t' '$4=="A" && $5=="G"' | cut -f 10- | tr -d '\t|' > rs41310239.txt
+wc -c rs41310749.txt rs41310239.txt</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>Each file holds <b>5,009</b> characters: 5,008 alleles and the newline. Two characters per person, in the order of the sample file – the first is the person's first chromosome, the second their second.</p></div>
+<p>Now read them into R and make them into vectors of 0s and 1s:</p>
+<pre class="code" data-run="r"><code>read_alleles &lt;- function(path) {
+  s &lt;- readLines(path)[1]
+  as.integer(strsplit(s, "")[[1]])
+}
+a &lt;- read_alleles("~/project/rs41310749.txt")   # rs41310749
+b &lt;- read_alleles("~/project/rs41310239.txt")   # rs41310239
+length(a); length(b)
+mean(a); mean(b)</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>5,008 each, with means <b>0.1390</b> and <b>0.1116</b> – the frequencies from stage 2, recovered a different way.</p></div>
+
+<h2>2. The two-by-two table</h2>
+<p>Because the data are phased, each of the 5,008 chromosomes has a definite pair of alleles: one from each variant. Count the four combinations:</p>
+<pre class="code" data-run="r"><code>tab &lt;- table(rs41310749 = a, rs41310239 = b)
+tab
+addmargins(tab)</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p><b>4,286</b> chromosomes carry neither, <b>163</b> carry rs41310749 alone, <b>26</b> carry rs41310239 alone, and <b>533</b> carry both.</p></div>
+<div class="callout science"><div class="co-t">What that table means</div>
+<p>If the two variants were inherited independently, you would expect about 5,008 × 0.1390 × 0.1116 ≈ <b>78</b> chromosomes carrying both. There are <b>533</b>. They are very far from independent.</p>
+<p>But look at the 163 and the 26. If the two had truly never been separated, one of those cells would be empty. Neither is. "Complete linkage disequilibrium" is already in trouble – and in stage 6 you will find out which population those 163 come from.</p>
+</div>
+
+<h2>3. D, D′ and r², by hand</h2>
+<p>Write <i>p<sub>A</sub></i> for the frequency of the rs41310749 alternative allele, <i>p<sub>B</sub></i> for rs41310239, and <i>p<sub>AB</sub></i> for the frequency of chromosomes carrying both. The basic quantity is</p>
+<p style="text-align:center"><i>D</i> = <i>p<sub>AB</sub></i> − <i>p<sub>A</sub></i> <i>p<sub>B</sub></i></p>
+<p>– how much more often the two travel together than chance would give. D is awkward on its own because its possible range depends on the frequencies, so it is scaled two ways. <b>D′</b> divides by the largest value D could have taken; <b>r²</b> is the squared correlation between the two alleles.</p>
+<pre class="code" data-run="r"><code>pA &lt;- mean(a); pB &lt;- mean(b); pAB &lt;- mean(a == 1 &amp; b == 1)
+D &lt;- pAB - pA * pB
+Dmax &lt;- if (D &gt;= 0) min(pA * (1 - pB), pB * (1 - pA)) else min(pA * pB, (1 - pA) * (1 - pB))
+Dprime &lt;- abs(D) / Dmax
+r2 &lt;- D^2 / (pA * (1 - pA) * pB * (1 - pB))
+c(pA = pA, pB = pB, pAB = pAB, D = D, Dprime = Dprime, r2 = r2)
+cor(a, b)^2          # r2 is just the squared correlation</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>D′ = <b>0.946</b> and r² = <b>0.697</b>. And <code>cor(a, b)^2</code> gives exactly the same r² – the two formulas are the same thing.</p></div>
+<div class="callout think"><div class="co-t">Think</div><p>D′ near 1 says recombination has essentially never separated these two. r² of 0.7 says one is an imperfect proxy for the other. Both are true at once. Which of the two would you want to be high if you were choosing a variant to genotype as a stand-in for another? Which would you want if you were asking whether two variants arose on the same ancestral chromosome?</p></div>
+
+<h2>4. The same calculation, one population at a time</h2>
+<p>Make a function of what you just wrote, then apply it within each superpopulation. Each person contributes two consecutive alleles, so repeat each label twice:</p>
+<pre class="code" data-run="r"><code>ld &lt;- function(a, b) {
+  pA &lt;- mean(a); pB &lt;- mean(b); pAB &lt;- mean(a == 1 &amp; b == 1)
+  D &lt;- pAB - pA * pB
+  Dmax &lt;- if (D &gt;= 0) min(pA * (1 - pB), pB * (1 - pA)) else min(pA * pB, (1 - pA) * (1 - pB))
+  c(n = length(a), pA = round(pA, 4), pB = round(pB, 4),
+    Dprime = round(abs(D) / Dmax, 3), r2 = round(D^2 / (pA * (1 - pA) * pB * (1 - pB)), 3))
+}
+samples &lt;- read.delim("/data/examples/scn5a/1000g/samples.tsv")
+sup &lt;- rep(samples$superpopulation, each = 2)
+length(sup) == length(a)
+t(sapply(split(seq_along(a), sup), function(i) ld(a[i], b[i])))</code></pre>
+<div class="callout check"><div class="co-t">Check</div>
+<table class="table"><thead><tr><th></th><th>AFR</th><th>AMR</th><th>EAS</th><th>EUR</th><th>SAS</th></tr></thead>
+<tbody>
+<tr><td>D′</td><td>1.000</td><td>0.962</td><td>1.000</td><td><b>1.000</b></td><td>0.994</td></tr>
+<tr><td>r²</td><td><b>0.103</b></td><td>0.851</td><td>0.747</td><td><b>1.000</b></td><td>0.981</td></tr>
+</tbody></table>
+<p>In Europeans the two variants are the same variant for all practical purposes: r² = 1, every chromosome that has one has the other. In Africans D′ is still 1 – they have never been separated by recombination – but r² is 0.10, because rs41310749 is eight times commoner there than rs41310239.</p></div>
+<div class="callout science"><div class="co-t">The explanation</div>
+<p>D′ = 1 with very different frequencies has one simple reading: the rarer allele arose <b>on a chromosome that already carried</b> the commoner one. Every copy of rs41310239-G sits on an rs41310749-A background, but not the other way round. The older allele is rs41310749-A; the younger one is rs41310239-G, and it arose later, on a subset of those chromosomes.</p>
+<p>The 2012 study was of a single kindred – 22 mutation carriers – and within one family two variants this close together will almost always travel together. "Complete linkage disequilibrium" was a fair description of what they could see. It is not a property of the variants: it is a property of the sample they saw them in.</p></div>
+
+<h2>5. Letting PLINK do it</h2>
+<pre class="code" data-run="term"><code>cd ~/project
+plink2 --pfile scn5a --chr 3 --from-bp 38650500 --to-bp 38651600 \
+       --r2-phased --ld-window-r2 0 --out promoter_ld
+grep -E '38650537|38651526' promoter_ld.vcor | head</code></pre>
+<p>PLINK gives the same r² for the pair. Use your own code when you want to understand something and PLINK when you want it fast and right – which is what you will need in stage 4.</p>
+
+<div class="callout log"><div class="co-t">For your logbook</div>
+<ul>
+<li>The two-by-two table, and the expected count under independence.</li>
+<li>The formulas for D, D′ and r², in your own words, with the numbers you got.</li>
+<li>The table of D′ and r² by population, and your explanation of why they disagree.</li>
+<li>Which allele you think is older, and why.</li>
+</ul></div>
+
+<h2>Going further</h2>
+<ul>
+<li><b>The 163.</b> Which populations do the chromosomes carrying rs41310749 without rs41310239 come from? Use <code>table(sup[a == 1 &amp; b == 0])</code>. You are a stage early, but the answer is worth seeing now.</li>
+<li><b>Unphased data.</b> If you did not know the phase, you could not fill the two-by-two table directly. Read about how LD is estimated from unphased genotypes (the EM algorithm), and why phased data make this stage easy.</li>
+<li><b>Sampling error.</b> Only 26 chromosomes carry rs41310239 alone. Resample your 5,008 chromosomes with replacement a thousand times and see how much r² varies. How precise is 0.697, really?</li>
+</ul>
+<ul class="checklist">
+<li data-check="s3-nb">I got the two variants into R as haplotype vectors.</li>
+<li data-check="s3-table">I made the two-by-two table and compared it with independence.</li>
+<li data-check="s3-formula">I computed D, D′ and r² by hand and understand the difference.</li>
+<li data-check="s3-pop">I computed them within each population and can explain the African result.</li>
+<li data-check="s3-plink">I checked my answer against PLINK.</li>
+</ul>
+<div class="stage-nav"><button type="button" data-goto="h-s02"><small>Back</small>← Stage 2 · Two thousand five hundred genomes</button><button class="next" type="button" data-goto="h-s04"><small>Next</small>Stage 4 · How far does it reach? →</button></div>

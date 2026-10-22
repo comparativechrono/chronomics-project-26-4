@@ -1,0 +1,41 @@
+genome	rsid	pos_GRCh38	pos_GRCh37	human_ref	haplotype_allele	archaic_genotype	archaic_ref	depth	carries_haplotype_allele
+Vindija Neanderthal	rs7374392	38631501	38672992	A	T	A/A	A	17	no
+Vindija Neanderthal	rs56053699	38632090	38673581	C	A	C/C	C	14	no
+Vindija Neanderthal	rs80172327	38642799	38684290	C	T	C/C	C	40	no
+Vindija Neanderthal	rs41310239	38650537	38692028	A	G	no call			
+Vindija Neanderthal	rs41310749	38651526	38693017	G	A	G/G	G	43	no
+Vindija Neanderthal	rs7373686	38652770	38694261	A	G	A/A	A	13	no
+Vindija Neanderthal	rs7374843	38659251	38700742	C	T	C/C	C	21	no
+Vindija Neanderthal	rs7374853	38659328	38700819	C	G	C/C	C	21	no
+Vindija Neanderthal	rs73825723	38659571	38701062	G	A	G/G	G	28	no
+Vindija Neanderthal	rs62242851	38666394	38707885	C	T	no call			
+Vindija Neanderthal		38667308	38708799	GTA	GTATATA	no call			
+Vindija Neanderthal	rs74958514	38669862	38711353	C	T	C/C	C	24	no
+Vindija Neanderthal	rs77251295	38676978	38718469	C	T	no call			
+Vindija Neanderthal	rs113250970	38679353	38720844	ATAGGGGTC	A	A/A	A	19	not comparable (indel)
+Vindija Neanderthal	rs151236465	38680173	38721664	TC	T	T/T	T	25	not comparable (indel)
+Vindija Neanderthal	rs6599235	38680536	38722027	C	T	C/C	C	22	no
+Vindija Neanderthal	rs74941275	38680914	38722405	C	A	C/C	C	36	no
+Vindija Neanderthal	rs77188077	38681130	38722621	G	C	G/G	G	28	no
+Vindija Neanderthal	rs79792607	38681284	38722775	C	T	C/C	C	20	no
+Vindija Neanderthal	rs75073937	38682101	38723592	C	T	C/C	C	15	no
+Altai Neanderthal	rs7374392	38631501	38672992	A	T	not retrieved			
+Altai Neanderthal	rs56053699	38632090	38673581	C	A	not retrieved			
+Altai Neanderthal	rs80172327	38642799	38684290	C	T	not retrieved			
+Altai Neanderthal	rs41310239	38650537	38692028	A	G	not retrieved			
+Altai Neanderthal	rs41310749	38651526	38693017	G	A	not retrieved			
+Altai Neanderthal	rs7373686	38652770	38694261	A	G	not retrieved			
+Altai Neanderthal	rs7374843	38659251	38700742	C	T	not retrieved			
+Altai Neanderthal	rs7374853	38659328	38700819	C	G	not retrieved			
+Altai Neanderthal	rs73825723	38659571	38701062	G	A	not retrieved			
+Altai Neanderthal	rs62242851	38666394	38707885	C	T	not retrieved			
+Altai Neanderthal		38667308	38708799	GTA	GTATATA	not retrieved			
+Altai Neanderthal	rs74958514	38669862	38711353	C	T	not retrieved			
+Altai Neanderthal	rs77251295	38676978	38718469	C	T	not retrieved			
+Altai Neanderthal	rs113250970	38679353	38720844	ATAGGGGTC	A	not retrieved			
+Altai Neanderthal	rs151236465	38680173	38721664	TC	T	not retrieved			
+Altai Neanderthal	rs6599235	38680536	38722027	C	T	not retrieved			
+Altai Neanderthal	rs74941275	38680914	38722405	C	A	not retrieved			
+Altai Neanderthal	rs77188077	38681130	38722621	G	C	not retrieved			
+Altai Neanderthal	rs79792607	38681284	38722775	C	T	not retrieved			
+Altai Neanderthal	rs75073937	38682101	38723592	C	T	not retrieved			

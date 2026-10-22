@@ -1,0 +1,118 @@
+<!-- id: h-s11 | title: Stage 11 · Write it up | group: The project | stage: 11 | tab: yes | tabtitle: Stage 11 – Write it up | summary: Turn eleven stages of analysis into a paper someone else could check; the structure, the figures, what belongs in the methods, how to write a limitation, and how to make the whole thing reproducible | keys: stage 11 write up report paper manuscript structure abstract methods results discussion limitations figures tables reproducibility readme scripts version data availability preregistration -->
+<h1>Stage 11 · Write it up</h1>
+<div class="stage-meta"><span class="when">Weeks 11–12</span><span>about 10 hours</span><span class="stage-progress"></span></div>
+<p class="lede">A result that only exists in your notebook is not a result. This stage turns ten weeks of work into something another person can read, check, disagree with, and build on – which is the only form in which science counts.</p>
+<div class="skills"><b>You will learn</b><ul>
+<li>the structure of a genetics paper, and what actually goes in each part</li>
+<li>to write a methods section someone could follow without asking you anything</li>
+<li>to write limitations that strengthen rather than weaken the paper</li>
+<li>to package code and data so the analysis can be run again</li>
+</ul></div>
+
+<h2>1. What you have</h2>
+<p>Before writing, lay the findings out in one list, in the order they were established, with the evidence for each. If a claim has no line in this list, it does not go in the paper.</p>
+<div class="callout science"><div class="co-t">The findings</div>
+<ol>
+<li>The two promoter variants of the 2012 paper are in complete linkage disequilibrium by D′ in every population, but r² ranges from 0.10 in Africans to 1.00 in Europeans – so "complete linkage disequilibrium" was a statement about one sample, not about the variants.</li>
+<li>D′ = 1 with unequal frequencies identifies rs41310749-A as the older allele and rs41310239-G as having arisen on it.</li>
+<li>They are two of 18 variants, near-fixed on the same chromosomes and rare off them, spanning 50.6 kb (chr3:38,631,501–38,682,101). In the pooled panel no variant reaches r² ≥ 0.8 with rs41310749; within Europeans 22 do, spanning exactly those 50.6 kb.</li>
+<li>The same scan in 462 independently assembled haplotypes returns the same span to the base, and 20 variants – the two extra being ones the short-read panel places just off the block, one of them a short tandem repeat it describes five incompatible ways.</li>
+<li>The block carries no insertion or deletion of 50 bases or more. The one structural variant enriched on it genome-wide (an 838 bp AluY insertion, odds ratio 11, P = 9 × 10<sup>−6</sup>) lies 492 kb outside it.</li>
+<li>It is at 1.5% in Africans and 16–20% in Europeans and South Asians, while the ancestral background alone is at 11.5% in Africans and near zero elsewhere.</li>
+<li>Its extended haplotype homozygosity exceeds 0.5 for 21 kb upstream and 32 kb downstream; of 22–24 frequency-matched control cores elsewhere in the window, only 3 upstream and none downstream decay as slowly.</li>
+<li>A high-coverage Neanderthal carries the non-block allele at all 15 comparable positions: it is not archaic.</li>
+<li>Of the 20 variants, none alters a protein and exactly one – rs41310749 – lies in an annotated enhancer.</li>
+<li>Across six cardiac and five circadian traits, the marginal associations split cleanly: four cardiac traits at P &lt; 10<sup>−4</sup>, every circadian trait at P ≥ 0.11.</li>
+<li><b>None of the cardiac associations can be shown to be independent of the locus's three known signals.</b> A single-lead diagnostic says they are (P down to 10<sup>−4</sup>); simulation shows that diagnostic rejects 86% of the time for a variant with no effect, in exactly this configuration. Conditioning on all three signals leaves QRS duration and the QT interval null, Brugada syndrome at 0.041 by way of an eight-order swing, the PR interval uninformative, and only atrial fibrillation stable – at 0.011, which does not survive correction for six traits.</li>
+<li>In whole blood the block tracks lower <i>SCN5A</i> expression in all 18 testable variants, but that signal too is consistent with tagging a commoner neighbour. In heart no variant clears GTEx's threshold, though rs41310749's effect is directionally concordant and nominally significant in atrial appendage (P = 0.031) – under-powered, not null.</li>
+</ol></div>
+<div class="callout think"><div class="co-t">Think</div><p>Which single one of those twelve is the paper's headline? There is a defensible case for 3, for 4 and for 11. Whichever you pick shapes the whole write-up – the title, the abstract's first sentence, and which figure is Figure 1. Decide before you write a word.</p></div>
+<div class="callout science"><div class="co-t">A paper whose main result is "we could not tell"</div>
+<p>Finding 11 is a negative, and it is the finding the project spent the most effort on. That can feel like failure. It is not, and here is the test of whether you have written it up properly: does your paper tell the next person something they would otherwise have had to learn the hard way?</p>
+<p>Yours does, three times over. It establishes a 50 kb haplotype that nobody had described, in two independent datasets. It rules out archaic origin and large structural variation. And it demonstrates – with a simulation anyone can rerun – that a diagnostic widely used to argue for independent association is badly anti-conservative at loci with several independent signals, which is most well-studied loci. That last one is a methodological result, and it is worth more than the association you did not get to claim.</p>
+<p>Write it as what it is. "We could not resolve whether this haplotype has an effect independent of the known signals at the locus, and here is exactly why, and here is what would resolve it" is a stronger sentence than any overclaim you could have made instead.</p></div>
+
+<h2>2. The structure</h2>
+<div class="callout log"><div class="co-t">Each section's actual job</div>
+<ul>
+<li><b>Title.</b> The finding, not the activity. "A 50 kb haplotype carries the <i>SCN5A</i> promoter variants…" not "An investigation of…".</li>
+<li><b>Abstract.</b> Four or five sentences: what was known, what you did, what you found with the key number, what it means. Every number in it must appear in the results.</li>
+<li><b>Introduction.</b> Three paragraphs is usually enough. What the locus is; what the 2012 paper reported; the specific gap – nobody asked whether those two variants are part of something larger. End with the question, not with a summary of your answer.</li>
+<li><b>Methods.</b> Enough for a stranger to repeat it. Data sources with accessions and versions; the genome build and how you converted; every threshold with its value; the software with version numbers. Write this section first – it is the easiest, and it tells you what you actually did.</li>
+<li><b>Results.</b> In the order the findings were established, each with its number and uncertainty, no interpretation. Hardest discipline in the paper: say what you found, not what it means.</li>
+<li><b>Discussion.</b> What it means, what it does not mean, how it fits the published literature, what you could not resolve, what should be done next. Limitations belong here, in the open, not in a defensive final paragraph.</li>
+<li><b>Data and code availability.</b> Where every input came from and where your scripts are.</li>
+</ul></div>
+
+<h2>3. The figures</h2>
+<p>Four figures carry this paper. You have already made most of them:</p>
+<div class="callout check"><div class="co-t">The figure list</div>
+<ol>
+<li><b>The block.</b> r² against position, faceted by superpopulation (stage 4) – the picture that shows the block exists and that pooling hides it.</li>
+<li><b>The haplotype.</b> The carrier-versus-non-carrier heat map over the 50.6 kb (stage 5), with the gene track underneath.</li>
+<li><b>Replication and decay.</b> The two datasets side by side, plus the EHH curves (stages 6 and 7).</li>
+<li><b>Phenotypes.</b> Observed z against expected-from-the-lead for all 21 variants and all 11 traits, with the ±1 standard error on the expectation drawn (stage 10). This is the figure that makes the central argument visible.</li>
+</ol></div>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->A figure must be readable alone</div><p>Every axis labelled with units. Every panel titled. The caption states what is plotted, what the error bars are, and what <i>n</i> is – a reader who sees only the figure and caption should be able to say what it shows. And check it at the size it will print: a point size that looks right on your screen is often invisible on the page.</p></div>
+
+<h2>4. Writing a limitation properly</h2>
+<p>Most students write limitations as apologies. They are not. A limitation is a precise statement of what your evidence cannot support, and it is the part of a paper that experienced readers trust most.</p>
+<div class="callout science"><div class="co-t">Weak and strong, on the same point</div>
+<p><b>Weak:</b> "A limitation of our study is that our LD reference panel was relatively small, so some of our conclusions may be less reliable."</p>
+<p><b>Strong:</b> "Correlations with the lead variant were estimated in 503 unrelated Europeans, giving a standard error of about 0.03. With <i>z</i><sub>lead</sub> = −51.5 for the PR interval, this propagates to an uncertainty of ±1.6 on the expected <i>z</i> – comparable to the signal being tested. We therefore report the PR interval association as indistinguishable from tagging rather than as absent, and note that a reference panel of order 10<sup>4</sup> would be needed to resolve it."</p>
+<p>The second is longer, and says something. It names the quantity, gives its size, traces its consequence, states what was done about it, and says what would settle it. Write all of your limitations like that.</p></div>
+<div class="task"><div class="task-t">Your turn</div>
+<p>Write the four limitations this project certainly has, in the strong form: (1) the archaic test rests on one genome at 15 positions; (2) GTEx has no power for <i>SCN5A</i> in heart; (3) the haplotype's membership list depends on a threshold and differs between datasets; (4) all phenotype data are from predominantly European-ancestry studies, while the block is commonest in South Asians.</p></div>
+
+<h2>5. Making it reproducible</h2>
+<p>Package the project so that someone with your folder can get your numbers. The test is simple and unforgiving: delete your outputs, run your scripts in order, and check that everything comes back.</p>
+<pre class="code" data-run="term"><code>cd ~/project
+mkdir -p writeup/{scripts,figures,tables}
+cp *.R *.sh writeup/scripts/ 2>/dev/null
+ls writeup/scripts/
+cat &gt; writeup/README.md &lt;&lt;'EOF'
+# The SCN5A promoter haplotype
+
+Run the scripts in numerical order. Each writes to tables/ or figures/.
+Inputs: /data/examples/scn5a (1000 Genomes 30x phased, HPRC release 2,
+GWAS Catalog summary statistics - accessions in tables/sources.tsv).
+Genome build: GRCh38. GRCh37 inputs converted by subtracting 41,491,
+valid only at this locus.
+Thresholds: haplotype membership, frequency >= 0.9 on and <= 0.1 off.
+EOF
+cat writeup/README.md</code></pre>
+<div class="callout log"><div class="co-t">The reproducibility checklist</div>
+<ul>
+<li>Every script numbered in run order, and each one runs from a clean start.</li>
+<li>No path that exists only on your machine; no step done by hand that is not written down.</li>
+<li>Every threshold and parameter in the script, not typed at a prompt.</li>
+<li>Every data source with its accession, URL and version.</li>
+<li>The genome build stated once, prominently, and the conversion documented.</li>
+<li>A README a stranger could follow.</li>
+<li>Software versions – <code>sessionInfo()</code> in R, <code>--version</code> for the tools.</li>
+</ul></div>
+<div class="callout think"><div class="co-t">Think</div><p>You found two real errors in work you had already done: the three borderline variants that the short-read panel was blurring, and the archaic comparison that matched a deletion against a single base. Neither was caught by running the code again – the code ran fine both times. What actually caught them? Build that into how you work.</p></div>
+
+<div class="callout log"><div class="co-t">What to hand in</div>
+<ul>
+<li>The paper: title, abstract, introduction, methods, results, discussion, references.</li>
+<li>Four figures with full captions, and the tables they refer to.</li>
+<li>The reproducibility package: scripts, README, sources table.</li>
+<li>Your logbook, as it stands – including the predictions that turned out wrong. Those are the most valuable pages in it.</li>
+</ul></div>
+
+<h2>Going further</h2>
+<ul>
+<li><b>Review someone else's.</b> Swap papers with another student and write a referee's report: three things that are convincing, three claims that outrun their evidence, three things you could not reproduce from the methods. Then read the report you got.</li>
+<li><b>Preregister the next step.</b> Write down, before looking, what you expect to find if you extend the phenotype lookup to ten more traits – including what result would make you abandon the cardiac claim. Then look.</li>
+<li><b>A one-page version.</b> Write the whole thing as a single page for a non-specialist – a clinician, or a member of the family in the 2012 paper. Fitting it on one page tells you which of your findings you actually believe.</li>
+</ul>
+<ul class="checklist">
+<li data-check="s11-findings">I listed my findings with the evidence for each.</li>
+<li data-check="s11-methods">I wrote the methods section first, and it is complete.</li>
+<li data-check="s11-figs">I have four finished figures with captions that stand alone.</li>
+<li data-check="s11-lim">I wrote my limitations in the strong form.</li>
+<li data-check="s11-repro">I deleted my outputs, re-ran everything, and got the same numbers.</li>
+<li data-check="s11-done">The paper is written.</li>
+</ul>
+<div class="stage-nav"><button type="button" data-goto="h-s10"><small>Back</small>← Stage 10 · Is it a signal of its own?</button><button class="next" type="button" data-goto="h-data"><small>Next</small>The project data →</button></div>

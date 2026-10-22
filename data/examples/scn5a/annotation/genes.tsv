@@ -1,0 +1,3 @@
+gene	chrom	start_GRCh38	end_GRCh38	strand	description
+SCN5A	chr3	38548057	38649743	-	cardiac sodium channel Nav1.5
+SCN10A	chr3	38696802	38816286	-	sodium channel Nav1.8

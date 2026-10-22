@@ -1,0 +1,83 @@
+<!-- id: h-s01 | title: Stage 1 · Two variants | group: The project | stage: 1 | tab: yes | tabtitle: Stage 1 – Two variants | summary: The terminal: commands, files, folders and pipes; the table of variants; find rs41310749 and rs41310239 in a VCF file; look them up in Ensembl and dbSNP; read the paper that found them | keys: stage 1 terminal shell bash command ls cd pwd mkdir cat head cut grep wc pipe tsv vcf bcftools rs41310749 rs41310239 scn5a promoter grch37 grch38 coordinates build liftover ensembl dbsnp europe pmc -->
+<h1>Stage 1 · Two variants</h1>
+<div class="stage-meta"><span class="when">Weeks 1–2</span><span>about 4 hours</span><span class="stage-progress"></span></div>
+<p class="lede">Start where the project starts: two lines in a database. Find them in the data you have been given, find out what the world already knows about them, and learn enough of the terminal to go on.</p>
+<div class="skills"><b>You will learn</b><ul>
+<li>the terminal: moving around, looking into files, joining commands with pipes</li>
+<li>what a VCF file is, and how to pull one position out of one</li>
+<li>that a position means nothing without saying which <i>build</i> of the genome it is on</li>
+<li>to look a variant up in Ensembl and dbSNP, and a paper up in Europe PMC</li>
+</ul></div>
+
+<h2>1. Your first commands</h2>
+<p>The <b>Terminal</b> tab on the right is a Linux terminal running in this browser. A command is a program's name, then its arguments. Try these one at a time:</p>
+<pre class="code" data-run="term"><code>pwd
+ls /data/examples/scn5a
+mkdir -p ~/project/results
+cd ~/project
+pwd</code></pre>
+<p><code>pwd</code> prints where you are; <code>ls</code> lists a folder; <code>mkdir -p</code> makes one (and does not complain if it is already there); <code>cd</code> moves you. <code>~</code> is your home folder.</p>
+
+<h2>2. The table of variants</h2>
+<p>The project's variants are in a small table. <code>column -t</code> lines the columns up so you can read it:</p>
+<pre class="code" data-run="term"><code>head -3 /data/examples/scn5a/variants.tsv
+column -t -s $'\t' /data/examples/scn5a/variants.tsv | head -5
+wc -l /data/examples/scn5a/variants.tsv</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>The first two rows are the two variants of the 2012 paper, <b>rs41310749</b> and <b>rs41310239</b>. The rest – the file has 24 lines in all, so 23 variants – are the ones you are going to discover for yourself over the next five stages. Do not look at them too closely yet.</p></div>
+<p>Notice that each variant has <b>two</b> positions, <code>pos_GRCh38</code> and <code>pos_GRCh37</code>. A position is only meaningful together with the version – the <b>build</b> – of the human reference genome it refers to. GRCh38 came out in 2013; a great deal of published data, including most of the GWAS files you will use in stage 9, is still on the older GRCh37.</p>
+<pre class="code" data-run="term"><code>cut -f 1,3,4 /data/examples/scn5a/variants.tsv | head -3
+awk -F'\t' 'NR>1 {print $4 - $3}' /data/examples/scn5a/variants.tsv | sort -u</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>Every variant has exactly the same difference between the two builds: <b>41,491</b>. That is not a general rule – it holds along this stretch of chromosome 3 and nowhere else. Write it in your logbook; you will need it in stage 9, and a project of this kind has sunk on a build mix-up before now.</p></div>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->The most common mistake in this field</div><p>If a result looks strange, check the build before you check anything else. A 41 kb shift will not make a variant vanish – it will quietly give you a <i>different</i> variant, with plausible-looking numbers.</p></div>
+
+<h2>3. Finding them in the genotypes</h2>
+<p>The genotypes of 2,504 people live in a <b>VCF</b> file. It is a text file: a header of lines beginning <code>##</code>, then one line per variant, then one column per person. <code>bcftools</code> reads it. <code>-H</code> drops the header; <code>-r</code> takes a region:</p>
+<pre class="code" data-run="term"><code>ls -la /data/examples/scn5a/1000g/
+bcftools view -H -r chr3:38650537 /data/examples/scn5a/1000g/scn5a_locus.vcf.gz | cut -f 1-5
+bcftools view -H -r chr3:38651526 /data/examples/scn5a/1000g/scn5a_locus.vcf.gz | cut -f 1-5</code></pre>
+<p>Two lines, each giving the chromosome, position, an identifier, the <b>reference</b> allele (the letter in the reference genome) and the <b>alternative</b> allele.</p>
+<div class="callout check"><div class="co-t">Check</div><p>At 38,650,537 the reference is <code>A</code> and the alternative <code>G</code>: that is rs41310239. At 38,651,526 it is <code>G</code> to <code>A</code>: rs41310749. They are <b>989 bases apart</b>.</p></div>
+<p>Now look at the people. Each genotype is two numbers separated by <code>|</code>: 0 for the reference allele, 1 for the alternative, and the bar means the data are <b>phased</b> – it is known which of the person's two chromosomes carries which.</p>
+<pre class="code" data-run="term"><code>bcftools view -H -r chr3:38651526 /data/examples/scn5a/1000g/scn5a_locus.vcf.gz | cut -f 10-14
+bcftools query -f '[%GT ]\n' -r chr3:38651526 /data/examples/scn5a/1000g/scn5a_locus.vcf.gz | tr ' ' '\n' | sort | uniq -c</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>Four genotype strings: <b>1,869</b> people are <code>0|0</code>, <b>284</b> are <code>0|1</code>, <b>290</b> are <code>1|0</code> and <b>61</b> are <code>1|1</code> – 2,504 people in all. Most carry none of the alternative allele, about one in five carries one, and 61 carry two.</p></div>
+<div class="callout think"><div class="co-t">Think</div><p>Why are <code>0|1</code> and <code>1|0</code> listed separately, when both mean "one copy"? What extra thing does the phasing let you ask, that an unphased genotype would not? (This is the whole basis of the project.)</p></div>
+
+<h2>4. What the world already knows</h2>
+<p>Open the <b>Databases</b> tab and look rs41310749 up in Ensembl, then in dbSNP. Write down: its alleles, its frequency in each population, and what consequence Ensembl assigns it.</p>
+<div class="tryrow"><button class="do" type="button" data-api="ensembl:variation:rs41310749">rs41310749 in Ensembl</button><button class="do" type="button" data-api="ensembl:variation:rs41310239">rs41310239 in Ensembl</button></div>
+<p>Then find the paper. In the Europe PMC card, search for the variant identifier itself – a good trick, because a paper that reports a variant usually names it.</p>
+<div class="tryrow"><button class="do" type="button" data-api="europepmc:search:rs41310749">Search Europe PMC for "rs41310749"</button></div>
+<div class="callout check"><div class="co-t">Check</div><p>Only a handful of papers mention these variants at all. The one you want is <b>Park et al., <i>Heart Rhythm</i> 2012;9:1090–1096</b> – one kindred carrying an <i>SCN5A</i> loss-of-function mutation, 22 mutation carriers, in whom the two promoter variants were associated with more severe arrhythmia (P = 0.0007). Read it: how many carriers, how many severe cases, what they measured, and how strong you think the evidence is.</p></div>
+<div class="callout science"><div class="co-t">The sentence this project is built on</div>
+<p>In their methods: a "systematic survey of the <b>2.8-kb</b> <i>SCN5A</i> promoter region". That was the window they searched, and it is where they found the two variants.</p>
+<p>By stage 5 you will have shown that the two variants belong to a block <b>50.6 kb</b> long. Which means 95% of it lay outside the window the 2012 study could see – not through any fault of theirs, but because nobody had looked. That gap is the project.</p></div>
+<div class="task"><div class="task-t">Your turn</div>
+<p>Ensembl gives rs41310749 the consequence "regulatory region variant" and rs41310239 "intergenic variant". Both sit between <i>SCN5A</i> and <i>SCN10A</i>. Using the gene table, work out how far each is from the start of <i>SCN5A</i> – and remember that <i>SCN5A</i> is on the <b>minus</b> strand, so its start is its highest coordinate.</p>
+<details class="hint answer"><summary>Show the answer</summary>
+<pre class="code" data-run="term"><code>cat /data/examples/scn5a/annotation/genes.tsv
+awk -F'\t' 'NR>1 && $1=="SCN5A" {print "SCN5A starts (minus strand) at", $4}' /data/examples/scn5a/annotation/genes.tsv</code></pre>
+<p><i>SCN5A</i> runs from 38,548,057 to 38,649,743 on the minus strand, so transcription starts at <b>38,649,743</b> and runs leftwards. rs41310239 is 794 bases upstream of it, rs41310749 is 1,783 bases upstream. Both are in the promoter region the 2012 authors sequenced.</p></details></div>
+
+<div class="callout log"><div class="co-t">For your logbook</div>
+<ul>
+<li>The commands you learned, each with one line on what it does – your own cheat sheet.</li>
+<li>The two variants: position on both builds, alleles, distance apart, distance from the gene.</li>
+<li>The build offset, 41,491, and why it matters.</li>
+<li>A paragraph on the 2012 paper: what it claims, and what would have to be true for the claim to hold.</li>
+</ul></div>
+
+<h2>Going further</h2>
+<ul>
+<li><b>The third allele.</b> Ensembl lists rs41310239 as A/G/T. The 1000 Genomes file has only A and G. Which sources report a T, and at what frequency? What would you need to see before believing in a third allele?</li>
+<li><b>How many variants are there in total?</b> Count the lines in the VCF with <code>bcftools view -H … | wc -l</code> (you should get 2,392) and work out how many variants per kilobase that is across the 500 kb. Remember that this file keeps only variants carried by at least 1% of chromosomes – the real number is far higher.</li>
+<li><b>Two records, one position.</b> <code>bcftools view -H … | cut -f2 | sort | uniq -d | wc -l</code> counts the positions that appear more than once: there are 75. Look at a few. What is different about the two records at the same position, and which column tells you? You have already met one such pair – position 38,650,537 – and you will meet it again in stage 2, where ignoring it gives the wrong answer.</li>
+<li><b>The odd one out.</b> One record in this file has <code>&lt;DEL&gt;</code> in its ALT column instead of a sequence of letters. Find it with <code>bcftools view -H … | awk -F'\t' '$5 ~ /&lt;/' | cut -f 1-5</code>. That is a <i>symbolic</i> allele: the file is saying "a deletion starts here" without spelling out what is deleted. Some tools count it as a variant and some quietly drop it, which is why two honest programs can give you 2,392 and 2,391 for the same file.</li>
+</ul>
+<ul class="checklist">
+<li data-check="s1-term">I can move around the terminal and look into files.</li>
+<li data-check="s1-vcf">I found both variants in the VCF and understand the genotype format.</li>
+<li data-check="s1-build">I understand the two builds and have noted the offset.</li>
+<li data-check="s1-paper">I have read the 2012 paper and written it up.</li>
+</ul>
+<div class="stage-nav"><button type="button" data-goto="h-science"><small>Back</small>← The science</button><button class="next" type="button" data-goto="h-s02"><small>Next</small>Stage 2 · Two thousand five hundred genomes →</button></div>

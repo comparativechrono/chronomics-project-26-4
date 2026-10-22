@@ -1,0 +1,92 @@
+<!-- id: h-s06 | title: Stage 6 · Where in the world | group: The project | stage: 6 | tab: yes | tabtitle: Stage 6 – Where in the world | summary: The haplotype across 26 populations; the 163 African chromosomes that carry only the older variant; extended haplotype homozygosity and what it says about the age of the block | keys: stage 6 population frequency 26 populations afr yri msl gwd esn acb asw ehh extended haplotype homozygosity decay age selection out of africa founder drift rehh -->
+<h1>Stage 6 · Where in the world</h1>
+<div class="stage-meta"><span class="when">Weeks 6–7</span><span>about 6 hours</span><span class="stage-progress"></span></div>
+<p class="lede">The block exists. Now ask where it is common, where it is absent, and how long it has been around. The African chromosomes you noticed in stage 2 turn out to hold the answer.</p>
+<div class="skills"><b>You will learn</b><ul>
+<li>to read a frequency table across 26 populations without over-reading it</li>
+<li>what extended haplotype homozygosity measures and how to compute it</li>
+<li>to reason about the age of a haplotype from its length</li>
+<li>to tell the difference between "a signal of selection" and "a signal"</li>
+</ul></div>
+
+<h2>1. The haplotype across the world</h2>
+<p>Classify every chromosome into one of four states – both promoter variants, one, the other, or neither – and tabulate by population:</p>
+<pre class="code" data-run="r"><code>samples &lt;- read.delim("/data/examples/scn5a/1000g/samples.tsv")
+pop &lt;- rep(samples$population, each = 2)
+sup &lt;- rep(samples$superpopulation, each = 2)
+state &lt;- ifelse(a == 1 &amp; b == 1, "both",
+         ifelse(a == 1 &amp; b == 0, "749 only",
+         ifelse(a == 0 &amp; b == 1, "239 only", "neither")))
+round(prop.table(table(sup, state), 1), 4)</code></pre>
+<div class="callout check"><div class="co-t">Check</div>
+<table class="table"><thead><tr><th></th><th>AFR</th><th>AMR</th><th>EAS</th><th>EUR</th><th>SAS</th></tr></thead>
+<tbody>
+<tr><td>the haplotype</td><td><b>0.015</b></td><td>0.130</td><td>0.068</td><td>0.163</td><td><b>0.195</b></td></tr>
+<tr><td>rs41310749 alone</td><td><b>0.115</b></td><td>0.014</td><td>0.000</td><td>0.000</td><td>0.001</td></tr>
+</tbody></table>
+<p>Two mirror-image rows. The haplotype is thirteen times commoner in South Asians than in Africans; the lone rs41310749 allele is almost entirely African.</p></div>
+<div class="callout science"><div class="co-t">What those two rows mean together</div>
+<p>In stage 3 you worked out from D′ = 1 that rs41310749-A is the older allele and rs41310239-G arose later on chromosomes that already carried it. This table shows you the same event from the other side: Africa still carries the <b>ancestral background</b> at 11.5%, almost none of it carrying the younger variant. Everywhere else, essentially every copy of the background comes with the whole block attached.</p>
+<p>The simplest reading: the block was assembled in a population ancestral to non-Africans, or in Africa shortly before the migrations out of it, and the ancestral background it was built on is still present in Africa today.</p></div>
+<div class="task"><div class="task-t">Your turn – the 26 populations</div>
+<p>Superpopulations hide things. Repeat the table with the finer labels and look at the African populations separately. Yoruba (YRI), Mende (MSL), Gambian (GWD) and Esan (ESN) are West African; African-Caribbean (ACB) and African-American (ASW) carry European ancestry too.</p>
+<details class="hint answer"><summary>Show the answer</summary>
+<pre class="code" data-run="r"><code>t &lt;- round(prop.table(table(pop, state), 1), 4)
+t[c("YRI", "MSL", "GWD", "ESN", "LWK", "ACB", "ASW"), c("both", "749 only")]</code></pre>
+<p>In the West African populations the haplotype is at 0–1.5% while the lone allele is at 9–15%. In ACB and ASW the haplotype is at 3.1% and 4.9% – higher, because those populations have recent non-African ancestry. That gradient is itself evidence: the block arrives in Africa with admixture, not from African ancestry.</p></details></div>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->Be careful what you conclude from a frequency difference</div><p>A variant commoner in one continent than another is the normal state of affairs. Of the thousands of variants in your file, most will show differences of this size, because human populations have different histories of drift, bottlenecks and migration. A frequency difference is a fact to explain, not evidence of selection, and certainly not evidence of anything about the people who carry it. The explanation here – one allele older than the other, a block assembled on it, and migration – requires no selection at all.</p></div>
+
+<h2>2. How long is it, really? Extended haplotype homozygosity</h2>
+<p>r² and the on/off scan both needed a threshold. <b>Extended haplotype homozygosity</b> (EHH) does not. Take the carrier chromosomes, walk outwards from the core, and at each distance ask: if I pick two carriers at random, what is the chance they are still identical all the way out to here? It starts at 1 and decays as recombination breaks the block up.</p>
+<pre class="code" data-run="r"><code>ehh &lt;- function(H, idx, order_out) {
+  sapply(seq_along(order_out), function(k) {
+    sub &lt;- H[order_out[1:k], idx, drop = FALSE]
+    key &lt;- apply(sub, 2, paste, collapse = "")
+    n &lt;- table(key)
+    sum(n * (n - 1)) / (length(key) * (length(key) - 1))   # homozygosity of extended haplotypes
+  })
+}
+core &lt;- which(pos == 38651526)
+right &lt;- which(pos &gt; 38651526 &amp; pos &lt;= 38800000)
+right &lt;- right[order(pos[right])]
+e_car &lt;- ehh(H, which(carrier),  right)
+e_oth &lt;- ehh(H, which(!carrier), right)
+d &lt;- (pos[right] - 38651526) / 1000
+plot(d, e_car, type = "l", lwd = 2, ylim = c(0, 1), xlab = "distance from the core (kb)",
+     ylab = "EHH", col = "#2F4B6B")
+lines(d, e_oth, lwd = 2, col = "grey60")
+legend("topright", c("the haplotype", "all other chromosomes"), lwd = 2,
+       col = c("#2F4B6B", "grey60"), bty = "n")</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>Two curves that could hardly be more different. The non-carriers fall below EHH = 0.5 within about <b>0.4 kb</b>. The carriers stay above 0.5 for about <b>33 kb</b> going towards <i>SCN10A</i> and about <b>21 kb</b> going towards <i>SCN5A</i>. The block is tens of times more homogeneous than its neighbourhood.</p></div>
+<div class="callout science"><div class="co-t">Reading length as age</div>
+<p>Recombination breaks haplotypes up at a roughly constant rate, so a long, unbroken haplotype is a <i>young</i> one – there has not been time to break it. As a rough guide, a haplotype of length <i>L</i> in morgans has an expected age of about 1/<i>L</i> generations. At roughly 1 centimorgan per megabase here, 50 kb is about 0.05 cM = 0.0005 M, giving an order-of-magnitude age of a couple of thousand generations – tens of thousands of years.</p>
+<p>Treat that as an order of magnitude and nothing more. The calculation assumes a constant recombination rate, no selection, a single origin and a simple demography, and the real confidence interval is very wide. But it is the right order: old enough to be spread across Eurasia, young enough not to have been broken up.</p></div>
+<div class="callout think"><div class="co-t">Think</div><p>A long haplotype at high frequency is the classic signature of positive selection – it is what tests like iHS and XP-EHH look for. You have a long haplotype at 16% in Europeans. What else would you need to show before claiming selection? What is the most boring explanation that also fits?</p></div>
+
+<h2>3. The boring explanation, tested</h2>
+<p>The boring explanation is drift: with no selection at all, some haplotypes drift up in frequency, and a young one that drifts up is long. To argue for selection you must show the haplotype is <i>longer than expected for its frequency</i>, which means comparing it with other haplotypes of the same frequency elsewhere in the genome – a genome-wide scan, which your 500 kb cannot support.</p>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->What you can and cannot say</div><p>You can say: this haplotype is unusually homogeneous compared with other chromosomes <i>at this locus</i>. You cannot say it is under selection, because you have not compared it with the rest of the genome at matched frequency. Say the first and not the second – and say explicitly in your report that you did not test for selection. A sentence admitting what you did not do is worth more than a paragraph implying you did.</p></div>
+
+<div class="callout log"><div class="co-t">For your logbook</div>
+<ul>
+<li>The four-state table, by superpopulation and by the 26 populations.</li>
+<li>Your account of why the African pattern is the mirror image of everywhere else.</li>
+<li>The EHH figure, and the distances at which each curve crosses 0.5.</li>
+<li>Your age estimate, with the assumptions written out and the caveats stated.</li>
+<li>One paragraph: what would have to be done to test for selection, and why you did not do it.</li>
+</ul></div>
+
+<h2>Going further</h2>
+<ul>
+<li><b>EHH both ways and by population.</b> Compute it leftwards as well, and within each superpopulation separately. The African curve is based on only 20 carrier chromosomes – plot a bootstrap band around it and see how little you can say.</li>
+<li><b>The <code>rehh</code> package.</b> Redo the calculation with a published implementation and check you agree. If you do not, find out which of you is right before you move on.</li>
+<li><b>Where does it <i>end</i> in each population?</b> Compare the EHH half-decay distance across the five superpopulations. Africans should break down faster for a reason that has nothing to do with this locus; what is it?</li>
+</ul>
+<ul class="checklist">
+<li data-check="s6-table">I made the four-state table by population.</li>
+<li data-check="s6-afr">I can explain the African pattern in terms of allele age and migration.</li>
+<li data-check="s6-ehh">I computed EHH myself and plotted carriers against non-carriers.</li>
+<li data-check="s6-age">I made an age estimate and wrote down its assumptions.</li>
+<li data-check="s6-select">I understand why I cannot claim selection from these data.</li>
+</ul>
+<div class="stage-nav"><button type="button" data-goto="h-s05"><small>Back</small>← Stage 5 · The haplotype itself</button><button class="next" type="button" data-goto="h-s07"><small>Next</small>Stage 7 · Reading it with long reads →</button></div>

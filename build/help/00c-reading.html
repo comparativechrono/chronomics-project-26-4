@@ -1,0 +1,62 @@
+<!-- id: h-reading | title: The reading list | group: The project | stage: 13 | tab: yes | tablabel: Reading | tabtitle: The reading list | summary: The papers behind each stage, with what to take from each; the founding 2012 study, the two datasets, the methods, and the phenotype studies | keys: reading list references papers citation park 2012 heart rhythm byrska-bishop liao pangenome sabeti ehh yang cojo conditional van den boogaard scn10a enhancer gtex ntalla barc brugada prufer neanderthal plink vep -->
+<h1>The reading list</h1>
+<p class="lede">Twenty papers, grouped by the stage that needs them. Read the first one properly in week 1; read the rest when the stage comes. For each, the note says what to take from it – you are not expected to understand every paper in full.</p>
+
+<div class="callout warn"><div class="co-t"><!--ICON:info-->How to read a paper you only partly understand</div><p>Read the abstract, then the figures with their captions, then the last paragraph of the discussion. That is often enough to know what the paper claims and how. Go to the methods only when you need to do something the paper did. Nobody reads a genetics paper start to finish on the first pass, and pretending otherwise is how people end up not reading them at all.</p></div>
+
+<h2>The paper this project starts from</h2>
+<div class="callout science"><div class="co-t">Read this one closely</div>
+<p><b>Park JK, Martin LJ, Zhang X, Jegga AG, Benson DW.</b> Genetic variants in <i>SCN5A</i> promoter are associated with arrhythmia phenotype severity in patients with heterozygous loss-of-function mutation. <i>Heart Rhythm</i> 2012;9:1090–1096. <a href="https://doi.org/10.1016/j.hrthm.2012.02.023" target="_blank" rel="noopener">doi:10.1016/j.hrthm.2012.02.023</a></p>
+<p>One large kindred carrying the <i>SCN5A</i> loss-of-function mutation 1936delC (Q646RfsX5), with 22 mutation carriers. The authors surveyed <b>2.8 kb</b> of the <i>SCN5A</i> promoter and found rs41310749 and rs41310239, which they describe as being in complete linkage disequilibrium. Carriers of the two-variant allele had more severe arrhythmia phenotypes (P = 0.0007); all three severely affected patients carried it on both the mutant and the wild-type chromosome.</p>
+<p>Two things to notice, because the whole project follows from them. First, the window they searched was 2.8 kb – so if the two variants belong to something larger, <b>95% of it was outside what they could see</b>. Second, "complete linkage disequilibrium" was observed in one kindred; by stage 3 you will know that this statement is true in some populations and false in others.</p>
+</div>
+<div class="callout think"><div class="co-t">Think while you read it</div><p>Three severe cases out of 22 carriers, P = 0.0007. Work out what test gives that P-value from those numbers, and what the confidence interval on the effect would be. Then ask what you would want to see before changing how a patient is managed. This is not a criticism of the paper – it is a 2012 family study and it reports what it found. It is practice at reading an effect size next to its uncertainty.</p></div>
+
+<h2>Other work on these promoter variants</h2>
+<ul>
+<li><b>Yang P, Koopmann TT, Pfeufer A, et al.</b> Polymorphisms in the cardiac sodium channel promoter displaying variant <i>in vitro</i> expression activity. <i>Eur J Hum Genet</i> 2008;16:350–357. <a href="https://doi.org/10.1038/sj.ejhg.5201952" target="_blank" rel="noopener">doi</a><br><span class="note">Earlier work showing that <i>SCN5A</i> promoter polymorphisms change expression in reporter assays. Read it for what a functional experiment on a promoter variant actually involves – and for how far an <i>in vitro</i> result is from a clinical one.</span></li>
+<li><b>Yagihara N, Watanabe H, Barnett P, et al.</b> Variants in the <i>SCN5A</i> promoter associated with various arrhythmia phenotypes. <i>J Am Heart Assoc</i> 2016;5:e003644. <a href="https://doi.org/10.1161/JAHA.116.003644" target="_blank" rel="noopener">doi</a><br><span class="note">A larger survey of promoter variation and arrhythmia. Useful for stage 9: see which variants they tested, and whether any of your 21 appears.</span></li>
+</ul>
+
+<h2>Stages 2–3 · the data and the measures</h2>
+<ul>
+<li><b>Byrska-Bishop M, Evani US, Zhao X, et al.</b> High-coverage whole-genome sequencing of the expanded 1000 Genomes Project cohort including 602 trios. <i>Cell</i> 2022;185:3426–3440.e19. <a href="https://doi.org/10.1016/j.cell.2022.08.004" target="_blank" rel="noopener">doi</a><br><span class="note">The dataset you use throughout. Read the sections on phasing and on the related samples; both matter for what you can conclude.</span></li>
+<li><b>Chang CC, Chow CC, Tellier LCAM, et al.</b> Second-generation PLINK: rising to the challenge of larger and richer datasets. <i>GigaScience</i> 2015;4:7. <a href="https://doi.org/10.1186/s13742-015-0047-8" target="_blank" rel="noopener">doi</a><br><span class="note">The tool paper. Skim it, then keep the PLINK 2 documentation open instead – but cite this when you use PLINK.</span></li>
+<li><span class="note">For D, D′ and r² there is no single paper to read; any population-genetics textbook chapter on linkage disequilibrium will do. What matters is that you can derive all three from a 2×2 table, which you do in stage 3.</span></li>
+</ul>
+
+<h2>Stage 6 · haplotype structure and age</h2>
+<ul>
+<li><b>Sabeti PC, Reich DE, Higgins JM, et al.</b> Detecting recent positive selection in the human genome from haplotype structure. <i>Nature</i> 2002;419:832–837. <a href="https://doi.org/10.1038/nature01140" target="_blank" rel="noopener">doi</a><br><span class="note">Where extended haplotype homozygosity comes from. Read it for the definition and for the logic linking haplotype length to age – and note how carefully the authors argue for selection, which is the standard you would have to meet.</span></li>
+</ul>
+
+<h2>Stage 7 · the pangenome</h2>
+<ul>
+<li><b>Liao WW, Asri M, Ebler J, et al.</b> A draft human pangenome reference. <i>Nature</i> 2023;617:312–324. <a href="https://doi.org/10.1038/s41586-023-05896-x" target="_blank" rel="noopener">doi</a><br><span class="note">The paper to cite for the assemblies. Read the introduction for why one reference genome is not enough, and the sections on what the pangenome recovers that short reads miss – especially in repeats, which is exactly what you find at 38,667,308.</span></li>
+<li><b>Hickey G, Monlong J, Ebler J, et al.</b> Pangenome graph construction from genome alignments with Minigraph-Cactus. <i>Nat Biotechnol</i> 2024;42:663–673. <a href="https://doi.org/10.1038/s41587-023-01793-w" target="_blank" rel="noopener">doi</a><br><span class="note">How the graph you are using was built, and what "reference bias" means. Needed if you want to argue that the assembly call at the repeat is the right one.</span></li>
+</ul>
+
+<h2>Stage 8 · annotation, archaic genomes, expression</h2>
+<ul>
+<li><b>Hunt SE, Moore B, Amode RM, et al.</b> Annotating and prioritizing genomic variants using the Ensembl Variant Effect Predictor – a tutorial. <i>Hum Mutat</i> 2022;43:986–997. <a href="https://doi.org/10.1002/humu.24298" target="_blank" rel="noopener">doi</a><br><span class="note">What the consequence terms mean, which is not obvious. Read it before you put "regulatory region variant" in a sentence.</span></li>
+<li><b>Prüfer K, de Filippo C, Grote S, et al.</b> A high-coverage Neandertal genome from Vindija Cave in Croatia. <i>Science</i> 2017;358:655–658. <a href="https://doi.org/10.1126/science.aao1887" target="_blank" rel="noopener">doi</a><br><span class="note">The genome you test the haplotype against. Read the section on coverage and on how confidently a genotype can be called from ancient DNA – it bears directly on how much weight your result at 15 positions can carry.</span></li>
+<li><b>GTEx Consortium.</b> The GTEx Consortium atlas of genetic regulatory effects across human tissues. <i>Science</i> 2020;369:1318–1330. <a href="https://doi.org/10.1126/science.aaz1776" target="_blank" rel="noopener">doi</a><br><span class="note">What an eQTL is and how GTEx measures it. Find the sample sizes per tissue: they explain why <i>SCN5A</i> has no eQTLs in heart, and why that is not a negative result.</span></li>
+</ul>
+
+<h2>Stages 9–10 · phenotypes, and whether a signal is your own</h2>
+<ul>
+<li><b>Ntalla I, Weng LC, Cartwright JH, et al.</b> Multi-ancestry GWAS of the electrocardiographic PR interval identifies 202 loci underlying cardiac conduction. <i>Nat Commun</i> 2020;11:2542. <a href="https://doi.org/10.1038/s41467-020-15706-x" target="_blank" rel="noopener">doi</a><br><span class="note">The source of your PR interval statistics, and the paper in which this locus is among the strongest signals. Find rs6801957 in it.</span></li>
+<li><b>Barc J, Tadros R, Glinge C, et al.</b> Genome-wide association analyses identify new Brugada syndrome risk loci and highlight a new mechanism of sodium channel regulation in disease susceptibility. <i>Nat Genet</i> 2022;54:232–239. <a href="https://doi.org/10.1038/s41588-021-01007-6" target="_blank" rel="noopener">doi</a><br><span class="note">Your Brugada statistics, and the trait on which your strongest surviving result sits. Read what they conclude about <i>SCN5A</i> and <i>SCN10A</i> regulation.</span></li>
+<li><b>van den Boogaard M, Smemo S, Burnicka-Turek O, et al.</b> A common genetic variant within <i>SCN10A</i> modulates cardiac <i>SCN5A</i> expression. <i>J Clin Invest</i> 2014;124:1844–1852. <a href="https://doi.org/10.1172/JCI73140" target="_blank" rel="noopener">doi</a><br><span class="note">This is rs6801957 – the variant that threatens your entire result in stage 10. It is an enhancer inside <i>SCN10A</i> that regulates <i>SCN5A</i>, demonstrated experimentally. Read it properly: you cannot argue around a variant you do not understand.</span></li>
+<li><b>Yang J, Ferreira T, Morris AP, et al.</b> Conditional and joint multiple-SNP analysis of GWAS summary statistics identifies additional variants influencing complex traits. <i>Nat Genet</i> 2012;44:369–375. <a href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">doi</a><br><span class="note">The conditional-analysis method of stage 10, and the paper whose assumptions you will show to be violated here. The key sentence is the one about requiring an LD reference from the same population as the GWAS; read it and then look at how large your reference is.</span></li>
+</ul>
+
+<h2>Worth reading at some point in the twelve weeks</h2>
+<ul>
+<li><span class="note">A review of <i>SCN5A</i> and Nav1.5 in physiology and disease – there are several good ones; pick a recent one and read it for the biology rather than the genetics. You should be able to say what the PR interval, the QRS duration and the QT interval each measure, and which part of the heartbeat a sodium channel contributes to.</span></li>
+<li><span class="note">Anything on the history of the haplotype-block concept and the HapMap project. It explains why "haplotype block" is both an extremely useful idea and one with no precise definition – which is why your stage 5 threshold mattered.</span></li>
+<li><span class="note">One paper that was later contradicted, in any field you like. Find out what the original authors did and did not do wrong. It is the best possible preparation for writing your own discussion.</span></li>
+</ul>
+
+<div class="callout log"><div class="co-t">For your logbook</div><p>Keep a running annotated bibliography from week 1: one or two sentences per paper on what you took from it. By week 11 it is most of your reference list, and the annotations become your introduction.</p></div>
+<div class="stage-nav"><button type="button" data-goto="h-data"><small>Back</small>← The project data</button><button class="next" type="button" data-goto="h-glossary"><small>Next</small>Glossary →</button></div>

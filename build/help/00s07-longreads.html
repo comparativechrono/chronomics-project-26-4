@@ -1,0 +1,116 @@
+<!-- id: h-s07 | title: Stage 7 · Reading it with long reads | group: The project | stage: 7 | tab: yes | tabtitle: Stage 7 – Reading it with long reads | summary: The Human Pangenome Reference Consortium assemblies; repeat the whole analysis in 462 independently assembled haplotypes; find the variants short reads got slightly wrong, and the repeat they could not represent at all | keys: stage 7 pangenome hprc assembly long read minigraph cactus graph genome reference bias structural variant tandem repeat vntr str replication independent 231 samples 462 haplotypes -->
+<h1>Stage 7 · Reading it with long reads</h1>
+<div class="stage-meta"><span class="when">Weeks 7–8</span><span>about 7 hours</span><span class="stage-progress"></span></div>
+<p class="lede">Everything so far rests on one dataset, built one way: short reads aligned to one reference, with the phase worked out statistically. Now test the whole result against genomes assembled from long reads, where the two chromosomes are read separately and nothing is inferred.</p>
+<div class="skills"><b>You will learn</b><ul>
+<li>what a pangenome is and why one reference genome is not enough</li>
+<li>the difference between genotyping against a reference and assembling a genome</li>
+<li>to replicate a finding in independent data – the most valuable thing you can do to it</li>
+<li>why repeats are where short-read methods fail, and how to show it</li>
+</ul></div>
+
+<h2>1. Why a second dataset, and why this one</h2>
+<p>The 1000 Genomes genotypes are <b>inferred</b> in two ways. Reads a few hundred bases long are aligned to the GRCh38 reference, so anything that differs too much from the reference is hard to see at all; and the assignment of alleles to the two chromosomes – the phase – comes from a statistical model, not from observation.</p>
+<p>The <b>Human Pangenome Reference Consortium</b> takes a different approach: for each person, long reads are assembled into two complete chromosome sequences, one per parent, and the assemblies are combined into a graph. Nothing is imputed. Where the two datasets agree, the finding is solid; where they disagree, the disagreement is informative.</p>
+<div class="callout science"><div class="co-t">A pangenome in one paragraph</div>
+<p>A single reference genome is one person's sequence, and every variant is described as a difference from it. That works until the thing you care about is absent from the reference, or sits in a region where the reference is unusual. A <b>pangenome graph</b> holds many genomes at once: shared sequence is a single path, and where genomes differ the graph branches. Reads map to the graph rather than to one sequence, so a variant that is common in the species but missing from the reference is no longer invisible.</p></div>
+<pre class="code" data-run="term"><code>ls -la /data/examples/scn5a/hprc/
+bcftools query -l /data/examples/scn5a/hprc/scn5a_locus.vcf.gz | wc -l
+bcftools view -H /data/examples/scn5a/hprc/scn5a_locus.vcf.gz | wc -l
+head -3 /data/examples/scn5a/hprc/hprc_samples.csv</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p><b>231 samples</b> – so 462 assembled haplotypes – and <b>6,160 records</b> in the locus. Far fewer people than the 1000 Genomes panel, but every allele is read rather than inferred.</p></div>
+
+<h2>2. The same analysis, the other dataset</h2>
+<p>Run exactly what you ran in stage 5. Resist the urge to change anything: the point is that the method is identical and only the data differ.</p>
+<pre class="code" data-run="term"><code>cd ~/project
+bcftools query -f '%POS\t%REF\t%ALT[\t%GT]\n' \
+  /data/examples/scn5a/hprc/scn5a_locus.vcf.gz > hprc_matrix.tsv
+wc -l hprc_matrix.tsv
+bcftools view -H -r chr3:38651526 /data/examples/scn5a/hprc/scn5a_locus.vcf.gz | cut -f 1-5
+bcftools view -H -r chr3:38650537 /data/examples/scn5a/hprc/scn5a_locus.vcf.gz | cut -f 1-5</code></pre>
+<p>Load it, define carriers, and scan, with the same thresholds:</p>
+<pre class="code" data-run="r"><code>raw &lt;- read.delim("~/project/hprc_matrix.tsv", header = FALSE)
+pos2 &lt;- raw[[1]]; gt2 &lt;- as.matrix(raw[, -(1:3)])
+H2 &lt;- matrix(as.integer(unlist(strsplit(as.vector(t(gt2)), "\\|"))), nrow = nrow(gt2), byrow = TRUE)
+dim(H2)
+i749 &lt;- which(pos2 == 38651526); i239 &lt;- which(pos2 == 38650537)
+car2 &lt;- H2[i749[1], ] == 1 &amp; H2[i239[1], ] == 1
+sum(car2); mean(car2)
+f_on2 &lt;- rowMeans(H2[, car2]); f_off2 &lt;- rowMeans(H2[, !car2])
+def2 &lt;- which(f_on2 &gt;= 0.9 &amp; f_off2 &lt;= 0.1)
+length(def2); range(pos2[def2]); diff(range(pos2[def2])) / 1000</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p><b>40</b> of the 462 assembled haplotypes carry the block – a frequency of <b>0.087</b>, against 0.106 in the 1000 Genomes panel, which is what you would expect from a different and smaller sample of populations. The scan returns <b>20 variants</b> spanning <b>38,631,501 to 38,682,101</b> – the <i>same 50.6 kb</i>, to the base, found in completely independent data.</p></div>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->Use the same definition in both datasets, or you are not comparing them</div><p>"Off the haplotype" has to mean the same thing in both scans. It is tempting, in the assemblies, to leave out the sixteen haplotypes that carry rs41310749 alone – they are a different background, after all. But if you do that here and not in stage 5, the two scans are answering slightly different questions, and one variant (rs6807191, at 38,658,460) passes the criterion only because of that choice: off-haplotype 0.0985 under the narrower definition and 0.1002 under the wider one. A membership list that depends on a bookkeeping decision is not a finding. Use all non-carriers in both, as stage 5 did, and say so.</p></div>
+<div class="callout science"><div class="co-t">That is the replication</div>
+<p>Two datasets, different people, different sequencing technology, different analysis pipeline, no shared assumptions about phase – and the same block, with the same boundaries. The 50.6 kb figure is now something you can defend. This is worth more than any amount of additional analysis of the first dataset.</p></div>
+
+<h2>3. Where the two disagree – and why that is the interesting part</h2>
+<p>Eighteen variants met the criterion in both datasets. Two met it only in the assemblies, and one that was borderline in the panel turns out to miss in the assemblies too. Compare them directly:</p>
+<pre class="code" data-run="r"><code>both &lt;- intersect(pos[defining], pos2[def2])
+only_hprc &lt;- setdiff(pos2[def2], pos[defining])
+length(both); only_hprc
+# what the short-read panel says about those three
+data.frame(pos = only_hprc,
+           on_1000G  = round(f_on [match(only_hprc, pos)],  4),
+           off_1000G = round(f_off[match(only_hprc, pos)],  4),
+           on_HPRC   = round(f_on2 [match(only_hprc, pos2)], 4),
+           off_HPRC  = round(f_off2[match(only_hprc, pos2)], 4))</code></pre>
+<div class="callout check"><div class="co-t">Check</div>
+<p><b>18 in both</b>, and two that qualify only in the assemblies: <b>38,666,394</b> and <b>38,667,308</b>. Both are <i>present</i> in the 1000 Genomes file – they are not invisible to short reads. The difference is in the detail:</p>
+<table class="table"><thead><tr><th>position</th><th>1000G on / off</th><th>HPRC on / off</th><th>verdict</th></tr></thead>
+<tbody>
+<tr><td>38,666,394 (rs62242851)</td><td>0.906 / <b>0.1008</b></td><td>1.000 / 0.0995</td><td>passes in the assemblies, fails in the panel by <b>0.0008</b></td></tr>
+<tr><td>38,667,308</td><td colspan="2">five different alternative alleles in 1000G; one clean call in HPRC (1.000 / 0.064)</td><td>passes in the assemblies only</td></tr>
+<tr><td>38,658,460 (rs6807191)</td><td>0.929 / <b>0.129</b></td><td>1.000 / <b>0.1002</b></td><td><b>fails in both</b>, by 0.029 and by 0.0002</td></tr>
+</tbody></table>
+<p>These are the two borderline variants you had to make a decision about in stage 5, plus one that turns out to miss in both datasets. Go back and see what you wrote.</p></div>
+<div class="callout science"><div class="co-t">What a 0.0008 miss tells you</div>
+<p>In the assemblies all three variants are on <b>every single</b> carrier haplotype – 40 out of 40. In the short-read panel they are on 90–93% of carriers and on a few per cent too many non-carriers. That pattern is the fingerprint of imperfect phasing: a small number of alleles assigned to the wrong chromosome of the pair blurs the edges of a block in both directions at once.</p>
+<p>But look at the margins. rs62242851 fails the panel's threshold by <b>eight ten-thousandths</b>, and rs6807191 fails the assemblies' by <b>two ten-thousandths</b>. A threshold is a cliff, and a variant can fall off it for reasons that have nothing to do with biology. Three of the 18 that <i>do</i> pass are within 0.01 of the bound as well.</p>
+<p>So the honest description is not "the block has 18 members" or "20". It is: <b>18 variants meet the criterion in both datasets; two more meet it in the assemblies only; and the criterion is doing more work than the data can support at the edges.</b> Say which list you used and show the near-misses. In stage 10 you will see that one of these borderline variants carries the project's strongest trait association – which is exactly why this bookkeeping matters.</p></div>
+
+<h2>4. The repeat that short reads could not describe</h2>
+<p>The third disagreement is of a different kind. Look at what each dataset says is at 38,667,308:</p>
+<pre class="code" data-run="term"><code>echo "--- 1000 Genomes:"
+bcftools view -H -r chr3:38667308 /data/examples/scn5a/1000g/scn5a_locus.vcf.gz | cut -f 1-5
+echo "--- HPRC assemblies:"
+bcftools view -H -r chr3:38667308 /data/examples/scn5a/hprc/scn5a_locus.vcf.gz | cut -f 1-5</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>The short-read panel has <b>five</b> records at that position, each proposing a different number of <code>TA</code> units: <code>G&gt;GTA</code>, <code>G&gt;GTATA</code>, <code>G&gt;GTATATA</code>, <code>G&gt;GTGTA</code> and <code>GTA&gt;G</code>. The assemblies have one call, a four-base <code>TA</code> expansion, carried by every haplotype of the block. This is a <b>short tandem repeat</b>, and it is the single worst case for short-read genotyping: a read that is shorter than the repeat cannot tell you how many copies there are, and the caller ends up offering several incompatible descriptions of the same thing.</p></div>
+<div class="callout think"><div class="co-t">Think</div><p>None of the 18 variants you found in stage 5 would have been missed by short reads. This one was. How many variants of this kind do you think are missing from every short-read study ever published – and does that change how you read a paper that says "no variant in this region was associated"?</p></div>
+
+<h2>5. Is there anything big on the block?</h2>
+<p>A 50 kb haplotype could carry a deletion, a duplication or an inversion that no short-read study would show. Assemblies can answer that. Look for anything 50 bases or longer:</p>
+<pre class="code" data-run="r"><code>len &lt;- abs(nchar(raw[[3]]) - nchar(raw[[2]]))
+big &lt;- which(len &gt;= 50 &amp; pos2 &gt;= 38631501 &amp; pos2 &lt;= 38682101)
+length(big)
+data.frame(pos = pos2[big], length = len[big],
+           on = round(f_on2[big], 3), off = round(f_off2[big], 3))</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>Nothing. Across the whole 50.6 kb there is no insertion or deletion of 50 bases or more that is carried by the block. Whatever this haplotype does, it does not do it by gaining or losing a large piece of sequence. That is a real negative result, and only the assemblies could have given it to you.</p></div>
+<div class="task"><div class="task-t">Your turn</div>
+<p>Widen the search to the whole 500 kb and rank structural variants by how much more common they are on the block than off it. Is the top hit convincing? Check its position against the block's boundaries before you get excited.</p></div>
+
+<div class="callout log"><div class="co-t">For your logbook</div>
+<ul>
+<li>What a pangenome is, in your own words, and why assemblies are not just "better data".</li>
+<li>The replication: 40/462 haplotypes, 20 variants, the same 50.6 kb.</li>
+<li>The three disagreements, as a table, with your interpretation – and the size of each margin.</li>
+<li>Your stage 5 prediction about the borderline variants, and whether it was right.</li>
+<li>The structural-variant result – a negative one, stated plainly.</li>
+<li>A decision, with a reason: do you report the block as 18 variants or 20? Either is defensible; you must say which and why, and show the near-misses either way.</li>
+</ul></div>
+
+<h2>Going further</h2>
+<ul>
+<li><b>Which populations?</b> The HPRC samples are listed with their populations. Compute the block frequency per superpopulation in the assemblies and compare with your 1000 Genomes table. With 40 carriers the uncertainty is large – put confidence intervals on it before concluding anything about a difference.</li>
+<li><b>Overlapping samples.</b> Some HPRC individuals are also in the 1000 Genomes panel. Find them, and compare their genotypes variant by variant. Where the two datasets disagree about the same person, which do you believe?</li>
+<li><b>The graph itself.</b> Read about how Minigraph-Cactus builds a pangenome graph, and what "reference bias" means. Then reconsider: is the HPRC call at the repeat definitely right, or just differently wrong?</li>
+</ul>
+<ul class="checklist">
+<li data-check="s7-pan">I can explain what a pangenome is and why it matters here.</li>
+<li data-check="s7-rep">I repeated the stage 5 analysis in the assemblies and got the same block.</li>
+<li data-check="s7-dis">I found the disagreements, understand what causes them, and noted how small the margins are.</li>
+<li data-check="s7-repeat">I looked at the tandem repeat in both datasets and can explain the difference.</li>
+<li data-check="s7-sv">I checked for structural variants on the block and found none.</li>
+<li data-check="s7-decide">I decided whether to report 18 or 20 variants, and wrote down why.</li>
+</ul>
+<div class="stage-nav"><button type="button" data-goto="h-s06"><small>Back</small>← Stage 6 · Where in the world</button><button class="next" type="button" data-goto="h-s08"><small>Next</small>Stage 8 · What is on the haplotype →</button></div>

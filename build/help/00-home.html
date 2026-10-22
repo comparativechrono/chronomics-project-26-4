@@ -1,0 +1,50 @@
+<!-- id: h-home | title: Start here | group: The project | stage: 0 | tab: yes | tabtitle: Start here – the project | summary: The question, the plan, how to use this guide | keys: start project scn5a promoter haplotype rs41310749 rs41310239 linkage disequilibrium block brugada pr interval overview plan weeks question aims -->
+<h1>Two letters, and the fifty thousand that travel with them</h1>
+<div class="stage-meta"><span class="when">Week 1</span><span>about 3 hours</span><span class="stage-progress"></span></div>
+<p class="lede">In 2012 a study of one family found two changes in the switch that turns on the heart's sodium channel gene, <i>SCN5A</i>. The two changes were always inherited together, and family members who carried them had worse arrhythmia. Since then they have been treated as a pair. But a pair of letters in the genome is rarely alone: it is usually a fragment of a much longer stretch that is passed on intact, generation after generation. This project asks what that longer stretch is, what else rides on it, and whether it does anything.</p>
+
+<div class="callout science"><div class="co-t">The question</div>
+<p>Two variants, <b>rs41310749</b> and <b>rs41310239</b>, sit about a thousand letters upstream of <i>SCN5A</i>. They were reported to be in <b>complete linkage disequilibrium</b> – never seen apart. Linkage disequilibrium does not stop at two variants, though: it falls away gradually with distance, so a pair in perfect step is almost always the middle of a <b>haplotype block</b>, a run of DNA that recombination has not yet broken up.</p>
+<p><b>Your project:</b> find the block. Use the genomes of 2,504 people to measure how far the two variants' company extends, work out exactly which other variants travel with them, check the answer in long-read assemblies that read the stretch end to end, and then ask whether the block is associated with how the heart conducts its electrical signal – and whether it has anything to do with the clock.</p>
+</div>
+
+<p>Nobody has described this haplotype before, as far as we can tell. The guide takes you through the work in eleven stages, about one a week. Each stage teaches the tools it needs; you do not need to have programmed before.</p>
+
+<h2>The plan</h2>
+<ol class="stage-list">
+  <li><button type="button" data-goto="h-science"><span class="n">0</span><span class="t">The science: the heart's sodium channel, and what a haplotype is</span><span class="w">week 1</span><span class="s">How the heart conducts; what SCN5A does; recombination, linkage disequilibrium and blocks</span></button></li>
+  <li><button type="button" data-goto="h-s01"><span class="n">1</span><span class="t">Two variants</span><span class="w">week 1–2</span><span class="s">The terminal: commands, files and folders; find the two variants in the data and in the databases</span></button></li>
+  <li><button type="button" data-goto="h-s02"><span class="n">2</span><span class="t">Two thousand five hundred genomes</span><span class="w">week 2–3</span><span class="s">The 1000 Genomes panel; VCF files; PLINK 2; allele frequencies around the world</span></button></li>
+  <li><button type="button" data-goto="h-s03"><span class="n">3</span><span class="t">Measuring linkage</span><span class="w">week 3–4</span><span class="s">Your first R notebook; work out r² and D′ by hand, then let PLINK do it; why the two differ</span></button></li>
+  <li><button type="button" data-goto="h-s04"><span class="n">4</span><span class="t">How far does it reach?</span><span class="w">week 4–5</span><span class="s">Scan half a megabase; plot the decay; find where the company ends</span></button></li>
+  <li><button type="button" data-goto="h-s05"><span class="n">5</span><span class="t">The haplotype itself</span><span class="w">week 5–6</span><span class="s">Split the chromosomes into carriers and non-carriers; list what the haplotype carries</span></button></li>
+  <li><button type="button" data-goto="h-s06"><span class="n">6</span><span class="t">Where in the world</span><span class="w">week 6–7</span><span class="s">Frequency by population; the African exception, and what it says about the haplotype's age</span></button></li>
+  <li><button type="button" data-goto="h-s07"><span class="n">7</span><span class="t">Reading it with long reads</span><span class="w">week 7–8</span><span class="s">The pangenome: 231 assembled genomes; confirm the block and find what short reads miss</span></button></li>
+  <li><button type="button" data-goto="h-s08"><span class="n">8</span><span class="t">What is on the haplotype</span><span class="w">week 8–9</span><span class="s">Genes, promoters and enhancers; which of the variants could actually do something</span></button></li>
+  <li><button type="button" data-goto="h-s09"><span class="n">9</span><span class="t">Does it matter? Heart and clock</span><span class="w">week 9–10</span><span class="s">Ten public GWAS: PR interval, Brugada syndrome, fibrillation – and sleep and chronotype</span></button></li>
+  <li><button type="button" data-goto="h-s10"><span class="n">10</span><span class="t">Is it a signal of its own?</span><span class="w">week 10–11</span><span class="s">One of the strongest loci in cardiac genetics sits next door. Telling two signals apart, and knowing when you cannot</span></button></li>
+  <li><button type="button" data-goto="h-s11"><span class="n">11</span><span class="t">Write it up</span><span class="w">week 11–12</span><span class="s">Figures, methods, results and discussion; what you can and cannot claim</span></button></li>
+</ol>
+<p>Stages 1–6 are the core: by the end of stage 6 you will have defined the haplotype and know where it is found. Stages 7–10 each add a separate line of evidence, and stage 10 is the one where you learn to stop. Each stage ends with <b>going further</b>: ideas to follow if you have time.</p>
+
+<h2>How this page works</h2>
+<ul>
+  <li><b>The guide is on the left; the workbench is on the right.</b> The tabs along the top of the guide are the stages; <b>Help</b> is the manual of the tools. Drag the line between the two halves to change their width.</li>
+  <li><b>Grey boxes with code</b> have a button: <b>Run in the terminal</b> (terminal commands) or <b>Add to notebook</b> (R code). The buttons save typing, but type the first few commands of each stage yourself – you learn the shape of them that way.</li>
+  <li><b>Checklists</b> like the one below have boxes to tick. What you tick is saved in this browser, and the tab of the stage fills in as you go.</li>
+  <li><b>Hints and answers</b> hide behind <i>Show a hint</i>. Try first; looking is fine when you are stuck.</li>
+  <li><b>Search</b> (top of this pane) finds any word in the guide and in the help.</li>
+  <li><b>New words</b> are explained in the <a href="#h-glossary">Glossary</a>; the data are described in <a href="#h-data">The project data</a>, and the papers in <a href="#h-reading">The reading list</a>.</li>
+</ul>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->Your files live in this browser</div>
+<p>Everything you make is kept in this browser on this computer – not on a server. Use the same computer and browser each time, and once a week click <b>My files → Download all my files</b> (top right) and keep the copy somewhere safe.</p></div>
+
+<div class="callout log"><div class="co-t">Your logbook</div>
+<p>Keep one from the first day: a file in which you write, after every session, what you did, what came out, and what puzzled you. It is where your report will come from, and in a project with this much counting it is also where you will catch your own mistakes.</p></div>
+
+<ul class="checklist">
+<li data-check="s0-read">I have read this page and <a href="#h-science">The science</a>.</li>
+<li data-check="s0-logbook">I have started a logbook.</li>
+<li data-check="s0-tour">I have opened the terminal and the notebook once, to see what they look like.</li>
+</ul>
+<div class="stage-nav"><button class="next" type="button" data-goto="h-science"><small>Next</small>The science: the heart's sodium channel →</button></div>

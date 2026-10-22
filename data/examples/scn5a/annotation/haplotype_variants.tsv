@@ -1,0 +1,21 @@
+pos_GRCh38	rsid	ref	alt	defining_in_1000G	defining_in_HPRC	present_in_1000G_panel	af_on_haplotype_1000G	af_off_haplotype_1000G	af_on_haplotype_HPRC	af_off_haplotype_HPRC	most_severe_consequence	gene_consequences	regulatory_feature	transcription_factor_motif
+38631501	rs7374392	A	T	yes	yes	yes	0.9662	0.0389	0.975	0.0427	intron_variant	SCN5A: downstream_gene_variant; SCN5A: intron_variant intron 1/25; SCN5A: intron_variant intron 1/26; SCN5A: intron_variant intron 2/10; SCN5A: intron_variant intron 2/11; SCN5A: intron_variant intron 2/25; SCN5A: intron_variant intron 2/27; SCN5A: intron_variant,NMD_transcript_variant intron 2/15; SCN5A: intron_variant,NMD_transcript_variant intron 2/28; SCN5A: intron_variant,non_coding_transcript_variant intron 1/1; SCN5A: intron_variant,non_coding_transcript_variant intron 2/5		
+38632090	rs56053699	C	A	yes	yes	yes	0.97	0.0997	0.975	0.0853	intron_variant	SCN5A: downstream_gene_variant; SCN5A: intron_variant intron 1/25; SCN5A: intron_variant intron 1/26; SCN5A: intron_variant intron 2/10; SCN5A: intron_variant intron 2/11; SCN5A: intron_variant intron 2/25; SCN5A: intron_variant intron 2/27; SCN5A: intron_variant,NMD_transcript_variant intron 2/15; SCN5A: intron_variant,NMD_transcript_variant intron 2/28; SCN5A: intron_variant,non_coding_transcript_variant intron 1/1; SCN5A: intron_variant,non_coding_transcript_variant intron 2/5		
+38642799	rs80172327	C	T	yes	yes	yes	0.985	0.0264	1.0	0.0355	intron_variant	SCN5A: intron_variant intron 1/1; SCN5A: intron_variant intron 1/10; SCN5A: intron_variant intron 1/11; SCN5A: intron_variant intron 1/25; SCN5A: intron_variant intron 1/27; SCN5A: intron_variant,NMD_transcript_variant intron 1/15; SCN5A: intron_variant,NMD_transcript_variant intron 1/28; SCN5A: intron_variant,non_coding_transcript_variant intron 1/1; SCN5A: intron_variant,non_coding_transcript_variant intron 1/5; SCN5A: upstream_gene_variant		
+38650537	rs41310239	A	G	yes	yes	yes	1.0	0.0058	1.0	0.0071	upstream_gene_variant	SCN5A: upstream_gene_variant		
+38651526	rs41310749	G	A	yes	yes	yes	1.0	0.0364	1.0	0.0379	upstream_gene_variant	SCN5A: upstream_gene_variant	enhancer	
+38652770	rs7373686	A	G	yes	yes	yes	0.9644	0.0087	1.0	0.0095	upstream_gene_variant	SCN5A: upstream_gene_variant		
+38659251	rs7374843	C	T	yes	yes	yes	0.9287	0.0089	1.0	0.0095	upstream_gene_variant	SCN5A: upstream_gene_variant		
+38659328	rs7374853	C	G	yes	yes	yes	0.9287	0.0921	1.0	0.0948	upstream_gene_variant	SCN5A: upstream_gene_variant		
+38659571	rs73825723	G	A	yes	yes	yes	0.9287	0.0921	1.0	0.0948	upstream_gene_variant	SCN5A: upstream_gene_variant		
+38666394	rs62242851	C	T	no	yes	yes	0.9062	0.1008	1.0	0.0995	intergenic_variant			
+38667308		GTA	GTATATA	no	yes	position only			1.0	0.064				
+38669862	rs74958514	C	T	yes	yes	yes	0.9062	0.0161	1.0	0.0118	intergenic_variant			
+38676978	rs77251295	C	T	yes	yes	yes	0.9043	0.0136	1.0	0.0095	intergenic_variant			
+38679353	rs113250970	ATAGGGGTC	A	yes	yes	yes	0.9062	0.0255	1.0	0.0166				
+38680173	rs151236465	TC	T	yes	yes	yes	0.9062	0.0257	1.0	0.0166				
+38680536	rs6599235	C	T	yes	yes	yes	0.9062	0.0259	1.0	0.0166	intergenic_variant			
+38680914	rs74941275	C	A	yes	yes	yes	0.9062	0.0257	1.0	0.0166	intergenic_variant			
+38681130	rs77188077	G	C	yes	yes	yes	0.9062	0.0257	1.0	0.0166	intergenic_variant			
+38681284	rs79792607	C	T	yes	yes	yes	0.9062	0.0257	1.0	0.0166	intergenic_variant			
+38682101	rs75073937	C	T	yes	yes	yes	0.9043	0.0145	1.0	0.0095	intergenic_variant			

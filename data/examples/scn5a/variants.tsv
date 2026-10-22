@@ -1,0 +1,21 @@
+variant	chrom	pos_GRCh38	pos_GRCh37	ref	alt	role	note
+rs41310749	chr3	38651526	38693017	G	A	promoter variant	one of the two variants of the published haplotype
+rs41310239	chr3	38650537	38692028	A	G	promoter variant	the other; the two are in complete LD in Europeans
+rs7374392	chr3	38631501	38672992	A	T	haplotype variant	carried on the same haplotype
+rs56053699	chr3	38632090	38673581	C	A	haplotype variant	carried on the same haplotype
+rs80172327	chr3	38642799	38684290	C	T	haplotype variant	carried on the same haplotype
+rs7373686	chr3	38652770	38694261	A	G	haplotype variant	carried on the same haplotype
+rs7374843	chr3	38659251	38700742	C	T	haplotype variant	carried on the same haplotype
+rs7374853	chr3	38659328	38700819	C	G	haplotype variant	carried on the same haplotype
+rs73825723	chr3	38659571	38701062	G	A	haplotype variant	carried on the same haplotype
+rs62242851	chr3	38666394	38707885	C	T	haplotype variant	carried on the same haplotype
+	chr3	38667308	38708799	GTA	GTATATA	haplotype variant	carried on the same haplotype
+rs74958514	chr3	38669862	38711353	C	T	haplotype variant	carried on the same haplotype
+rs77251295	chr3	38676978	38718469	C	T	haplotype variant	carried on the same haplotype
+rs113250970	chr3	38679353	38720844	ATAGGGGTC	A	haplotype variant	carried on the same haplotype
+rs151236465	chr3	38680173	38721664	TC	T	haplotype variant	carried on the same haplotype
+rs6599235	chr3	38680536	38722027	C	T	haplotype variant	carried on the same haplotype
+rs74941275	chr3	38680914	38722405	C	A	haplotype variant	carried on the same haplotype
+rs77188077	chr3	38681130	38722621	G	C	haplotype variant	carried on the same haplotype
+rs79792607	chr3	38681284	38722775	C	T	haplotype variant	carried on the same haplotype
+rs75073937	chr3	38682101	38723592	C	T	haplotype variant	carried on the same haplotype

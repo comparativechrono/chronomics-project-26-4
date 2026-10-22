@@ -1,0 +1,211 @@
+<!-- id: h-s10 | title: Stage 10 · Is it a signal of its own? | group: The project | stage: 10 | tab: yes | tabtitle: Stage 10 – A signal of its own? | summary: The hardest stage: rs6801957 has a z of -51 at this locus, so anything correlated with it inherits a signal; build the standard test, then simulate your own situation and discover the test over-rejects 86 per cent of the time; then find out what the data really support | keys: stage 10 conditional analysis gcta cojo colocalisation tagging ld lead variant rs6801957 rs4131768 independent signals null hypothesis calibration simulation type i error over-rejection z score expected residual propagated uncertainty standard error instability honest negative result -->
+<h1>Stage 10 · Is it a signal of its own?</h1>
+<div class="stage-meta"><span class="when">Weeks 10–11</span><span>about 8 hours</span><span class="stage-progress"></span></div>
+<p class="lede">This is the stage that decides whether the project has a result. Four cardiac associations look convincing. You will build the standard test, watch it confirm them, then simulate it and discover it would have confirmed them for a variant with no effect at all. Learning to catch that is the most valuable thing in this project.</p>
+<div class="skills"><b>You will learn</b><ul>
+<li>what it means for an association to be "explained by linkage disequilibrium"</li>
+<li>conditional analysis: how it works, and how to tell when it is lying to you</li>
+<li>to build a diagnostic that carries its own uncertainty instead of hiding it</li>
+<li>to test a method by simulating your own situation, rather than trusting it</li>
+<li>to report a result you cannot fully resolve, without overclaiming or giving up</li>
+</ul></div>
+
+<h2>1. The neighbour</h2>
+<p>The <i>SCN5A</i>–<i>SCN10A</i> locus is one of the strongest signals in cardiac genetics. Find the top variant for the PR interval in the whole 500 kb:</p>
+<pre class="code" data-run="r"><code>d &lt;- read.delim("/data/examples/scn5a/gwas/PR_interval_Ntalla2020.tsv")
+d$pos38 &lt;- d$base_pair_location - 41491
+d$z &lt;- d$beta / d$standard_error
+d[which.max(abs(d$z)), c("variant_id", "pos38", "beta", "standard_error", "p_value")]</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p><b>rs6801957</b>, at 38,725,824 – inside <i>SCN10A</i>, about 44 kb beyond the end of your block – with a z of <b>−51.5</b>. Its P-value is of the order of 10<sup>−578</sup>. It is a known enhancer that regulates <i>SCN5A</i>, demonstrated experimentally, and one of the best-established regulatory variants in the human genome.</p></div>
+<div class="callout science"><div class="co-t">Why a z of 51 is a problem for you</div>
+<p>If a variant is correlated with rs6801957 at even r = 0.1, and rs6801957 is the only causal variant, then that variant is expected to show a z of about 0.1 × 51.5 ≈ 5 all by itself – which is a P-value of 6 × 10<sup>−7</sup>. Your strongest cardiac result, P = 7.5 × 10<sup>−15</sup>, corresponds to a z of 7.8. A weak correlation with a colossal signal is enough to manufacture almost any result you like.</p>
+<p>So before claiming that the block affects cardiac conduction you must answer: <b>is its signal more than it would inherit from rs6801957 by correlation alone?</b></p></div>
+<pre class="code" data-run="r"><code># how correlated is the block with the lead?
+i_lead &lt;- which(pos == 38725824)
+i_hap  &lt;- match(hap$pos_GRCh38, pos); i_hap &lt;- i_hap[!is.na(i_hap)]
+eur &lt;- rep(samples$superpopulation, each = 2) == "EUR"
+r &lt;- apply(H[i_hap, eur], 1, function(x) cor(x, H[i_lead, eur]))
+round(range(r), 3); round(max(r^2), 4)</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>The correlations are small – r between about −0.12 and +0.07, so r² never above about 0.014 in Europeans. Small, but not zero, and 0.1 × 51.5 is all it takes.</p></div>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->One lead is not the whole story – and this is where the project nearly went wrong</div>
+<p>Everything above treats rs6801957 as <i>the</i> signal at this locus. It is not. Run a stepwise search and you will find <b>three</b> independent genome-wide-significant signals for every cardiac trait – and for Brugada syndrome the third of them, <b>rs4131768</b> at 38,653,683, sits <i>inside</i> your block's span and is correlated with your variants at <b>r = 0.29</b>, five times more strongly than rs6801957 is.</p>
+<p>A test that conditions only on rs6801957 leaves rs4131768's signal in the data and then attributes it to your haplotype. Section 3 builds that test, section 4 shows what it does, and section 5 is where you find out, by simulation, that it cannot be trusted. Work through them in order – the detour is the most useful thing in this project.</p></div>
+
+<h2>2. The textbook method, and why it fails here</h2>
+<p>The standard tool is <b>approximate conditional analysis</b>: given summary statistics and an LD matrix, estimate what each variant's z would be if you held the lead variant fixed. The formula, from Yang and colleagues (2012), is</p>
+<p style="text-align:center"><i>z</i>(<i>i</i>|<i>C</i>) = ( <i>z<sub>i</sub></i> − <b>R</b><sub><i>iC</i></sub><b>R</b><sub><i>CC</i></sub><sup>−1</sup><b>z</b><sub><i>C</i></sub> ) ⁄ √( 1 − <b>R</b><sub><i>iC</i></sub><b>R</b><sub><i>CC</i></sub><sup>−1</sup><b>R</b><sub><i>Ci</i></sub> )</p>
+<p>Implement it with one conditioning variant, then two, then five, and watch what happens:</p>
+<pre class="code" data-run="r"><code>cond &lt;- function(zi, zC, riC, RCC) {
+  w &lt;- solve(RCC, zC)
+  num &lt;- zi - sum(riC * w)
+  den &lt;- sqrt(max(1e-12, 1 - sum(riC * solve(RCC, riC))))
+  num / den
+}
+# build the LD matrix in Europeans and condition on the top 1, 2, then 5 variants
+Z &lt;- t(scale(t(H[, eur])))
+top &lt;- order(-abs(d$z[match(pos, d$pos38)]), na.last = NA)[1:5]
+target &lt;- match(38666394, pos)                    # rs62242851, the block's strongest
+for (k in 1:5) {
+  C &lt;- top[1:k]
+  RCC &lt;- (Z[C, , drop = FALSE] %*% t(Z[C, , drop = FALSE])) / sum(eur)
+  riC &lt;- as.vector((Z[target, ] %*% t(Z[C, , drop = FALSE])) / sum(eur))
+  zc &lt;- cond(d$z[match(pos[target], d$pos38)], d$z[match(pos[C], d$pos38)], riC, RCC)
+  cat(sprintf("conditioning on %d variants: z = %7.2f  (P = %s)\n",
+              k, zc, format.pval(2 * pnorm(-abs(zc)), digits = 2)))
+}</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>The answer does not settle down. As you add conditioning variants the conditional P-value swings over tens of orders of magnitude – in our run, from 10<sup>−6</sup> to 10<sup>−14</sup> to 10<sup>−42</sup>. Adding information makes the answer <i>bigger</i>, which is not how a well-behaved estimator behaves.</p></div>
+<div class="callout science"><div class="co-t">Why it breaks – and this is a real result, not a bug</div>
+<p>The formula assumes the LD matrix <b>R</b> is known. It is not: it is estimated from 503 Europeans, and each correlation carries a standard error of roughly (1 − r²)/√<i>n</i> ≈ 0.03. The correction subtracted from your z is <b>R</b><sub><i>iC</i></sub><b>R</b><sub><i>CC</i></sub><sup>−1</sup><b>z</b><sub><i>C</i></sub>, and with |<i>z<sub>C</sub></i>| ≈ 51 an error of 0.03 in r becomes an error of about 1.5 in the correction – comparable to the entire signal you are testing. Inverting <b>R</b><sub><i>CC</i></sub> for correlated conditioning variants amplifies it further.</p>
+<p>This is a <b>known limitation</b> of conditional analysis with an external LD reference, and it is at its worst exactly here: a gigantic lead signal, a small reference panel, and a weakly correlated variant of interest. The right response is not to pick whichever run gives the nicest answer. It is to use a method whose uncertainty you can see.</p></div>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->What to do when a standard method misbehaves</div><p>Report it. An analysis that says "the standard approach was unstable here, for this reason, so we did something more conservative" is far stronger than one that quietly reports the run that worked. If you ever find yourself choosing between several versions of an analysis on the basis of the answer, stop and write down what is happening – that moment is the single most common origin of results that do not replicate.</p></div>
+
+<h2>3. A diagnostic that shows its working</h2>
+<p>Turn the question round. Instead of asking "what is left after removing the lead?", ask "<b>what would we expect to see if the lead were the only cause?</b>" and compare. If rs6801957 is the sole causal variant, the expected signal at variant <i>i</i> is simply</p>
+<p style="text-align:center"><i>z</i><sub>expected</sub> = <i>r</i> × <i>z</i><sub>lead</sub></p>
+<p>and because <i>r</i> is estimated, that expectation has a standard error of |<i>z</i><sub>lead</sub>| × (1 − <i>r</i>²)/√<i>n</i>. Both go into the comparison:</p>
+<pre class="code" data-run="r"><code>tagging &lt;- function(z_obs, z_lead, r, n) {
+  z_exp &lt;- r * z_lead
+  se_exp &lt;- abs(z_lead) * (1 - r^2) / sqrt(n)
+  resid &lt;- z_obs - z_exp
+  se_resid &lt;- sqrt(1 + se_exp^2)          # 1 for the observed z, se_exp for the expectation
+  t &lt;- resid / se_resid
+  c(z_exp = z_exp, se_exp = se_exp, resid = resid, t = t, p = 2 * pnorm(-abs(t)))
+}
+round(tagging(z_obs = 7.78, z_lead = -51.5, r = -0.057, n = 1006), 4)</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>For rs62242851 and the PR interval: expected z = <b>+2.92 ± 1.62</b>, observed <b>+7.78</b>, so a residual of +4.86 against a standard error of 1.90 – t = +2.55, P = 0.011. Notice how large the ±1.62 is. That is the honest uncertainty that conditional analysis had hidden.</p></div>
+<div class="callout science"><div class="co-t">Why this is the conservative choice</div>
+<p>This diagnostic is deliberately weaker than conditional analysis. It conditions on one variant rather than several, so any signal carried by a second independent variant at the locus is left in the "expected" column and counted against you. It inflates the standard error by the full uncertainty of <i>r</i>. If a result survives this, it is not an artefact of the LD reference – and if it does not survive, you have not proved it absent, only that you cannot distinguish it from tagging.</p></div>
+
+<h2>4. The verdict on your four cardiac results</h2>
+<p>Apply it to every variant and every trait:</p>
+<pre class="code" data-run="r"><code>ref &lt;- read.delim("/data/examples/scn5a/annotation/tagging_diagnostic.tsv")
+library(dplyr)
+ref %&gt;% group_by(trait) %&gt;%
+  summarise(n = n(), lead = first(lead_rsid), lead_z = first(lead_z),
+            n_surviving = sum(as.numeric(residual_p) &lt; 0.05),
+            best_t = residual_t[which.max(abs(residual_t))]) %&gt;%
+  arrange(desc(abs(best_t))) %&gt;% as.data.frame()</code></pre>
+<div class="callout check"><div class="co-t">Check</div>
+<table class="table"><thead><tr><th>trait</th><th>lead z</th><th>variants with residual P &lt; 0.05</th><th>best residual t</th></tr></thead>
+<tbody>
+<tr><td>Brugada syndrome</td><td>−28.7</td><td>18 of 18</td><td>+3.81</td></tr>
+<tr><td>QRS duration</td><td>+12.3</td><td>19 of 19</td><td>+3.63</td></tr>
+<tr><td>QT interval</td><td>+11.6</td><td>17 of 20</td><td>+3.09</td></tr>
+<tr><td>atrial fibrillation</td><td>+20.9</td><td>15 of 20</td><td>−2.76</td></tr>
+<tr><td>PR interval</td><td>−51.5</td><td>1 of 18</td><td>+2.55</td></tr>
+<tr><td>resting heart rate</td><td>+10.2</td><td>0 of 17</td><td>+1.68</td></tr>
+<tr><td>all five circadian traits</td><td>≤ 4.1</td><td>0</td><td>≤ +1.52</td></tr>
+</tbody></table></div>
+<div class="callout think"><div class="co-t">Think – before you read on</div><p>That table looks like a result: four cardiac traits with signal the lead cannot account for, nothing circadian, consistent across nearly every variant. Write down now, in your logbook, what you would conclude from it. Then do section 5. The gap between what you just wrote and what you will write afterwards is the point of this stage.</p></div>
+
+<h2>5. Finding out whether the test works</h2>
+<p>A P-value is a statement about how often you would see something this extreme <b>if the null hypothesis were true</b>. So before believing P = 1.4 × 10<sup>−4</sup>, ask what this test's null hypothesis actually is. It is: <i>the strongest variant in the window is the only causal one.</i></p>
+<p>You already know that is false here. There are three independent signals, and one of them – rs4131768, r = 0.29 with your block – is not being conditioned on. So the real question is: <b>how does this test behave when its null is wrong in that particular way?</b></p>
+<p>That is a question about a sampling distribution, and you do not have to reason about it. You can simulate it and count.</p>
+<pre class="code" data-run="r"><code># the three variants: your strongest (rs62242851), the lead, and the ignored third signal
+want &lt;- c(target = 38666394, lead = 38725824, ignored = 38653683)
+i &lt;- match(want, pos)
+R &lt;- cor(t(H[i, eur]))
+round(R, 4)
+# the single-lead test, as a function
+tag_t &lt;- function(z_target, z_lead, r, n) {
+  z_exp  &lt;- r * z_lead
+  se_exp &lt;- abs(z_lead) * (1 - r^2) / sqrt(n)
+  (z_target - z_exp) / sqrt(1 + se_exp^2)
+}
+# simulate z ~ MVN(R b, R) with the TARGET'S OWN EFFECT SET TO ZERO, under two truths
+library(MASS)
+n &lt;- sum(eur) * 2
+sim &lt;- function(b, reps = 20000) {
+  z &lt;- mvrnorm(reps, mu = as.vector(R %*% b), Sigma = R)
+  t &lt;- tag_t(z[, 1], z[, 2], R[1, 2], n)
+  c(median_abs_t = median(abs(t)), reject_05 = mean(abs(t) &gt; 1.96),
+    reject_001 = mean(abs(t) &gt; 3.291))
+}
+round(sim(c(0, -28.689, 0)),      4)   # the test's own null: only the lead is causal
+round(sim(c(0, -28.689, 14.008)), 4)   # the truth: a second signal, ignored</code></pre>
+<div class="callout check"><div class="co-t">Check</div>
+<table class="table"><thead><tr><th>what is true</th><th>median &#124;t&#124;</th><th>rejects at P &lt; 0.05</th><th>rejects at P &lt; 0.001</th></tr></thead>
+<tbody>
+<tr><td>the test's own null (only the lead is causal)</td><td>0.68</td><td>0.051</td><td>0.001</td></tr>
+<tr><td><b>the real locus</b> (rs4131768 ignored)</td><td><b>3.06</b></td><td><b>0.86</b></td><td><b>0.41</b></td></tr>
+<tr><td>a second signal half as strong</td><td>1.52</td><td>0.33</td><td>0.039</td></tr>
+</tbody></table>
+<p>Under its own assumptions the test is <b>exactly right</b> – it rejects 5.1% of the time at the 5% level, which is what a correct test does. Under the truth it rejects <b>86%</b> of the time for a variant with <b>no effect at all</b>. And its median &#124;t&#124; under that wrong null is <b>3.06</b> – while the Brugada value you were about to believe was 3.81.</p></div>
+<div class="callout science"><div class="co-t">So the table in section 4 is not a result</div>
+<p>The test was correctly derived and correctly implemented. It is simply answering a question whose premise is false here, and when the premise fails it produces exactly the pattern seen in section 4: large, consistent, highly significant residuals across every variant of the block. The consistency that made the table persuasive is a property of the artefact – all 20 variants are the same haplotype, so they all inherit the same borrowed signal.</p>
+<p>This is worth sitting with. Nothing was fudged, no code was wrong, the P-values were computed properly, and the answer was still meaningless. The error was in the <b>null hypothesis</b>, which is the part nobody checks.</p></div>
+
+<h2>6. What the data can actually support</h2>
+<p>Go back to conditional analysis, but use it properly: condition on all three independent signals, and report the whole sequence rather than one step of it.</p>
+<pre class="code" data-run="r"><code>s &lt;- read.delim("/data/examples/scn5a/annotation/inference_summary.tsv")
+s[, c("trait", "strongest_marginal_p", "conditional_p_1_signals",
+      "conditional_p_2_signals", "conditional_p_3_signals", "stability")]</code></pre>
+<div class="callout check"><div class="co-t">Check</div>
+<table class="table"><thead><tr><th>trait</th><th>marginal P</th><th>1 signal</th><th>2 signals</th><th>3 signals</th><th>verdict</th></tr></thead>
+<tbody>
+<tr><td>PR interval</td><td>7.5 × 10<sup>−15</sup></td><td>1.2 × 10<sup>−6</sup></td><td>2.3 × 10<sup>−14</sup></td><td>1.7 × 10<sup>−42</sup></td><td>unstable – 36 orders</td></tr>
+<tr><td>Brugada syndrome</td><td>1.3 × 10<sup>−11</sup></td><td>2.7 × 10<sup>−7</sup></td><td>2.2 × 10<sup>−10</sup></td><td><b>0.041</b></td><td>unstable – 8 orders</td></tr>
+<tr><td>QRS duration</td><td>0.014</td><td>8.9 × 10<sup>−5</sup></td><td>1.5 × 10<sup>−3</sup></td><td><b>0.28</b></td><td>null at 3 signals</td></tr>
+<tr><td>QT interval</td><td>3.2 × 10<sup>−5</sup></td><td>9.7 × 10<sup>−4</sup></td><td>6.4 × 10<sup>−4</sup></td><td><b>0.19</b></td><td>null at 3 signals</td></tr>
+<tr><td>atrial fibrillation</td><td>5.4 × 10<sup>−7</sup></td><td>9.3 × 10<sup>−4</sup></td><td>8.3 × 10<sup>−3</sup></td><td><b>0.011</b></td><td><b>stable</b></td></tr>
+<tr><td>resting heart rate</td><td>0.20</td><td>0.077</td><td>0.46</td><td>1.4 × 10<sup>−3</sup></td><td>unstable – 3 orders</td></tr>
+<tr><td>all five circadian</td><td>≥ 0.11</td><td colspan="3">no genome-wide-significant signal at the locus, so nothing to condition on</td><td>null</td></tr>
+</tbody></table></div>
+<div class="callout science"><div class="co-t">The project's result, stated as carefully as it deserves</div>
+<p><b>No cardiac trait shows a stable association independent of the known signals at this locus.</b> QRS duration and the QT interval are null once all three are accounted for. Brugada syndrome ends at P = 0.041, but by way of a sequence that moves eight orders of magnitude, so the number cannot be read as a measurement. The PR interval moves <i>thirty-six</i> orders and is simply uninformative – its lead's z of −51.5 makes the correction so large that an error of 0.03 in a correlation swamps the signal. Atrial fibrillation is the one trait whose answer barely moves (9.3 × 10<sup>−4</sup> → 8.3 × 10<sup>−3</sup> → 0.011), and 0.011 across six cardiac traits does not survive correction.</p>
+<p><b>The circadian traits are a clean null</b>, and they are the one place where the answer is simple: nothing at this locus reaches genome-wide significance for any of the five, so there is nothing to condition on and the marginal result is the final one. Every P-value is 0.11 or larger in studies of hundreds of thousands of people.</p>
+<p>So the honest conclusion is: a real, replicated, 50 kb haplotype whose cardiac associations <b>cannot be separated</b> from the locus's known independent signals with a reference panel of 503 people – the same variant gives P = 1.4 × 10<sup>−4</sup> or P = 0.28 for the same trait depending on how many signals you condition on – and which shows <b>no association with any circadian trait</b>.</p>
+<p>That is a less exciting result than section 4 promised. It is also the one the data support, and saying so is the whole job.</p></div>
+<div class="callout think"><div class="co-t">Think</div><p>Would more data fix this? Work out how the standard error of a correlation scales with the size of the reference panel, and how large a panel you would need to shrink the ±1.6 uncertainty on the PR interval expectation to 0.1. Then ask whether a bigger panel is the right answer at all, or whether this question needs individual-level genotypes rather than summary statistics.</p></div>
+
+<h2>7. The same test on the expression signal</h2>
+<p>Do it again for the blood eQTL from stage 8, where the lead was rs4131768 with P = 1.8 × 10<sup>−50</sup>:</p>
+<pre class="code" data-run="r"><code>eq &lt;- read.delim("/data/examples/scn5a/annotation/gtex_tagging.tsv")
+summary(as.numeric(eq$r_with_lead)); sum(as.numeric(eq$residual_p) &lt; 0.05); nrow(eq)
+head(eq[order(as.numeric(eq$residual_p)), c("rsid", "marginal_p", "r_with_lead",
+                                            "z_expected_from_lead", "residual_t", "residual_p")], 5)</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p>The block's variants correlate with rs4131768 at only r = 0.25–0.32, but z<sub>lead</sub> = −14.9, so the expected z is about −4.8 – and the observed values are −4.2 to −7.6. Only <b>3 of 18</b> variants have a residual P below 0.05, and the smallest is 0.009, which does not survive correction for 18 tests. The whole-blood expression signal is consistent with tagging.</p></div>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->Note what just happened to your own standards</div>
+<p>This is the <b>same single-lead test</b> you have just shown to over-reject 86% of the time. So why is it acceptable here?</p>
+<p>Because of which way its bias runs. The test is anti-conservative: it over-states independence. Here it found <i>no</i> independent signal – so a test biased towards finding one, finding none, is strong evidence that there is none. In section 4 it found a signal, which is exactly what the bias produces, so there the result is worthless.</p>
+<p>The same test, the same data, opposite evidential value, depending only on the direction of the answer. Get into the habit of asking which way a method's bias points before deciding what its output is worth. It is not double standards – it is the only consistent standard there is.</p></div>
+<div class="callout think"><div class="co-t">Think</div><p>The expression signal is explained away, and the trait signals cannot be shown to be independent either. Does anything survive from stages 9 and 10? Write down what you would now put in an abstract – and notice that "we could not determine X" is a finding, provided you say what would determine it.</p></div>
+
+<div class="callout log"><div class="co-t">For your logbook</div>
+<ul>
+<li>rs6801957: where it is, what it does, and why its z of −51 is a problem for you.</li>
+<li>The three independent signals, and which of them is most correlated with your block.</li>
+<li>Your conditional-analysis instability demonstration, with the numbers from your own run.</li>
+<li>The arithmetic showing why an error of 0.03 in <i>r</i> matters when <i>z</i><sub>lead</sub> = 51.</li>
+<li>What you wrote after section 4, before you ran the simulation. <b>Do not tidy this up.</b></li>
+<li>Your simulation, its three scenarios, and the rejection rates you got.</li>
+<li>The sensitivity table across one, two and three signals, and your verdict per trait.</li>
+<li>The eQTL version, and why a biased test can still be informative in one direction.</li>
+</ul></div>
+<div class="callout science"><div class="co-t">What this stage was really teaching</div>
+<p>Four things, in order of how often they go wrong in published work:</p>
+<ol>
+<li>A P-value is only as good as its null hypothesis, and the null is the part nobody checks.</li>
+<li>When you cannot reason about whether a method works in your situation, <b>simulate your situation</b> and count. It took twenty lines.</li>
+<li>Consistency across correlated tests is not corroboration. Twenty variants of one haplotype are one observation.</li>
+<li>If you find yourself choosing between analyses by looking at which gives the better answer, stop – that is the moment a result becomes unreproducible, and it feels exactly like making progress.</li>
+</ol></div>
+
+<h2>Going further</h2>
+<ul>
+<li><b>Which signal does the work?</b> Repeat the three-signal conditional analysis for Brugada syndrome leaving out rs4131768 but keeping the other two. How much of the collapse from 10⁻⁷ to 0.04 is down to that one variant?</li>
+<li><b>Colocalisation.</b> Read about <code>coloc</code> and Bayesian colocalisation. It asks a related question – do two traits share a causal variant? – in a framework that handles uncertainty properly. What would you need that your bundle does not have?</li>
+<li><b>A better LD reference.</b> Everything here is limited by 503 Europeans. How much would 50,000 help? Work out how the standard error of <i>r</i> scales, and how large a reference you would need to make the ±1.62 on the PR interval expectation small enough to settle the question.</li>
+<li><b>Simulate it.</b> Simulate a locus where you know there is only one causal variant, run both methods, and see how often each gives a false positive. This is the most convincing possible way to justify your choice of method.</li>
+</ul>
+<ul class="checklist">
+<li data-check="s10-lead">I found the locus lead and understand why it threatens my result.</li>
+<li data-check="s10-cond">I implemented conditional analysis and demonstrated its instability.</li>
+<li data-check="s10-why">I can explain, with arithmetic, why it is unstable here.</li>
+<li data-check="s10-tag">I built the tagging diagnostic with propagated uncertainty.</li>
+<li data-check="s10-sim">I simulated the test under the real locus and found how often it over-rejects.</li>
+<li data-check="s10-verdict">I conditioned on all three signals and know what the data support.</li>
+<li data-check="s10-eqtl">I applied the same test to the expression signal and can say why it is informative there.</li>
+</ul>
+<div class="stage-nav"><button type="button" data-goto="h-s09"><small>Back</small>← Stage 9 · Does it matter?</button><button class="next" type="button" data-goto="h-s11"><small>Next</small>Stage 11 · Write it up →</button></div>

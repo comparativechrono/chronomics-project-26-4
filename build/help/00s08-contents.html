@@ -1,0 +1,82 @@
+<!-- id: h-s08 | title: Stage 8 · What is on the haplotype | group: The project | stage: 8 | tab: yes | tabtitle: Stage 8 – What is on the haplotype | summary: Annotate all 20 variants with the Variant Effect Predictor; find the one in an enhancer; ask whether the block came from Neanderthals; look it up in GTEx and find out what expression data can and cannot say | keys: stage 8 annotation vep variant effect predictor consequence regulatory enhancer promoter motif archaic neanderthal vindija denisovan introgression gtex eqtl expression whole blood heart tissue power -->
+<h1>Stage 8 · What is on the haplotype</h1>
+<div class="stage-meta"><span class="when">Weeks 8–9</span><span>about 6 hours</span><span class="stage-progress"></span></div>
+<p class="lede">You have 20 variants and 50.6 kb. Now find out what they are: where they sit, what they might do, where the block came from, and whether anyone has measured its effect on the gene it sits next to.</p>
+<div class="skills"><b>You will learn</b><ul>
+<li>the Variant Effect Predictor, and what its "consequence" terms do and do not mean</li>
+<li>to look a region up in a regulatory annotation and read it sceptically</li>
+<li>to test a haplotype against archaic genomes</li>
+<li>what an eQTL is, and the difference between a negative result and no test</li>
+</ul></div>
+
+<h2>1. Annotating all 20 at once</h2>
+<p>Ensembl's <b>Variant Effect Predictor</b> (VEP) takes a list of variants and says, for each, which transcripts and regulatory features it falls in. Use the one in your bundle first, then check a few by hand in the browser:</p>
+<pre class="code" data-run="term"><code>head -1 /data/examples/scn5a/annotation/haplotype_variants.tsv
+cut -f 1,2,12,14 /data/examples/scn5a/annotation/haplotype_variants.tsv | column -t -s $'\t'</code></pre>
+<div class="tryrow"><button class="do" type="button" data-api="ensembl:vep:rs41310749">rs41310749 through VEP</button><button class="do" type="button" data-api="ensembl:vep:rs62242851">rs62242851 through VEP</button></div>
+<div class="callout check"><div class="co-t">Check</div><p>Of the 20: eight are <b>intergenic</b>, six are <b>upstream</b> of <i>SCN5A</i>, three are <b>intronic</b> in <i>SCN5A</i>, and three (the two deletions and the repeat) get no consequence term at all. <b>None changes a protein.</b> Exactly one falls in an annotated regulatory feature – an <b>enhancer</b> – and that one is <b>rs41310749</b>, one of the two variants the 2012 paper picked out.</p></div>
+<div class="callout think"><div class="co-t">Think</div><p>That is a satisfying result: of 20 variants, the one in an enhancer is the one already suspected. How much weight should that carry? Before you answer, consider: how many enhancers are annotated in this 50 kb, how were they annotated, and if you shuffled the 20 variants to random positions in the region, how often would one land in an enhancer?</p></div>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->"Regulatory region variant" is a location, not a function</div><p>A VEP consequence tells you where a variant is, not what it does. "Upstream gene variant" means "within 5 kb of a transcript start". "Enhancer" means the position overlaps a feature in Ensembl's regulatory build, which was called from chromatin data across a panel of cell types – often not the cell type you care about. None of it is evidence that the variant changes anything. Treat annotation as a way of generating hypotheses and ranking them, never as a result.</p></div>
+<div class="task"><div class="task-t">Your turn</div>
+<p>Pick the three variants closest to the <i>SCN5A</i> transcription start and look each one up in the Ensembl browser. For each, write down: which regulatory features overlap it, in which cell types the evidence was collected, and whether any of those cell types is cardiac. Then say honestly how much the annotation has told you.</p></div>
+
+<h2>2. Did it come from Neanderthals?</h2>
+<p>A long haplotype of moderate frequency, common outside Africa and nearly absent within it, fits the profile of <b>archaic introgression</b> – DNA inherited from Neanderthals or Denisovans by the ancestors of non-Africans. It is a specific, testable claim: if the block is archaic, an archaic genome should carry its alleles.</p>
+<p>High-coverage archaic genomes are public. The bundle has the result for the Vindija Neanderthal; the comparison is one allele at a time, and the only hard part is the coordinates – the archaic files are on <b>GRCh37</b>:</p>
+<pre class="code" data-run="term"><code>column -t -s $'\t' /data/examples/scn5a/annotation/archaic_alleles.tsv | head -25
+awk -F'\t' 'NR>1 {print $10}' /data/examples/scn5a/annotation/archaic_alleles.tsv | sort | uniq -c</code></pre>
+<div class="callout check"><div class="co-t">Check</div><p><b>Sixteen</b> of the 20 positions could be called in the Vindija genome, at depths of 13 to 43 reads. <b>Fourteen</b> of those are single-base substitutions, and the Neanderthal carries the <b>non-haplotype allele at all fourteen</b>. The other two are deletions and cannot be compared – read the next box for why. Four positions had no call at all, which is ordinary for ancient DNA.</p></div>
+<div class="callout science"><div class="co-t">The answer, and a trap worth seeing</div>
+<p><b>The block is not archaic.</b> At every one of the fourteen positions where the comparison is valid, the Neanderthal looks like a non-carrier. A haplotype inherited from Neanderthals would not do that.</p>
+<p>Now the trap. Two of the 20 variants are deletions, written in VCF style as <code>ATAGGGGTC&gt;A</code> and <code>TC&gt;T</code> – so the "haplotype allele" is the string <code>A</code> or <code>T</code>. The archaic file reports a single base per position, and at those two positions it reports <code>A</code> and <code>T</code>. A naive string comparison says "match" and reports that the Neanderthal carries the haplotype allele. It does not: the match is between a VCF spelling convention and a single base, and means nothing. Two apparent matches out of sixteen called positions is over 10% – enough to turn a clean negative into an ambiguous one and to let someone write a sentence about partial archaic ancestry.</p>
+<p>The fix is to compare only single-base substitutions and say so. There is a second, quieter version of the same bug in the same comparison: the usual way to check that your coordinate conversion worked is to confirm that the archaic reference base matches the human reference allele – but if you compare the archaic base against only the <i>first character</i> of a multi-base allele, an indel passes that check automatically and tells you nothing. Compare the whole string, and count the indels separately.</p><p>The general lesson is worth more than either result: <b>when two datasets describe the same thing in different formats, the join is where the errors live.</b> Check a few by hand, always.</p></div>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->What this test does not rule out</div><p>One archaic genome tested at fourteen positions is good evidence, not proof. The Altai Neanderthal and the Denisovan genomes could not be retrieved when the bundle was built, so the test rests on Vindija alone. And "not archaic" does not mean "not old" – stage 6 put the block in the tens of thousands of years, which is plenty of time for a modern-human haplotype to spread across Eurasia without any archaic help. Say what you tested, in which genome, at how many positions.</p></div>
+
+<h2>3. Does the block change how much SCN5A is made?</h2>
+<p>The variants are regulatory in position, so the obvious question is whether they change gene expression. A variant whose genotype predicts a gene's expression level is an <b>expression quantitative trait locus</b>, an eQTL, and the <b>GTEx</b> project has measured them in 49 human tissues.</p>
+<div class="tryrow"><button class="do" type="button" data-api="gtex:eqtl:SCN5A">SCN5A eQTLs in GTEx</button><button class="do" type="button" data-api="gtex:eqtl:SCN10A">SCN10A eQTLs in GTEx</button></div>
+<div class="callout check"><div class="co-t">Check</div><p>First, which of your variants GTEx can even test: <b>18 of the 20</b>. rs41310239 – one of the two published promoter variants – is <b>not in GTEx v8 at all</b>, and neither is the repeat at 38,667,308. Say "18 of the 18 testable", never "18 of 20", or you have quietly turned an absence of data into a negative result.</p>
+<p><b>In whole blood</b>, all <b>18 of the 18</b> are significant eQTLs for <i>SCN5A</i>, every one associated with <b>lower</b> expression, the strongest at P = 3 × 10<sup>−14</sup>.</p>
+<p><b>In heart</b> – left ventricle and atrial appendage, the tissues that matter for a cardiac sodium channel – <b>no variant anywhere in the region</b> reaches GTEx's significance threshold for <i>SCN5A</i>. Not one.</p></div>
+<div class="callout warn"><div class="co-t"><!--ICON:info-->Do not read that last line as "no effect in heart"</div>
+<p>Here is the trap, and it is one worth getting caught in once. The endpoint that returns eQTLs returns only the <b>significant</b> ones. Zero rows means "none passed the threshold" – it does not mean "nothing was tested". Ask the question the other way round, variant by variant, and heart answers:</p>
+<table class="table"><thead><tr><th>tissue</th><th>donors</th><th>effect of rs41310749</th><th>P</th></tr></thead>
+<tbody>
+<tr><td>heart, atrial appendage</td><td>372</td><td>−0.099</td><td><b>0.031</b></td></tr>
+<tr><td>heart, left ventricle</td><td>386</td><td>−0.055</td><td>0.054</td></tr>
+<tr><td>whole blood</td><td>670</td><td colspan="2">140 variants pass the threshold here</td></tr>
+</tbody></table>
+<p>So heart <i>was</i> tested, in 372 and 386 donors, and the effect points the same way as in blood – nominally significant in the atrium and borderline in the ventricle. What heart lacks is not data but <b>power</b>: barely half the donors of whole blood, post-mortem tissue, and a long cardiac transcript that is hard to quantify.</p></div>
+<div class="callout science"><div class="co-t">The honest statement, in three parts</div>
+<p>(1) In whole blood the haplotype tracks lower <i>SCN5A</i> expression, strongly. (2) In heart no variant clears the significance threshold, but rs41310749's effect is directionally concordant and nominally significant in atrial appendage (P = 0.031) – under-powered, not null. (3) Blood is not the tissue of interest, so (1) is a hint about mechanism and not a measurement of it.</p>
+<p>Notice how different that is from "GTEx shows no effect in heart", and how much work the words are doing. A great deal of published interpretation turns on exactly this distinction.</p></div>
+<div class="callout think"><div class="co-t">Think</div><p>Why would a cardiac sodium channel gene be expressed in blood at all, and should an effect measured there be expected to carry over to heart muscle? Look up where else <i>SCN5A</i> is expressed before you answer.</p></div>
+<div class="task"><div class="task-t">Your turn – the question stage 10 will finish</div>
+<p>Find the strongest <i>SCN5A</i> eQTL in whole blood, anywhere in the region. Its P-value is 1.8 × 10<sup>−50</sup>, against 3 × 10<sup>−14</sup> for the best variant on your block – thirty-six orders of magnitude stronger. Where is it? Is it one of your 20? What is its frequency?</p>
+<details class="hint answer"><summary>Show the answer</summary>
+<p>It is <b>rs4131768</b>, at 38,653,683 – <i>inside</i> your block's span, but not one of its variants, and carried by <b>67%</b> of European chromosomes against your block's 16%. A much commoner, much stronger regulatory signal overlapping your haplotype. Hold that thought: it is the whole subject of stage 10.</p></details></div>
+
+<div class="callout log"><div class="co-t">For your logbook</div>
+<ul>
+<li>A table of all 20 variants with their consequence and any regulatory feature.</li>
+<li>The enhancer result, and your honest assessment of how impressive it is.</li>
+<li>The archaic test: which genome, how many positions were called, how many were comparable, the result, and the indel trap.</li>
+<li>The GTEx result in three sentences – blood, heart, and what each does and does not show.</li>
+<li>rs4131768: position, frequency, and why it worries you.</li>
+</ul></div>
+
+<h2>Going further</h2>
+<ul>
+<li><b>Shuffle test.</b> Count the annotated regulatory features in the 50.6 kb. Then draw 20 random positions from the region a thousand times and count how often at least one lands in an enhancer. Now you have a P-value for your "satisfying result".</li>
+<li><b>Conservation.</b> Look up the phyloP or GERP score of each of the 20 variants. Is any of them in sequence that has been conserved across mammals? A conserved regulatory site is a better candidate than an annotated one.</li>
+<li><b>Other archaic genomes.</b> The Altai Neanderthal and Denisovan genomes are public. Fetch them and extend the test. Does the conclusion hold at 42 comparisons instead of 14?</li>
+<li><b>Other genes.</b> The block is between <i>SCN5A</i> and <i>SCN10A</i>. Check GTEx for eQTLs of every gene within a megabase, not just those two – a regulatory variant need not act on its nearest neighbour.</li>
+</ul>
+<ul class="checklist">
+<li data-check="s8-vep">I annotated all 20 variants and know what the consequence terms mean.</li>
+<li data-check="s8-enh">I found the enhancer variant and can say how much weight it deserves.</li>
+<li data-check="s8-arch">I tested the block against an archaic genome and understand the indel trap.</li>
+<li data-check="s8-gtex">I looked it up in GTEx and can state the blood and heart results separately.</li>
+<li data-check="s8-lead">I found rs4131768 and understand why it is a problem.</li>
+</ul>
+<div class="stage-nav"><button type="button" data-goto="h-s07"><small>Back</small>← Stage 7 · Reading it with long reads</button><button class="next" type="button" data-goto="h-s09"><small>Next</small>Stage 9 · Does it matter? Heart and clock →</button></div>
